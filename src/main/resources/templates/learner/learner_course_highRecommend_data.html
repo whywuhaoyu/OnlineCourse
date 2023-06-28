@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心高分推荐</title>
+</head>
+<body>
+<div class="row" th:if="${not #lists.isEmpty(sysCourseListByCourseScoreForPersonalCenter)}">
+    <div class="col-sm-12 col-md-12 wow fadeInRight animated" th:each="sysCourse:${sysCourseListByCourseScoreForPersonalCenter}">
+        <div class="thumbnail">
+            <a th:data="${sysCourse.courseId}" th:onclick="|updateViewCountByCourseId(this.getAttribute('data'))|" th:href="@{/learner/getCourseDetailData(courseId=${sysCourse.courseId})}" >
+                <img src="../images/course/computer/java/1031.jpg" th:src="'/images/course'+${sysCourse.imgPath}" alt="通用的占位符缩略图">
+            </a>
+            <div class="caption ">
+                <h4 th:text="${sysCourse.courseName}">JAVA语言入门教程2022版</h4>
+                <p>课程评分：<span>[[${sysCourse.courseScore}]]分</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!--分页-->
+    <div  th:if="${not #lists.isEmpty(sysCourseListByCourseScoreForPersonalCenter)}">
+        <ul class="pager">
+            <li th:classappend="${cur == 1} ? 'disabled' : ''">
+                <a th:style="${cur == 1} ? 'pointer-events:none' : ''" href="javascript:void(0)"
+                   th:onclick="loadDataByCourseScoreForPersonalCenter([[${pre}]])">&larr;上一页</a>
+            </li>
+            <li th:classappend="${cur == last} ? 'disabled' : ''" >
+                <a th:style="${cur == last}  ? 'pointer-events:none' : ''" href="javascript:void(0)"
+                   th:onclick="loadDataByCourseScoreForPersonalCenter([[${next}]])">下一页 &rarr;</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

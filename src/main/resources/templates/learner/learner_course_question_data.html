@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程试题数据</title>
+</head>
+<body>
+<br>
+<input type="hidden" id="courseIdForQuestion" th:value="${courseId}">
+<div style="text-align: center" th:if="${#lists.isEmpty(sysQuestionListByCourseId)}">
+    <img style="width:400px;height: 300px;" src="../images/default/no-comment.png" alt="略">
+    <h4 style="font-style: italic;color: #999999;text-align: center"> 您还未学习或学完本课程，请继续学习！</h4>
+</div>
+<div style="text-align: center" th:if="${not #lists.isEmpty(sysQuestionListByCourseId)} and ${userGrade}!=0">
+    <img style="width:400px;height: 300px;" src="../images/default/no-comment.png" alt="略">
+    <h4 style="font-style: italic;color: #999999;text-align: center">
+        满分100分，您的成绩为 <span style="color: red">[[${userGrade}]]分</span>
+        <a href="javascript:void(0)" id="answerAgain">重新作答</a>
+    </h4>
+</div>
+
+<div th:if="${userGrade == 0}" th:remove="tag">
+    <div th:if="${not #lists.isEmpty(sysQuestionListByCourseId)}" style="height: 500px; overflow-y: scroll;">
+        <ul class="list-group" th:each="sysquestion,stat:${sysQuestionListByCourseId}">
+            <li class="list-group-item">
+                <div style="width: 650px;height: auto" >
+                    <span class="question-title">[[${stat.count}]]. [[${sysquestion.questionDescription}]]</span>
+                    <span class="pull-right">[[${sysquestion.questionAward}]]分</span>
+                    <input type="hidden" class="getQuestionId" th:value="${sysquestion.questionId}">
+                    <div class="options" style="margin-top: 10px" th:if="${sysquestion.questionType} == '单选题' or ${sysquestion.questionType}=='判断题'">
+                        <label th:if="${sysquestion.a} != null">
+                            <input type="radio" th:name="'q'+${stat.count}" value="A">
+                            <span class="option-letter">A. </span>
+                            <span class="option-content">[[${sysquestion.a}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.b} != null">
+                            <input type="radio" th:name="'q'+${stat.count}" value="B">
+                            <span class="option-letter">B. </span>
+                            <span class="option-content">[[${sysquestion.b}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.c} != null">
+                            <input type="radio" th:name="'q'+${stat.count}" value="C">
+                            <span class="option-letter">C. </span>
+                            <span class="option-content">[[${sysquestion.c}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.d} != null">
+                            <input type="radio" th:name="'q'+${stat.count}" value="D">
+                            <span class="option-letter">D. </span>
+                            <span class="option-content">[[${sysquestion.d}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.e} != null">
+                            <input type="radio" th:name="'q'+${stat.count}" value="E">
+                            <span class="option-letter">E. </span>
+                            <span class="option-content">[[${sysquestion.e}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.f} != null">
+                            <input type="radio" th:name="'q'+${stat.count}" value="F">
+                            <span class="option-letter">F. </span>
+                            <span class="option-content">[[${sysquestion.f}]]</span>
+                        </label>
+                    </div>
+                    <div class="options" style="margin-top: 10px" th:if="${sysquestion.questionType} == '多选题'">
+                        <label th:if="${sysquestion.a} != null">
+                            <input type="checkbox" th:name="'q'+${stat.count}" value="A">
+                            <span class="option-letter">A. </span>
+                            <span class="option-content">[[${sysquestion.a}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.b} != null">
+                            <input type="checkbox" th:name="'q'+${stat.count}" value="B">
+                            <span class="option-letter">B. </span>
+                            <span class="option-content">[[${sysquestion.b}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.c} != null">
+                            <input type="checkbox" th:name="'q'+${stat.count}" value="C">
+                            <span class="option-letter">C. </span>
+                            <span class="option-content">[[${sysquestion.c}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.d} != null">
+                            <input type="checkbox" th:name="'q'+${stat.count}" value="D">
+                            <span class="option-letter">D. </span>
+                            <span class="option-content">[[${sysquestion.d}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.e} != null">
+                            <input type="checkbox" th:name="'q'+${stat.count}" value="E">
+                            <span class="option-letter">E. </span>
+                            <span class="option-content">[[${sysquestion.e}]]</span>
+                        </label>
+                        <label th:if="${sysquestion.f} != null">
+                            <input type="checkbox" th:name="'q'+${stat.count}" value="F">
+                            <span class="option-letter">F. </span>
+                            <span class="option-content">[[${sysquestion.f}]]</span>
+                        </label>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <button class="btn btn-primary" id="submit-answer" style="width: 80px;border-radius: 20px;margin-left: 250px">提交</button>
+        <button class="btn btn-default" id="question-refresh" style="width: 80px;border-radius: 20px;margin-left: 25px">取消</button>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    $(function (){
+        $('input:radio').click(function(){
+            const $radio = $(this);
+            if ($radio.data('checked')){
+                $radio.prop('checked', false);
+                $radio.data('checked', false);
+            } else {
+                $radio.prop('checked', true);
+                $radio.data('checked', true);
+            }
+        });
+
+        $("#submit-answer").click(function (){
+            const questionAnswers = [{}]
+            let flag = true;
+            const questionIds=$("input[type='hidden'].getQuestionId")
+            questionIds.each(function(index, element) {
+                const checkedInput=$(element).next('div').find("input:radio:checked, input:checkbox:checked");
+                if(checkedInput.length ===0){
+                    flag = false;
+                }
+                let userAnswer=[]
+                checkedInput.each(function() {
+                    userAnswer.push($(this).val())
+                });
+                questionAnswers.push({
+                    questionId: $(element).val(),
+                    userAnswer: userAnswer
+                })
+            });
+            questionAnswers.shift()
+            console.log("答案数组：",questionAnswers)
+
+            const courseId=$("#courseIdForQuestion").val()
+            if(!flag){
+                layer.msg("还有题目未作答！", {
+                    icon: 2,
+                    time: 1000,
+                    shade: [0.4, '#393D49'],
+                    area:['200px','66px'],
+                });
+            }else{
+                $.ajax({
+                    url: "/learner/getExamResult/"+courseId,
+                    data: JSON.stringify(questionAnswers),
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (json) {
+                        if(json.state===200){
+                            layer.msg('提交成功！您的成绩是：'+json.data.score, {
+                                icon: 6,
+                                time: 700,
+                                shade: [0.4, '#393D49'],
+                                area:['260px','66px'],
+                                end: function (){
+                                    location.reload()
+                                }
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("AJAX Error: " + status + " " + error);
+                    }
+                });
+
+            }
+
+
+        })
+
+        $("#question-refresh").click(function() {
+            $(".options :input")
+                .not(':button',':submit',':reset','hidden')
+                .prop("checked",false)
+        })
+
+        $("#answerAgain").click(function (){
+            const courseId=$("#courseIdForQuestion").val()
+            $.ajax({
+                url : "/updateUserGradeByCourseId",
+                data :{
+                    courseId : courseId
+                },
+                type : "POST",
+                dataTypeL: JSON,
+                success: function (json) {
+                    if(json.state===200){
+                        layer.msg('重置成功！', {
+                            icon: 6,
+                            time: 700,
+                            shade: [0.4, '#393D49'],
+                            area:['60px','66px'],
+                            end: function (){
+                                location.reload()
+                            }
+                        });
+                    }else if(json.state===5001){
+                        layer.msg("更新失败！", {
+                            icon: 5,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['80px','66px'],
+                        });
+                    }
+                }
+
+            })
+
+        })
+
+    })
+
+</script>
+</body>
+</html>

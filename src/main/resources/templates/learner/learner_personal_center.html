@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <div th:include="learner/common :: learnerCommonBase"></div>
+</head>
+<body>
+
+<!--导航 -->
+<div th:replace="learner/common :: navigation"></div>
+<!--导航结束-->
+
+<div class="container">
+    <!--课程分类以及轮播图-->
+    <div th:replace="learner/common :: rotation"></div>
+    <br>
+</div>
+
+<div class="container">
+    <input type="hidden" id="userId" th:value="${session.sysUser.userId}">
+    <!--左边-->
+    <div class="col-md-8 col-sm-12">
+
+        <!--课程选项卡-->
+        <div class="panel panel-success">
+            <div class="panel-body">
+                <!--tab选项卡 begin-->
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#myCourse" data-toggle="tab"><span id="myCourseCount" class="badge pull-right" th:text="${myCourseCount}"></span>我的课程</a>
+                    </li>
+                    <li>
+                        <a href="#myComment" data-toggle="tab"><span id="myCommentCount" class="badge pull-right" th:text="${myCommentCount}"></span>历史评论</a>
+                    </li>
+                    <li>
+                        <a href="#updateMyPwd" data-toggle="tab">修改密码</a>
+                    </li>
+                    <li>
+                        <a href="#updateMyUserName" data-toggle="tab">修改昵称（用户名）</a>
+                    </li>
+                    <li>
+                        <a href="#uploadHeadImg" data-toggle="tab">更改头像</a>
+                    </li>
+                </ul>
+
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="myCourse"></div>
+
+                    <div class="tab-pane fade" id="myComment"></div>
+
+                    <div class="tab-pane fade" id="updateMyPwd">
+                        <form class="updatePwd-form" id="update-form" method="post">
+                            <div class="line">
+                                <i class="iconfont formal-icon">&#xe667;</i><span class="split">|</span>
+                                <input type="text" class="text" placeholder="账号"  name="account" id="account" readonly th:value="${session.sysUser.account}"/>
+                            </div>
+                            <div class="line">
+                                <i class="iconfont formal-icon">&#xe60f;</i><span class="split">|</span>
+                                <input type="password" class="password" placeholder="原密码" id="oldPassword" name="oldPassword" readonly th:value="${session.sysUser.password}" />
+                            </div>
+                            <div class="line">
+                                <i class="iconfont formal-icon">&#xe60f;</i><span class="split">|</span>
+                                <input type="password" class="password" placeholder="新密码" id="newPassword" name="newPassword" />
+                            </div>
+                            <div class="line">
+                                <i class="iconfont formal-icon">&#xe620;</i><span class="split">|</span>
+                                <input type="password" class="password" placeholder="确认密码" id="confirmPassword" />
+                            </div>
+                            <button type="button" id="updatePwd-btn">修改</button>
+                        </form>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="updateMyUserName">
+                            <form class="updatePwd-form" id="updateUserName-form" method="post">
+                                <div class="line">
+                                    <i class="iconfont formal-icon">&#xe667;</i><span class="split">|</span>
+                                    <input type="text" class="text" placeholder="账号" id="updateUserName-account"  name="account" readonly th:value="${session.sysUser.account}"/>
+                                </div>
+                                <div class="line">
+                                    <i class="iconfont formal-icon">&#xe60f;</i><span class="split">|</span>
+                                    <input type="text" class="userName" placeholder="原用户名" id="oldUserName" name="oldUserName" readonly th:value="${session.sysUser.userName}"/>
+                                </div>
+                                <div class="line">
+                                    <i class="iconfont formal-icon">&#xe60f;</i><span class="split">|</span>
+                                    <input type="text" class="userName" placeholder="新用户名" id="newUserName" name="newUserName" />
+                                </div>
+                                <div class="line">
+                                    <i class="iconfont formal-icon">&#xe620;</i><span class="split">|</span>
+                                    <input type="text" class="userName" placeholder="确认用户名" id="confirmUserName" />
+                                </div>
+                                <button type="button" id="updateUserName-btn">修改</button>
+                            </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="uploadHeadImg">
+                        <br>
+                        <label for="userNewHeadImg" class="control-label">当前头像：</label>
+                        <div class="details_div" th:if="${session.sysUser.headImgPath} != null">
+                            <ul class="details_picList" id="list1">
+                               <img th:src="${session.sysUser.headImgPath}" alt="略" src="" width="150px" height="150px" style="border-radius: 50%">
+                            </ul>
+                            <br>
+                        </div>
+                        <div class="details_div" th:if="${session.sysUser.headImgPath} == null">
+                            <ul class="details_picList" id="list2">
+                                <img src="../images/index/user.jpg" alt="略"width="150px" height="150px" style="border-radius: 50%">
+                            </ul>
+                            <br>
+                        </div>
+                        <br>
+                        <label for="userNewHeadImg" class="control-label">上传新头像：</label>
+                        <div class="details_div">
+                            <ul class="details_picList" id="user_list">
+                                <li class="details_picList_fileUpload" >
+                                    <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1528"
+                                         width="40" height="40">
+                                        <path d="M0 512C0 229.230208 229.805588 0 512 0 794.769792 0 1024 229.805588 1024 512 1024 794.769792 794.194412 1024 512 1024 229.230208 1024 0 794.194412 0 512Z"
+                                              p-id="1529" fill="#FF7874"></path>
+                                        <path d="M753.301333 490.666667l-219.946667 0L533.354667 270.741333c0-11.776-9.557333-21.333333-21.354667-21.333333-11.776 0-21.333333 9.536-21.333333 21.333333L490.666667 490.666667 270.72 490.666667c-11.776 0-21.333333 9.557333-21.333333 21.333333 0 11.797333 9.557333 21.354667 21.333333 21.354667L490.666667 533.354667l0 219.904c0 11.861333 9.536 21.376 21.333333 21.376 11.797333 0 21.354667-9.578667 21.354667-21.333333l0-219.946667 219.946667 0c11.754667 0 21.333333-9.557333 21.333333-21.354667C774.634667 500.224 765.077333 490.666667 753.301333 490.666667z"
+                                              p-id="1530" fill="#FFFFFF"></path>
+                                    </svg>
+                                    <span>点击上传</span>
+                                    <input type="file" id="userNewHeadImg" onchange="uploadNewImage(this)" accept="image/*">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="details_tools_div">
+                            <input class="frm_btn" id="btn_updateHeadImg_save" type="button" value="保存"/>
+                            <input class="frm_btn frm_clear" id="btn_updateHeadImg_cancel" data-bs-dismiss="offcanvas" type="button" value="取消"/>
+                        </div>
+                    </div>
+
+                </div>
+                <!--tab选项卡 end-->
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--右边-->
+    <div class="col-md-4 col-sm-3 col-xs-8">
+        <!--高分课程推荐-->
+        <div>
+            <span class="text-info" style="color: brown"><span class="glyphicon glyphicon-exclamation-sign"></span><span style="font-size: 20px">高分推荐</span></span>
+            <div id="highCourse"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--加载课程搜索功能-->
+<div th:replace="learner/common :: getCourseBySearchCondition"></div>
+
+
+<!--首页menu数据加载-->
+<div th:replace="learner/common :: loadMenu"></div>
+
+
+<!--加载用户已选课程数据-->
+<div th:replace="learner/common :: getCourseStudyAndComment"></div>
+
+
+
+
+<!--页脚 start-->
+<div th:replace="learner/common :: footer"></div>
+<!--页脚 end-->
+
+<!--注销操作提示-->
+<div th:replace="user/common :: logout-prompt"></div>
+
+
+<div th:replace="learner/common :: learner-operation-prompt"></div>
+
+</body>
+</html>

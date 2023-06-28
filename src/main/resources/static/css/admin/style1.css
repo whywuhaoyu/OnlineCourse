@@ -1,0 +1,786 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.scroll div {
+    margin: 0;
+}
+
+a {
+    color: #20a53a;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #23527c;
+    text-decoration: none;
+}
+
+a:focus {
+    text-decoration: none;
+}
+
+.bgf {
+    background-color: #fff;
+}
+
+
+body, html {
+    height: 100%;
+    background-color: #f2f2f2;
+}
+
+
+
+
+
+#user-phone {
+    display: none;
+}
+
+.wrap {
+    min-height: 100%;
+}
+
+.wrap .container-fluid {
+    padding: 0;
+    height: 100%;
+}
+
+.left-nav {
+    float: left;
+    background-color: #3c444d;
+    width: 200px;
+    height: 100%;
+    position: fixed;
+}
+
+.left-nav .navbar a {
+    color: #d6d7d9;
+}
+
+.left-nav .navbar {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+.left-nav .navbar .active {
+    border-left: #20a53a 3px solid;
+}
+
+.ul-menu {
+    background-color: #353d44;
+}
+
+.nav > li > a {
+    padding: 15px 15px;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > a:hover {
+    color: #fff;
+    background-color: #2c3138;
+}
+
+.nav > li > a:focus,
+.nav > li > a:hover {
+    text-decoration: none;
+    background-color: #2c3138;
+    color: #fff;
+}
+
+.mytitle{
+    margin-bottom: 0;
+}
+
+.mytitle h3 {
+    display: inline-block;
+    color: #d6d7d9;
+    text-align: center;
+    font-size: 17px;
+    margin: 15px 25px;
+}
+
+.mytitle:hover {
+    background-color: #20a53a;
+    cursor: pointer;
+}
+
+.mytitle:hover h3 {
+    color: #fff;
+}
+
+.main-content {
+    margin-left: 200px;
+    height: 100%;
+
+}
+
+.nav-path {
+    margin: 15px 0;
+    height: 55px;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
+    background-color: #fff;
+}
+
+.ol-path {
+    height: 100%;
+    background-color: #fff;
+    line-height: 40px;
+}
+
+
+.welcome {
+    float: right;
+    margin-top: -60px;
+    margin-right: 60px;
+    font-size: 0;
+    /*width: 200px;*/
+}
+
+.welcome li {
+    display: block;
+}
+
+.welcome .user {
+    font-size: 15px;
+}
+
+.welcome a {
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+li {
+    list-style: none;
+}
+
+.user-menu {
+    display: inline-block;
+    float: right;
+    margin-right: 15px;
+
+}
+
+
+#account-operate {
+    position: absolute;
+    display: none;
+    margin-left: -40px;
+    border: 1px solid #ededed;
+    box-shadow: 0 6px 12px rgb(0 0 0 / 18%);
+    font-size: 15px;
+    background-color: #fff;
+    border-radius: 6px;
+    width: 150px;
+    z-index: 1000;
+}
+
+
+#account-operate a {
+    display: inline-block;
+    margin: 0;
+    color: #767676;
+    text-align: center;
+    width: 100%;
+}
+
+#account-operate a:hover {
+    color: #17adff;
+}
+
+#account-operate li {
+    padding: 5px 0;
+    height: 40px;
+    border-top: 1px solid #ededed;
+}
+
+#account-operate li:hover {
+    background-color: #eee;
+}
+
+.user-drop .arrow-icon {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.user-drop .user {
+    cursor: pointer;
+}
+
+.user-drop .user:hover {
+    color: #17adff;
+}
+
+
+.show-box,
+.admin-view,
+.hospital-header {
+    margin-top: 30px;
+    height: auto;
+    background-color: #fff;
+    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 10%);
+    padding: 10px 30px;
+}
+
+.hospital-header {
+    padding: 20px 30px;
+}
+
+#department-box {
+    display: none;
+}
+
+.admin-view {
+    padding: 0;
+}
+
+
+.admin-view .admin_view_title {
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #eee;
+    padding: 0 20px;
+    font-size: 16px;
+    color: #666;
+}
+
+.all-info {
+    display: flex;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.all-info .view-text {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.view-text .li-box {
+    list-style-type: none;
+    display: inline-block;
+    height: 100px;
+    width: 200px;
+    background-color: #f9f9f9;
+    border: #f0f0f0 1px solid;
+    margin-left: 20px;
+    max-width: 230px;
+}
+
+.box-name {
+    line-height: 40px;
+    margin-top: 10px;
+    color: #999;
+    font-size: 15px;
+}
+
+.li-box .box-name {
+    margin-bottom: 0;
+}
+
+.li-box .li-val .li-link {
+    font-family: arial;
+    font-size: 26px;
+    color: #20a53a;
+}
+
+.show-box .box-header {
+    margin-bottom: 15px;
+}
+
+.show-box .box-header .table-title {
+    display: inline-block;
+}
+
+.regist-title {
+    display: inline-block;
+}
+
+.show-box .visitor-query,
+.show-box .regist-query {
+    display: inline-block;
+    float: right;
+    margin-top: 10px;
+}
+
+.name-search {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.name-search #username-query {
+    display: inline-block;
+    width: 150px;
+}
+
+
+.btn-div {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0;
+}
+
+.btn_group {
+    display: inline-block;
+    border: 1px solid #cfcfcf;
+    border-left: none;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 7px 10px;
+}
+
+.btn-div .btn_group:first-child {
+    border-left: 1px solid #cfcfcf;
+}
+
+.btn-div .btn_hover:hover {
+    background-color: #20a53a;
+    border-color: #20a53a;
+    color: #fff;
+}
+
+.btn_normal {
+    background-color: #20a53a;
+    border-color: #20a53a;
+    color: #fff;
+}
+
+.btn_no_click {
+    cursor: no-drop;
+    background-color: #fff;
+    border-color: #cfcfcf;
+    opacity: .65;
+}
+
+
+.btn-div .btn_icon {
+    width: 16px;
+    height: 16px;
+}
+
+
+.visitor-query .bootstrap-select > .dropdown-toggle {
+    width: 100px;
+}
+
+
+.visitor-query .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 100px;
+}
+
+.visitor-query select option {
+    font-size: 10px;
+}
+
+.visitor-query #username-query {
+    display: inline-block;
+    width: 120px;
+}
+
+.regist-query .query-selector {
+    display: inline-block;
+    margin: 8px;
+}
+
+
+.btn.active.focus, .btn.active:focus, .btn.focus,
+.btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: 0px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+
+table {
+    width: 100%;
+    /*height: 100%;*/
+}
+
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.table {
+    border: 1px solid #ddd;
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.table-bordered > tr > td {
+    height: 20px;
+    max-height: 20px;
+}
+
+/*去边框!*/
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+    border: 0 solid #ddd;
+}
+
+/*单元格设置*/
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+    padding: 8px;
+    line-height: 1.4;
+    vertical-align: top;
+    border-top: 0.5px solid #ddd;
+    text-align: center;
+}
+
+/*表头设置*/
+.table thead th {
+    vertical-align: inherit;
+    background-color: #f6f6f6;
+    /*border-bottom: 1px solid #e6e6e6;*/
+    color: #666;
+    font-weight: normal;
+    padding: 8px;
+}
+
+tr th > span,
+tr td > span {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+
+.cust—checkbox {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    vertical-align: top;
+    position: relative;
+    border-radius: 2px;
+    margin-top: 5px;
+}
+
+.cust—checkbox + input {
+    display: none;
+}
+
+input[type='checkbox'] {
+    margin: 4px;
+}
+
+.cust—checkbox.active {
+    background-color: #20a53a;
+    border-color: #20a53a;
+}
+
+.cust—checkbox.active::after {
+    content: '';
+    position: absolute;
+    display: block;
+    left: 50%;
+    top: 50%;
+    margin-left: -2.5px;
+    margin-top: -6px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+
+.bootstrap-table .fixed-table-container .fixed-table-body {
+    height: auto;
+    width: 100%;
+}
+
+.bootstrap-table .fixed-table-container {
+    clear: none;
+}
+
+.fixed-table-toolbar {
+    display: none;
+}
+
+.fixed-table-loading {
+    display: none;
+}
+
+.table tbody tr td span a {
+    color: #20a53a;
+    text-decoration: none;
+}
+
+.table tbody tr td span a:hover {
+    color: #337ab7;
+}
+
+.modal-dialog {
+    width: 450px;
+}
+
+.bottom-title {
+    height: 30px;
+    margin-top: 15px;
+}
+
+.bottom-title span {
+    line-height: 35px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #337ab7;
+}
+
+.top-info {
+    border-bottom: 1px solid #ededed;
+    padding: 10px;
+}
+
+.bottom-info {
+    padding: 10px;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+    width: 8px;
+    height: 5px;
+    background-color: #F5F5F5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(128, 128, 128, .3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(164, 160, 160, 0.5);
+    background-color: #8d8989;
+}
+
+#regist-modal,
+#pay-modal {
+    overflow-y: hidden;
+}
+
+#identify,
+#identify_expert {
+    display: inline-block;
+    width: 69%;
+}
+
+#get-identify,
+#get_identify_expert {
+    width: 30%;
+}
+
+.scroll {
+    max-height: 75%;
+    overflow: auto;
+}
+
+.bottom {
+    height: 100px;
+}
+
+a :focus {
+    outline: none;
+    text-decoration: none;
+}
+
+
+#registTime {
+    display: inline-block;
+    width: auto;
+}
+
+#registTime-query {
+    position: relative;
+    right: -280px;
+    margin-top: 5px;
+    width: 30%;
+}
+
+.border {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ededed;
+}
+
+.date-container {
+    display: flex;
+}
+
+.time-picker {
+    padding: 10px;
+}
+
+.registTime-selector {
+    display: inline-block;
+    padding-left: 5px;
+    width: 40%;
+
+}
+
+.date-picker {
+    display: inline-block;
+    /*width: 50%;*/
+}
+
+.block-label {
+    display: block;
+}
+
+.birth-picker {
+    height: 35px;
+}
+
+#patient-birth {
+    display: inline-block;
+}
+
+.btn-birth {
+    height: 34px;
+}
+
+.datetimepicker.datetimepicker-dropdown-bottom-right.dropdown-menu {
+    width: 250px;
+}
+
+.input-group-addon {
+    cursor: pointer;
+}
+
+.modal-input {
+    margin-bottom: 10px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+#code {
+    display: inline-block;
+    width: 69%;
+}
+
+#getCode {
+    width: 30%;
+}
+
+#back{
+    position: absolute;
+    right: 50px;
+    top: 160px;
+    border-radius: 100px;
+}
+
+
+
+
+/*
+ *以下为why所写
+ */
+.mtype{
+    text-align: center;
+    display: none;
+}
+
+
+
+.left-nav .navbar .actives {
+    border-left: #9955e6 3px solid;
+}
+
+.show-cbox {
+    margin-top: 30px;
+    height: auto;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
+    padding: 10px 15px;
+}
+
+.show-mbox {
+    margin-top: 30px;
+    height: 80%;
+    padding: 10px 15px;
+}
+
+#purchase_m{
+    display: inline-block;
+    width: 80%;
+}
+
+#purchase{
+    display: inline-block;
+    width: 80%;
+}
+
+#sicon {
+    color: darkseagreen;
+    display: inline-block;
+    width: 20%;
+    height: 50px;
+    line-height: 48px;
+    background-color: #353d44;
+    font-size: 5px;
+    padding-left: 15px;
+}
+
+.aicon {
+    margin-right: 10px;
+    font-size: 15px;
+}
+
+.show-box .purchase-title {
+    display: inline-block;
+    width: 60%;
+}
+
+.show-mbox .visitor-title,
+.show-mbox .purchase-title {
+    display: inline-block;
+    width: 60%;
+}
+
+
+.show-mbox .query-div{
+    display: inline-block;
+}
+
+
+#medicine-table a {
+    font-size: 14px;
+    color: #20a53a;
+}
+
+#medicine-table a:hover {
+    color: red;
+    text-decoration: none;
+}
+
+#updateMedicine .modal-body input {
+    width: 250px;
+    height: 35px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.modal-body label {
+    font: 16px black STSong;
+}
+
+.modal-footer label {
+    font: 16px black STSong;
+}

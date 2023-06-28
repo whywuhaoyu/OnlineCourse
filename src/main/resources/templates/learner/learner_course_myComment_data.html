@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户个人历史评论</title>
+</head>
+<body>
+<br>
+<div style="text-align: center;" th:if="${#lists.isEmpty(myCourseCommentViewList)}">
+    <img style="width:400px;height: 300px;" src="../images/default/no-comment.png" alt="略">
+    <h4 style="font-style: italic;color: #999999;text-align: center"> 抱歉，您暂无评论！</h4>
+</div>
+<div th:if="${not #lists.isEmpty(myCourseCommentViewList)}">
+    <ul class="list-group" th:each="userCourseCommentView:${myCourseCommentViewList}">
+        <li class="list-group-item">
+            <div style="width: 700px;height: 60px" >
+                <a style="margin-left:650px;margin-top: -20px" class="btn btn-group-vertical" role="button" th:data1="${session.sysUser.userId}" th:data2="${userCourseCommentView.courseId}" th:data3="${userCourseCommentView.commentTime}"
+                   th:data4="${cur}" th:onclick="|deleteMyComment(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'),this.getAttribute('data4'))|">
+                      <span class="glyphicon glyphicon-remove"></span>
+                </a>
+                <div style="float: left;margin-top: -20px">
+                    <a th:href="@{/learner/getCourseDetailData(courseId=${userCourseCommentView.courseId})}">
+                        <img th:if="${userCourseCommentView.getImgPath() != null}" th:src="@{'/images/course'+${userCourseCommentView.getImgPath()}}" width="70px" height="70px" style="border-radius: 20%">
+                    </a>
+                </div>
+                <div style="float: left;margin-left: 20px;margin-top: -20px">
+                    <span class="text-info" th:text="${userCourseCommentView.courseName}"></span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span id="1" style="font-size: 16px" class="iconfont1" th:classappend="${userCourseCommentView.courseScore>=1} ? 'icon-xingxing':'icon-xingxing1'"></span>
+                    <span id="2" style="font-size: 16px" class="iconfont1" th:classappend="${userCourseCommentView.courseScore>=2} ? 'icon-xingxing':'icon-xingxing1'"></span>
+                    <span id="3" style="font-size: 16px" class="iconfont1" th:classappend="${userCourseCommentView.courseScore>=3} ? 'icon-xingxing':'icon-xingxing1'"></span>
+                    <span id="4" style="font-size: 16px" class="iconfont1" th:classappend="${userCourseCommentView.courseScore>=4} ? 'icon-xingxing':'icon-xingxing1'"></span>
+                    <span id="5" style="font-size: 16px" class="iconfont1" th:classappend="${userCourseCommentView.courseScore == 5} ? 'icon-xingxing':'icon-xingxing1'"></span>
+                    <p style="font-size:13px;color: #999999;padding-top: 10px">发表于 [[${userCourseCommentView.commentTime}]]</p>
+                </div>
+
+            </div><br>
+            <span th:if="${userCourseCommentView.courseScore} == null" class="text-info" th:text="${userCourseCommentView.commentContent}"></span>
+            <span th:if="${userCourseCommentView.courseScore != null and userCourseCommentView.courseScore<4}" class="text-danger" th:text="${userCourseCommentView.commentContent}"></span>
+            <span th:if="${userCourseCommentView.courseScore >=4} " class="text-success" th:text="${userCourseCommentView.commentContent}"></span>
+
+        </li>
+    </ul>
+    <!--分页-->
+    <ul class="pager">
+        <li th:classappend="${cur == 1} ? 'disabled' : ''">
+            <a th:style="${cur == 1} ? 'pointer-events:none' : ''" href="javascript:void(0)" th:data1="${pre}" th:data2="${userId}"
+               th:onclick="|loadDataMyComment(this.getAttribute('data1'),this.getAttribute('data2'))|">&larr;上一页</a>
+        </li>
+        <li th:classappend="${cur == last} ? 'disabled' : ''" >
+            <a th:style="${cur == last}  ? 'pointer-events:none' : ''" href="javascript:void(0)" th:data1="${next}" th:data2="${userId}"
+               th:onclick="|loadDataMyComment(this.getAttribute('data1'),this.getAttribute('data2'))|">下一页 &rarr;</a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

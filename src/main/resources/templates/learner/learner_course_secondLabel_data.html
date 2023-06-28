@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>二级标签课程数据</title>
+</head>
+<body>
+
+<div class="row" th:if="${#lists.isEmpty(sysCourseListBySecondLabel)}">
+    <div class="col-sm-12 col-md-12 wow fadeInRight animated">
+        <div class="thumbnail">
+            <a onclick="updateViewCountByCourseId(390225877880934400)" th:href="@{/learner/getCourseDetailData(courseId=390225877880934400)}"><img src="../images/course/programming/java/1031.jpg"  alt="通用的占位符缩略图 "></a>
+            <div class="caption">
+                <h4>JAVA语言入门教程2022版</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-12 wow fadeInRight animated">
+        <div class="thumbnail">
+            <a onclick="updateViewCountByCourseId(390226907024723977)" th:href="@{/learner/getCourseDetailData(courseId=390226907024723977)}"><img src="../images/course/programming/java/1033.jpg" alt="通用的占位符缩略图 "></a>
+            <div class="caption">
+                <h4>Spring系列框架教程</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-12 wow fadeInRight animated">
+        <div class="thumbnail">
+            <a onclick="updateViewCountByCourseId(390558634590998531)" th:href="@{/learner/getCourseDetailData(courseId=390558634590998531)}"><img src="../images/course/office/995.jpg" alt="通用的占位符缩略图 "></a>
+            <div class="caption">
+                <h4>PPT2019视频教程</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" th:if="${not #lists.isEmpty(sysCourseListBySecondLabel)}">
+    <div class="col-sm-12 col-md-12 wow fadeInRight animated" th:each="sysCourse:${sysCourseListBySecondLabel}">
+        <div class="thumbnail">
+            <a th:data="${sysCourse.courseId}" th:onclick="|updateViewCountByCourseId(this.getAttribute('data'))|" th:href="@{/learner/getCourseDetailData(courseId=${sysCourse.courseId})}" >
+                <img src="../images/course/computer/java/1031.jpg" th:src="'/images/course'+${sysCourse.imgPath}" alt="通用的占位符缩略图">
+            </a>
+            <div class="caption ">
+                <h4 th:text="${sysCourse.courseName}">JAVA语言入门教程2022版</h4>
+            </div>
+        </div>
+    </div>
+
+    <!--分页-->
+    <div  th:if="${not #lists.isEmpty(sysCourseListBySecondLabel)}">
+        <ul class="pager">
+            <li th:classappend="${cur == 1} ? 'disabled' : ''">
+                <a th:style="${cur == 1} ? 'pointer-events:none' : ''" href="javascript:void(0)" th:data1="${pre}" th:data2="${secondLabel}" th:data3="${courseId}"
+                   th:onclick="|loadDataBySecondLabel(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'))|">&larr;上一页</a>
+            </li>
+            <li th:classappend="${cur == last} ? 'disabled' : ''" >
+                <a th:style="${cur == last}  ? 'pointer-events:none' : ''" href="javascript:void(0)" th:data1="${next}" th:data2="${secondLabel}" th:data3="${courseId}"
+                   th:onclick="|loadDataBySecondLabel(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'))|">下一页 &rarr;</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

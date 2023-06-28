@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户数据</title>
+</head>
+<body>
+<section class="panel" style="border-color: #dddddd">
+    <header class="panel-heading">
+        UserData Table
+        <span class="tools pull-right">
+            <input class="frm_btn frm_add" id="btn_user_add" type="button"   data-bs-toggle="offcanvas"
+                   data-bs-target="#adminAddUser" aria-controls="offcanvasRight" value="添加用户"/>
+        </span>
+        <div class="data_count_div text_info">
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2522" width="16"
+                 height="16">
+                <path d="M401.976676 735.74897c-88.721671 0-172.124196-34.635845-234.843656-97.526197-62.724577-62.86784-97.271394-146.453537-97.271394-235.358379s34.546817-172.490539 97.276511-235.361449c62.715367-62.887282 146.117892-97.522104 234.838539-97.522104 88.719624 0 172.135452 34.633798 234.881518 97.522104 62.704111 62.875003 97.235578 146.4607 97.235578 235.361449 0 88.901773-34.530444 172.487469-97.231485 235.358379C574.112128 701.116195 490.6963 735.74897 401.976676 735.74897zM401.976676 121.204479c-75.012438 0-145.533584 29.290093-198.572568 82.474386-109.585861 109.834524-109.585861 288.539602-0.004093 398.36901 53.043077 53.188386 123.564223 82.47848 198.577684 82.47848 75.015507 0 145.553027-29.291117 198.620663-82.47848C710.126918 492.220514 710.126918 313.511343 600.593246 203.678866 547.530726 150.496619 476.992183 121.204479 401.976676 121.204479z"
+                      p-id="2523" fill="#FF7874">
+                </path>
+                <path d="M932.538427 958.228017c-6.565533 0-13.129019-2.508123-18.132986-7.52437L606.670661 642.206504c-9.989515-10.014074-9.969049-26.231431 0.045025-36.220946s26.230408-9.969049 36.220946 0.045025l307.73478 308.497143c9.989515 10.014074 9.969049 26.231431-0.045025 36.220946C945.627537 955.735244 939.081447 958.228017 932.538427 958.228017z"
+                      p-id="2524" fill="#FF7874">
+                </path>
+            </svg>
+            <span class="data_count_title">查看合计</span>
+            <span>用户总数:</span>
+            <span class="data_count_value" id="user_count_data">[[${total}]]</span>
+            <span class="data_count_unit">位</span>
+        </div>
+    </header>
+    <div class="panel-body">
+        <div class="adv-table" >
+            <table class="display table table-bordered  table-hover" id="userDataTable" style="text-align: center">
+                <thead style="text-align: center">
+                <tr style="font-weight: bold">
+                    <th>#</th>
+                    <th>头像</th>
+                    <th>账号</th>
+                    <th>用户名</th>
+                    <th>身份</th>
+                    <th>用户专业</th>
+                    <th>上次登录</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="gradeX" th:each="sysuser,stat: ${sysUserList}">
+                    <td th:text="${stat.count}"></td>
+                    <td>
+                        <img th:src="${sysuser.headImgPath} ?: '../images/index/user.jpg'" width="32px" height="32px" style="border-radius: 50%" alt="略" src="">
+                    </td>
+                    <td th:text="${sysuser.account}"></td>
+                    <td th:text="${sysuser.userName}"></td>
+                    <td th:if="${sysuser.userType} == 'admin'" style="color: sandybrown;">系统管理员</td>
+                    <td th:if="${sysuser.userType} == 'super_admin'" style="color: sandybrown;">超级管理员</td>
+                    <td th:if="${sysuser.userType} == 'learner'">普通学习者</td>
+                    <td th:if="${sysuser.userMajor} != null">[[${sysuser.userMajor}]]</td>
+                    <td th:if="${sysuser.userMajor} == null">
+                        <i data-toggle="tooltip" data-placement="top" title="暂无相关信息" class="iconfont icon-zanwuxinxi"></i>
+                    </td>
+                    <td th:if="${sysuser.lastLoginTime} != null" th:text="${countUtil.timeConvert(sysuser.lastLoginTime)}"></td>
+                    <td th:if="${sysuser.lastLoginTime} == null">
+                        <i data-bs-toggle="tooltip" data-bs-placement="top" title="暂无相关信息" class="iconfont icon-zanwuxinxi"></i>
+                    </td>
+                    <td th:if="${sysuser.userEnabled} == false" style="color: red">停用</td>
+                    <td th:if="${sysuser.userEnabled} == true" style="color: green">正常</td>
+                    <td th:if="${sysuser.createTime} != null" th:text="${countUtil.timeConvert(sysuser.createTime)}"></td>
+                    <td th:if="${sysuser.createTime} == null">
+                        <i data-bs-toggle="tooltip" data-bs-placement="top" title="暂无相关信息" class="iconfont icon-zanwuxinxi"></i>
+                    </td>
+                    <td style="width: 160px">
+                        <div id="operate">
+<!--                            <span id="detailsData" class="iconfont icon-xiangqing"></span>&nbsp;&nbsp;-->
+                            <span id="editData" data-toggle="modal" data-target="#editUser-modal" class="iconfont icon-bianji"
+                                  th:data1="${sysuser.userId}" th:data2="${sysuser.account}" th:data3="${sysuser.userName}"
+                                  th:data4="${sysuser.userMajor}" th:data5="${sysuser.userType}" th:data6="${sysuser.userEnabled}"
+                                  th:onclick="|getEditUserData(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'),
+                                  this.getAttribute('data4'),this.getAttribute('data5'),this.getAttribute('data6'))|"></span>&nbsp;&nbsp;
+                            <span id="deleteData" th:data1="${cur}" th:data2="${pageSize}" th:data3="${sysuser.userId}" th:data4="${isNotEnabled}" th:data5="${isEnabled}" th:data6="${userType}"
+                                  th:data7="${userCondition}" th:onclick="|deleteUserDataByUserId(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'),
+                                  this.getAttribute('data4'),this.getAttribute('data5'),this.getAttribute('data6'),this.getAttribute('data7'))|" class="iconfont icon-iconfront-">
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="dataTables_info" th:if="${pages} != 0">
+                当前第[[${cur}]]页  总计 [[${pages}]]页  共[[${total}]]条记录
+            </div>
+            <div class="dataTables_info" th:if="${pages} == 0" style="text-align: center;color: #999999;font-style: italic">
+                抱歉，暂无记录！
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--表格分页-->
+<div class="row-fluid">
+    <!--分页-->
+    <nav aria-label="Page navigation">
+        <ul class="pagination" th:if="${pages} != 0">
+
+            <li style="margin-right: 20px">
+                <label class="frm_label">每页显示:</label>
+                <select id="userPageSize" th:value="${pageSize}" class="form-control" style="width: 60px;display: inline;text-align: center"
+                        th:data1="${isNotEnabled}" th:data2="${isEnabled}" th:data3="${userType}" th:data4="${userCondition}"
+                        th:onchange="|loadUserDataBySize(this,this.getAttribute('data1'),this.getAttribute('data2'),
+                        this.getAttribute('data3'),this.getAttribute('data4'))|">
+                    <option value="3" th:selected="${pageSize == 3}">3</option>
+                    <option value="5" th:selected="${pageSize == 5}">5</option>
+                    <option value="10" th:selected="${pageSize == 10}">10</option>
+                    <option value="15" th:selected="${pageSize == 15}">15</option>
+                    <option value="20" th:selected="${pageSize == 20}">20</option>
+                    <option value="30" th:selected="${pageSize == 30}">30</option>
+                </select>
+                <label class="frm_label">条</label>
+            </li>
+
+            <li th:classappend="${cur == 1} ? 'disabled' : ''"><a href="javascript:void(0)" th:onclick="loadUserData(1,[[${pageSize}]],[[${isNotEnabled}]],[[${isEnabled}]],[[${userType}]],[[${userCondition}]])">首页</a></li>
+
+            <li th:classappend="${cur == 1} ? 'disabled' : ''">
+                <a th:style="${cur == 1}  ? 'disabled pointer-events:none' : ''" href="javascript:void(0)" th:data1="${pre}" th:data2="${pageSize}" th:data3="${isNotEnabled}"
+                   th:data4="${isEnabled}" th:data5="${userType}" th:data6="${userCondition}"
+                   th:onclick="|loadUserData(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'),this.getAttribute('data4'),this.getAttribute('data5'),this.getAttribute('data6'))|">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li th:each="num:${#numbers.sequence(1,pages)}" th:class="${cur == num} ? 'active' : ''"
+                th:classappend="${num} == ${cur - 2} and ${cur} > 4 ? 'disabled' : ''">
+                <a href="javascript:void(0)" th:if="${num} == ${cur} or ${num} == ${cur - 1} or ${num} == ${cur + 1} or ${num} == ${pages} or ${num} == ${pages - 1}"
+                   th:text="${num}"  th:data1="${num}" th:data2="${pageSize}" th:data3="${isNotEnabled}"
+                   th:data4="${isEnabled}" th:data5="${userType}" th:data6="${userCondition}"
+                   th:onclick="|loadUserData(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'),
+                   this.getAttribute('data4'),this.getAttribute('data5'),this.getAttribute('data6'))|">1</a>
+                <a href="javascript:void(0)" th:if="${num} == ${cur - 2} and ${cur} > 4">...</a>
+                <a href="javascript:void(0)" th:if="${num} == ${cur + 2} and ${cur} < ${pages - 3}">...</a>
+            </li>
+
+
+            <li th:classappend="${cur == last} ? 'disabled' : ''">
+                <a th:style="${cur == last}  ? 'disabled pointer-events:none' : ''" href="javascript:void(0)" th:data1="${next}" th:data2="${pageSize}" th:data3="${isNotEnabled}"
+                   th:data4="${isEnabled}" th:data5="${userType}" th:data6="${userCondition}"
+                   th:onclick="|loadUserData(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'),this.getAttribute('data4'),this.getAttribute('data5'),this.getAttribute('data6'))|">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li th:classappend="${cur == last} ? 'disabled' : ''"><a href="javascript:void(0)" th:onclick="loadUserData([[${pages}]],[[${pageSize}]],[[${isNotEnabled}]],[[${isEnabled}]],[[${userType}]],[[${userCondition}]])">尾页</a></li>
+
+            <li><label style="margin-left: 20px" class="frm_label" th:text="${'当前页' + cur + '/' + pages + '总页'}">当前页3/5总页</label></li>
+
+            <li style="margin-left: 20px">
+                <div id="userDataPagination" class="input-group">
+                    <input id="userDataPage" style="width: 100px;" type="text" class="form-control" placeholder="跳转指定页" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-search" th:onclick="goUserDataPage([[${pageSize}]],[[${isNotEnabled}]],[[${isEnabled}]],[[${userType}]],[[${userCondition}]])">GO</button>
+                    </span>
+                </div>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+
+
+<!--查询和删除用户-->
+<div th:replace="admin/common :: query-user"></div>
+
+
+<!--添加用户-->
+<div th:replace="admin/common :: add-user"></div>
+
+
+<!--编辑用户-->
+<div th:replace="admin/common :: edit-user"></div>
+
+
+
+<div th:replace="admin/common :: tooltip"></div>
+</body>
+</html>

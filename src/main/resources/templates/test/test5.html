@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>试题界面</title>
+
+    <!--引入js文件-->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+
+    <style>
+        .time-remaining {
+            font-size: 18px;
+        }
+
+        .question {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .options label {
+            margin-right: 20px;
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">试卷名</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="time-remaining mb-4">剩余时间: <span id="timer"></span></div>
+            <div class="question-list"></div>
+            <button class="submit-btn btn btn-primary btn-lg btn-block" type="button">提交答案</button>
+        </div>
+
+        <div class="col-md-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 引入 Bootstrap 和 jQuery 库 -->
+
+
+
+
+<script>
+    $(function() {
+        // 设置题目数据
+        var questions = [{
+            title: '题目1',
+            options: ['选项A', '选项B', '选项C', '选项D']
+        },
+            {
+                title: '题目2',
+                options: ['选项A', '选项B', '选项C', '选项D']
+            },
+            {
+                title: '题目3',
+                options: ['选项A', '选项B', '选项C', '选项D']
+            },
+            // 添加更多题目
+        ];
+
+        // 根据题目数据动态生成 HTML
+        var questionList = $('.question-list');
+        var pagination = $('.pagination');
+        questions.forEach(function(question, index) {
+            var questionHtml = '<div class="question mb-4">' +
+                '<div class="question-title">' + question.title + '</div>' +
+                '<div class="options">';
+            question.options.forEach(function(option, index) {
+                var optionHtml = '<label><input type="radio" name="q' + (questionIndex + 1) + '" value="' + option.substr(0, 1) + '"> ' + option + '</label>';
+                questionHtml += optionHtml;
+            });
+            questionHtml += '</div></div>';
+            questionList.append(questionHtml);
+
+            var pageIndex = Math.floor(index / 10);
+            if (index % 10 === 0) {
+                var pageHtml = '<li class="page-item' + (pageIndex === 0 ? ' active' : '') + '"><a class="page-link" href="#">' + (pageIndex + 1) + '</a></li>';
+                pagination.append(pageHtml);
+            }
+        });
+
+        // 设置倒计时计时器，此处设置为60秒
+        var count = 60,
+            timer = setInterval(function() {
+                $('#timer').text(count--);
+                if (count < 0) {
+                    clearInterval(timer);
+                }
+            }, 1000);
+
+        // 题目分页点击事件
+        pagination.on('click', '.page-item', function() {
+            var page = $(this).index();
+            $('.page-item').removeClass('active');
+            $(this).addClass('active');
+            $('.question').hide();
+            $('.question').slice(page * 10, page * 10 + 10).show();
+        });
+
+        // 默认显示第一页
+        $('.page-item:first-child').click();
+
+        // 提交按钮点击事件
+        $('.submit-btn').click(function() {
+            // 获取用户选中的答案
+            var answers = {};
+            $('input[type=radio]:checked').each(function() {
+                var questionIndex = $(this).attr('name').substr(1);
+                var answer = $(this).val();
+                answers[questionIndex] = answer;
+            });
+
+            // 判断是否所有题目都已回答
+            var allAnswered = true;
+            $('.question').each(function() {
+                var questionIndex = $(this).index() + 1;
+                if (!answers.hasOwnProperty(questionIndex)) {
+                    allAnswered = false;
+                    return false; // break each loop
+                }
+            });
+            if (!allAnswered) {
+                alert('还有题目未回答');
+                return;
+            }
+
+            // 禁用按钮，避免多次提交
+            $(this).prop('disabled', true);
+
+            // 发送答题结果给服务器
+            $.ajax({
+                // ... 发送 ajax 请求
+            }).done(function() {
+                alert('提交成功');
+            }).fail(function() {
+                alert('提交失败');
+            }).always(function() {
+                $('.submit-btn').prop('disabled', false);
+            });
+        });
+    });
+
+
+
+</script>
+</body>
+</html>

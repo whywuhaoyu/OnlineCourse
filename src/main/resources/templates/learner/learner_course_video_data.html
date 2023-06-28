@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程视频数据</title>
+</head>
+<body>
+
+<br>
+<div style="text-align: center" th:if="${#lists.isEmpty(courseVideoViewList)}">
+    <img style="width:400px;height: 300px;" src="../images/default/no-video.png" alt="略">
+    <h4 style="font-style: italic;color: #999999;text-align: center"> 抱歉，该课程暂无视频！</h4>
+</div>
+<div th:if="${not #lists.isEmpty(courseVideoViewList)}">
+    <div class="list-group list-group-flush" th:each="courseVideoView:${courseVideoViewList}">
+        <a  th:href="@{/toVideoPlay(videoId=${courseVideoView.videoId},courseId=${courseVideoView.courseId})}" class="list-group-item list-group-item-action">
+            <div style="width: 700px;height: 50px" >
+                <div style="float: left;margin-left: 20px">
+                    <span class="text-info" th:text="${courseVideoView.videoName}"></span>
+                    <p style="font-size:13px;color: #999999;padding-top: 10px">视频上传于 [[${courseVideoView.videoUploadTime}]]</p>
+                </div>
+                <div style="float: left;margin-left: 200px">
+                    <h5 class="text-info" th:if="${courseVideoView.videoDuration} != null">时长：[[${courseVideoView.videoDuration}]]</h5>
+                </div>
+            </div>
+        </a>
+    </div>
+    <!--分页-->
+    <ul class="pager">
+        <li th:classappend="${cur == 1} ? 'disabled' : ''">
+            <a th:style="${cur == 1} ? 'pointer-events:none' : ''" href="javascript:void(0)" th:data1="${pre}" th:data2="${courseId}"
+               th:onclick="|loadDataVideo(this.getAttribute('data1'),this.getAttribute('data2'))|">&larr;上一页</a>
+        </li>
+
+        <li th:class="${num == cur} ? 'disabled pointer-events:none':''" th:each="num:${#numbers.sequence(1,pages)}" >
+            <a th:data1="${num}" th:data2="${courseId}" th:onclick="|loadDataVideo(this.getAttribute('data1'),this.getAttribute('data2'))|">[[${num}]]</a>
+        </li>
+
+        <li th:classappend="${cur == last} ? 'disabled' : ''" >
+            <a th:style="${cur == last}  ? 'pointer-events:none' : ''" href="javascript:void(0)" th:data1="${next}" th:data2="${courseId}"
+               th:onclick="|loadDataVideo(this.getAttribute('data1'),this.getAttribute('data2'))|">下一页 &rarr;</a>
+        </li>
+    </ul>
+</div>
+
+
+</body>
+</html>

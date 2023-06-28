@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程详情</title>
+    <div th:include="learner/common :: learnerCommonBase"></div>
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/c/font_3343940_wau61zj6g7.css">
+</head>
+<body>
+<!--导航 -->
+<div th:replace="learner/common :: navigation"></div>
+<!--导航结束-->
+
+<div class="container">
+    <!--课程分类以及轮播图-->
+    <div th:replace="learner/common :: rotation"></div>
+    <br>
+</div>
+
+
+<!--课程详细信息-->
+<div class="container">
+    <input type="hidden" id="userId" th:value="${session.sysUser.userId}">
+    <!--左边-->
+    <div class="col-md-8 col-sm-12">
+
+        <!--课程详细信息展示-->
+        <div th:replace="learner/common :: getCourseDetailData"></div>
+
+        <!--课程选项卡-->
+        <div class="panel panel-success">
+            <div class="panel-body" >
+                <!--tab选项卡 begin-->
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#catalogue" data-toggle="tab"><span class="badge pull-right" th:text="${courseVideoCount}"></span>课程目录</a>
+                    </li>
+                    <li>
+                        <a href="#comment" data-toggle="tab"><span class="badge pull-right" th:text="${courseCommentCount}"></span>课程评价</a>
+                    </li>
+                    <li>
+                        <a href="#question" data-toggle="tab"><span class="badge pull-right" th:text="${courseQuestionCount}"></span>课程练习</a>
+                    </li>
+                </ul>
+
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="catalogue"></div>
+
+                    <div class="tab-pane fade" id="comment"></div>
+
+                    <div class="tab-pane fade" id="question" ></div>
+
+                </div>
+                <!--tab选项卡 end-->
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--右边-->
+    <div class="col-md-4 col-sm-3 col-xs-8">
+        <!--兴趣课程推荐-->
+        <div>
+            <span class="text-info" style="color: red"><span class="glyphicon glyphicon-heart"></span><span style="font-size: 20px">猜您喜欢</span></span>
+            <div id="secondLabelForCourse"></div>
+        </div>
+    </div>
+</div>
+
+
+<!--加载课程搜索功能-->
+<div th:replace="learner/common :: getCourseBySearchCondition"></div>
+
+<!--加载评价课程模态框-->
+<div th:replace="learner/common :: judgeCourse"></div>
+
+<!--加载页面二级标签课程与用户评论数据-->
+<div th:replace="learner/common :: getCourseDataAndVideoAndComment"></div>
+
+
+<!--首页menu数据加载-->
+<div th:replace="learner/common :: loadMenu"></div>
+
+
+<!--页脚 start-->
+<div th:replace="learner/common :: footer"></div>
+<!--页脚 end-->
+
+<!--注销操作提示-->
+<div th:replace="user/common :: logout-prompt"></div>
+
+
+<div th:replace="learner/common :: learner-operation-prompt"></div>
+
+
+</body>
+
+</html>

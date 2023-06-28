@@ -1,0 +1,314 @@
+/*整体背景颜色*/
+body {
+    background-color: #d1e6da;
+}
+
+/*轮换层大小*/
+#myCarousel {
+	width: 100%;
+}
+
+
+/*accordion是左侧导航条*/
+#accordion {
+	min-height: 300px;
+}
+
+
+/*左右两侧的阴影效果*/
+.carousel-control.left {
+	background-image: none;
+	background-color: #666666;
+	width: 40px;
+	height: 60px;
+	margin: 160px 0 0 20px;
+	border-radius: 5px;
+}
+.carousel-control.right {
+	background-image: none;
+	background-color: #666666;
+	width: 40px;
+	height: 60px;
+	margin: 160px 20px 0 0;
+	border-radius: 5px;
+}
+
+.index-menu {
+	width: 100%;
+	margin-left: 5%;
+	padding: 5px 0;
+	background-color: #fdfdfd;
+	color: #ffffff;
+	border-radius: 5px;
+}
+
+
+/*主页一级分类菜单项 li*/
+.index-menu li {
+	line-height: 18px;
+	height: 18px;
+	text-align: center;
+	cursor: pointer;
+}
+.thumbnail {
+    border-radius: 20px 20px;
+}
+
+.thumbnail:hover {
+	border-color: red;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+	transform: translateY(-5px);
+}
+
+
+
+/*课程展示图片大小并设置圆角*/
+.thumbnail img {
+	width: 275px;
+	height: 194px;
+	border-radius: 20px 20px;
+}
+
+/*h4设置超出文本缩略显示*/
+.caption h4 {
+	width:230px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	-o-text-overflow:ellipsis;
+	-webkit-text-overflow:ellipsis;
+	-moz-text-overflow:ellipsis;
+	white-space:nowrap;
+}
+
+.abbreviation span{
+	width:10px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	-o-text-overflow:ellipsis;
+	-webkit-text-overflow:ellipsis;
+	-moz-text-overflow:ellipsis;
+	white-space:nowrap;
+}
+
+
+/*首页搜索框样式定制*/
+#searchCourse {
+	border-radius: 40px;
+}
+
+#searchCondition {
+	border-radius: 40px;
+}
+
+
+.show-box{
+	margin-top: 30px;
+	margin-bottom: 50px;
+	height: auto;
+	background-color: #fff;
+	box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 10%);
+	padding: 10px 30px;
+}
+
+/*课程列表搜索样式*/
+#searchCourseList{
+	position: relative;
+	float: left;
+	padding: 0px 12px;
+	margin-left: -1px;
+	line-height: 1.42857143;
+	color: #428bca;
+	text-decoration: none;
+	background-color: #fff;
+	width: 220px;
+}
+
+
+
+/*文本域样式设置*/
+textarea {
+	width:600px;
+	height: 240px;
+	padding: 12px 20px;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 15px;
+	resize: none;
+	outline: medium;
+}
+
+
+/*下拉框样式*/
+.speed {
+	position: relative;
+	display: inline-block;
+	margin-right: 20px;
+}
+
+
+
+
+.speed .current-speed {
+	cursor: pointer;
+	color: black;
+	font-weight: bold;
+}
+
+.speed .speed-options {
+	display: none;
+	position: absolute;
+	right: 0;
+	bottom: calc(100% + 5px);
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+	min-width: 45px;
+	padding: 5px 0;
+	text-align: center;
+	z-index: 1;
+}
+
+.speed .speed-option {
+	display: block;
+	padding: 5px 10px;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.speed .speed-option:hover {
+	background: #ddd;
+}
+
+.speed.showing .speed-options {
+	display: block;
+}
+
+.speed.showing .current-speed {
+	color: #000;
+}
+
+.speed-style {
+	background: #ddd;
+	color: #df0e69;
+}
+
+
+/*试题界面设置*/
+.question-title {
+	font-size: 15px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.options label {
+	display: block;
+	margin-bottom: 10px;
+	font-size: 14px;
+}
+
+.option-letter {
+	font-weight: bold;
+	margin-right: 5px;
+}
+
+.option-content {
+	font-weight: normal;
+	font-size: 14px;
+}
+
+
+
+/*图片上传*/
+.details_div{
+	text-align: center;
+	padding-top: 10px;
+	border-bottom: 1px solid #e9ebef;
+}
+.details_div_last{
+	margin-bottom: 40px;
+}
+.details_div>.details_title{
+	display: block;
+	color:#333;
+	margin-bottom: 20px;
+}
+.details_div>.details_picList{
+	font-size: 0;
+	padding: 0;
+	margin: 0 0 0 10px;
+}
+.details_picList>li{
+	border: 2px dashed #ccc;
+	display: inline-block;
+	list-style: none;
+	padding: 1px;
+	margin: 0 5px 10px;
+	vertical-align: top;
+	cursor: pointer;
+}
+.details_picList>.details_picList_fileUpload{
+	border-radius: 50%;
+	position: relative;
+}
+.details_picList_fileUpload>input[type="file"]{
+	cursor: pointer;
+	width: 150px;
+	height: 150px;
+	opacity: 0;
+}
+.details_picList_fileUpload>svg{
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: 25px auto 0;
+}
+.details_picList_fileUpload>span{
+	text-align: center;
+	position: absolute;
+	display: inline-block;
+	left: 0;
+	right: 0;
+	margin: 80px auto 0;
+	color:#666;
+	line-height: 14px;
+	font-size: 12px;
+}
+
+.details_tools_div{
+	padding-top: 20px;
+	padding-left: 240px;
+}
+.details_tools_div>.frm_btn{
+	width: 100px;
+	height: 30px;
+	margin-right: 20px;
+}
+
+.details_none {
+	display: none;
+}
+
+.frm_btn{
+	transition: background-color 0.25s ease-in;
+	outline: none;
+	height: 25px;
+	border-radius: 5px;
+	padding: 5px 18px;
+	border: 0;
+	color:white;
+	font-size: 13px;
+	background-color: #ff7874;
+	margin-right: 10px;
+}
+.frm_btn:hover{
+	background-color: #fe5874;
+}
+.frm_btn.frm_clear{
+	background-color: #f9B689;
+	padding: 5px 18px;
+}
+.frm_btn.frm_clear:hover{
+	background-color: #f9B659;
+}

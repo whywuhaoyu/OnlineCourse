@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+  <title>做题界面示例</title>
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    .time-remaining {
+      font-size: 18px;
+    }
+
+    .question {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    .question-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .options label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .option-letter {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">试卷名</h2>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="time-remaining mb-4">剩余时间: <span id="timer"></span></div>
+      <div class="question-list"></div>
+      <button class="submit-btn btn btn-primary btn-lg btn-block" type="button">提交答案</button>
+    </div>
+
+    <div class="col-md-4">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">4</a></li>
+          <li class="page-item"><a class="page-link" href="#">5</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function() {
+    var questions = [
+      {
+        title: '下面哪个是一段JavaScript代码？',
+        options: ['<p>Hello World</p>', 'if (a === b) {...}', 'body {color: red;}', 'function doSomething() {...}'],
+        answer: 'if (a === b) {...}'
+      },
+      {
+        title: '以下哪项不是JavaScript的数据类型？',
+        options: ['A. string', 'B. number', 'C. boolean', 'D. html'],
+        answer: 'D. html'
+      },
+      // 添加更多题目...
+    ];
+
+    var questionList = $('.question-list');
+
+    $.each(questions, function(index, question) {
+      var questionContainer = $('<div>').addClass('question mb-4');
+      var questionTitle = $('<div>').addClass('question-title').text((index + 1) + '. ' + question.title);
+      var optionsContainer = $('<div>').addClass('options');
+
+      // 将选项设置为纵向排列并加上选项字母
+      var optionLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+      $.each(question.options, function(optionIndex, option) {
+        var optionLabel = $('<label>').append(
+                $('<input>').attr('type', 'radio').attr('name', 'q' + (index + 1)).val(option)
+        ).append($('<span>').addClass('option-letter').text(optionLetters[optionIndex])).append(' ' + option);
+        optionsContainer.append(optionLabel);
+      });
+
+      questionContainer.append(questionTitle).append(optionsContainer);
+      questionList.append(questionContainer);
+    });
+
+    // 设置倒计时计时器
+    var count = 60,
+            timer = setInterval(function() {
+              $('#timer').text(count--);
+              if (count < 0) {
+                clearInterval(timer);
+              }
+            }, 1000);
+
+
+    // 默认显示第一页
+    $('.page-item:first-child').addClass('active');
+
+    // 题目分页点击事件
+    $('.page-item').click(function() {
+      var page = $(this).index();
+      $('.page-item').removeClass('active');
+      $(this).addClass('active');
+      $('.question').hide();
+      $('.question').slice(page * 10, page * 10 + 10).show();
+    });
+
+    // 提交按钮点击事件
+    $('.submit-btn').click(function() {
+      // 逻辑处理...
+    });
+  });
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <!--引入公共资源-->
+    <div th:include="user/common :: userCommonBase"></div>
+</head>
+<body style="height: 100%">
+<div class="container">
+    <div class="login">
+        <h2>用户登录</h2>
+        <form th:action="@{/login}" method="post" class="login-form" id="login-form">
+            <div class="line">
+                <i class="iconfont formal-icon">&#xe667;</i><span class="split">|</span>
+                <label for="account-login"></label>
+                <input type="text" class="text" placeholder="账号" id="account-login" name="account"/>
+            </div>
+
+            <div class="line">
+                <i class="iconfont formal-icon">&#xe60f;</i><span class="split">|</span>
+                <label for="password-login"></label>
+                <input type="password" class="password" placeholder="密码" id="password-login" name="password" />
+            </div>
+            <input type="button" id="login-btn" value="登录" >
+            <div class="remember">
+                <label>
+                    <input type="checkbox" sameSite="None" id="rememberMe" value="记住我！">
+                </label> 记住我！
+            </div>
+            <div class="link clearfix">
+                <a id="update_password" th:href="@{/toUpdatePassword}">忘记密码？</a>
+                <a id="register" th:href="@{/toRegister}">注册账号</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--禁止鼠标页面回退-->
+<script language="JavaScript">
+    history.pushState(null,null,document.URL);
+    window.addEventListener("popstate",function (){
+        history.pushState(null,null,document.URL)
+    })
+</script>
+
+</body>
+</html>

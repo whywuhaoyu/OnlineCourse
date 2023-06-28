@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>视频数据</title>
+</head>
+<body>
+<div class="col-md-9 col-sm-12" style="background-color: #8d8d8d;height: 500px;text-align: center;">
+    <h4 id="videoName" style="text-align: center;color: #2b2b2b">[[${videoName}]]</h4>
+    <input type="hidden" id="videoCurrent" th:value="${currentTime}"/>
+    <div style="width: 800px;height: 400px;margin: 30px">
+        <video id="myVideo" style="width: 800px;height: 400px" class="video-js vjs-default-skin vjs-big-play-centered"
+               controls preload="auto" autoplay="autoplay" muted="muted"
+               th:src="@{/video/play/}+${videoId}">
+        </video>
+        <a id="drawBackFive" class="btn btn-group-vertical" role="button">
+            <span class="iconfont icon-biaoqianlan-houtui5miao"></span>
+        </a>
+        <a id="previousVideo"  class="btn btn-group-vertical" role="button" style="color: black;font-size: 15px">
+            <span class="glyphicon glyphicon-arrow-left"></span>上一集
+        </a>
+        <a  id="nextVideo" class="btn btn-group-vertical" role="button" style="color: black;font-size: 15px">
+            下一集<span class="glyphicon glyphicon-arrow-right"></span>
+        </a>
+        <a id="advanceFive" class="btn btn-group-vertical" role="button">
+            <span class="iconfont icon-biaoqianlan-qianjin5miao"></span>
+        </a>
+
+        <div class="speed" style="margin-left: 25px">
+            <span class="current-speed">倍速</span>
+            <div class="speed-options">
+                <a class="speed-option speed-a" href="#" data-speed="3">3x</a>
+                <a class="speed-option speed-a" href="#" data-speed="2">2x</a>
+                <a class="speed-option speed-a" href="#" data-speed="1.5">1.5x</a>
+                <a class="speed-option speed-a" href="#" data-speed="1.25">1.25x</a>
+                <a class="speed-option speed-a" href="#" data-speed="1">1x</a>
+                <a class="speed-option speed-a" href="#" data-speed="0.5">0.5x</a>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+
+</script>
+</body>
+</html>

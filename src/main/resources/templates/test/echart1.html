@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <title>基本关系图示例</title>
+</head>
+<body>
+<!-- 引入 ECharts 库 -->
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<!-- 创建一个容器用于显示图表 -->
+<div id="main" style="width:1500px;height:1400px;"></div>
+<script>
+  // 初始化 ECharts 实例
+  var myChart = echarts.init(document.getElementById('main'));
+
+  // 指定图表的配置项和数据
+  var option = {
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a}：{b}'
+    },
+    series: [
+      {
+        type: 'graph',
+        layout: 'force',
+        symbol: 'circle',
+        symbolSize: 60,
+        roam: true,
+        label: {
+          normal: {
+            show: true,
+            position: 'right'
+          }
+        },
+        edgeSymbol: ['arrow', 'none'],
+        edgeSymbolSize: [10, 0],
+        edgeLabel: {
+          normal: {
+            textStyle: {
+              fontSize: 14
+            },
+            formatter: '{c}'
+          }
+        },
+        force: {
+          repulsion: 200
+        },
+        data: [
+          {name: '计算机组成原理'},
+          {name: '数据结构', des: '数据结构是计算机科学中的一个重要分支，它研究的是数据的组织、存储、检索和管理的方法与技术。'},
+          {name: '操作系统', des: '操作系统是计算机系统的核心，是管理和协调系统硬件和软件资源的程序集合。'},
+          {name: '编译原理', des: '编译原理研究的是将一种程序设计语言(源语言)翻译成另一种程序设计语言(目标语言)的技术和方法。'},
+          {name: '计算机网络', des: '计算机网络是计算机科学的一个重要分支，涉及传输媒介、通信协议、网络拓扑结构及其互连共同构成的各种网络。'},
+          {name: '软件工程', des: '软件工程是一门研究如何以系统化、规范化、自动化的方法去开发、维护和测试软件的学科。'},
+          {name: '数据库原理', des: '数据库原理是指设计和实现数据库系统所必须的基本原理和相关技术。'},
+          {name: '计算机系统结构'},
+          {name: '计算机体系结构', des: '计算机体系结构指计算机系统的逻辑结构和功能组织，包括硬件结构、指令系统和控制方式等。'},
+          {name: '计算机图形学', des: '计算机图形学是一门研究如何通过计算手段来生成、处理和显示图像的学科。'},
+          {name: '人工智能', des: '人工智能是计算机科学的一个重要分支，是研究如何实现智能行为的计算机系统的一门学科。'},
+          {name: '机器学习', des: '机器学习是人工智能领域的一个分支，它研究如何通过算法让计算机模拟人类学习的过程。'},
+          {name: '深度学习', des: '深度学习是机器学习领域的一个分支，它利用神经网络模拟人脑的神经元工作原理，实现自动化分类和识别等任务。'}
+        ],
+        edges: [
+          {source: '计算机组成原理', target: '数据结构', value: '90学时'},
+          {source: '计算机组成原理', target: '计算机系统结构', value: '90学时'},
+          {source: '计算机系统结构', target: '计算机体系结构', value: '60学时'},
+          {source: '计算机体系结构', target: '计算机图形学', value: '30学时'},
+          {source: '操作系统', target: '计算机网络', value: '60学时'},
+          {source: '操作系统', target: '数据库原理', value: '60学时'},
+          {source: '数据结构', target: '编译原理', value: '60学时'},
+          {source: '数据结构', target: '软件工程', value: '60学时'},
+          {source: '软件工程', target: '人工智能', value: '60学时'},
+          {source: '人工智能', target: '机器学习', value: '60学时'},
+          {source: '机器学习', target: '深度学习', value: '60学时'}
+        ]
+      }
+    ]
+  };
+
+  // 使用刚指定的配置项和数据显示图表
+  myChart.setOption(option);
+
+
+</script>
+</body>
+</html>

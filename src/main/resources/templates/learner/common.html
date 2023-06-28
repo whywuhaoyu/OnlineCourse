@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>admin 页面公共资源抽取</title>
+</head>
+
+
+<!--learner 页面公共资源抽取-->
+<head th:fragment="learnerCommonBase">
+    <title></title>
+
+    <!--引入css文件-->
+    <link rel="stylesheet" type="text/css" th:href="@{/iconfont/iconfont.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/iconfont/iconfont1.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/learner/footer.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/learner/webindex.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/learner/top.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/learner/personal-center.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap-theme.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sweetalert.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/font-awesome-4.7.0/css/font-awesome.css}" />
+
+
+    <!--引入js文件-->
+    <script type="text/javascript" th:src="@{/js/jquery-3.5.1.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/holder.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/layer3.1.1/layer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/sweetalert.min.js}"></script>
+
+</head>
+
+
+<body>
+
+
+
+  <!--learner 首页导航-->
+  <div th:fragment="navigation">
+      <div class="container" style="padding-top: 5px">
+          <nav class="navbar well-sm" style="background-color: #fdfdfd" role="navigation">
+              <div class="container-fluid">
+                  <div class="navbar-header">
+                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+                          <span class="sr-only">切换导航</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                      </button>
+                      <span th:if="${session.sysUser != null}">
+                          <a class="navbar-brand" href="#" >Hi，[[${session.sysUser.userName}]]</a>
+                      </span>
+                      <span th:if="${session.sysUser == null}">
+                          <a class="navbar-brand" href="#" >优课网，欢迎您</a>
+                      </span>
+                  </div>
+
+                  <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                      <ul class="nav navbar-nav pull-left">
+                          <li class="active">
+                              <a th:href="@{/learner/learner_main_view}" >首页</a>
+                          </li>
+                          <li class="dropdown">
+                              <a class="dropdown-toggle" data-toggle="dropdown">课程类型<b class="caret"></b></a>
+                              <ul class="dropdown-menu">
+                                  <li th:each="firstLabel:${session.firstLabelList}" style="text-align: center">
+                                      <a th:href="@{/learner/learner_course_list(firstLabel=${firstLabel})}" th:text="${firstLabel}"></a>
+                                      <p class="divider"></p>
+                                  </li>
+                              </ul>
+                          </li>
+                          <li>
+                              <a href="#" id="logout">退出账号</a>
+                          </li>
+                      </ul>
+
+                      <ul class="nav navbar-nav pull-right">
+                          <li>
+                              <a th:href="@{/learner/learner_personal_center}">
+                                  个人中心
+                              </a>
+                          </li>
+                          <li>
+                              <img th:if="${session.sysUser.headImgPath} !=null" th:src="@{${session.sysUser.headImgPath}}" width="50px" height="50px" style="border-radius: 50%">
+                              <img th:if="${session.sysUser.headImgPath} ==null" src="../images/user/user.jpg" width="50px" height="50px" style="border-radius: 50%">
+                          </li>
+                      </ul>
+
+                      <div class="input-group col-md-4" style="padding-top: 7px;padding-left: 100px">
+                          <label for="searchCondition"></label><input id="searchCondition" type="text" class="form-control" placeholder="课程太多？搜一搜" />
+                          <span class="input-group-btn" style="padding-left: -50px;">
+                              <button id="searchCourse" class="btn btn-info btn-search">
+                                 <span class="glyphicon glyphicon-search"></span>
+                              </button>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          </nav>
+      </div>
+  </div>
+
+
+
+
+  <!--learner 首页轮播图展示-->
+  <div th:fragment="rotation">
+      <div class="row">
+          <div class="col-md-2" id="indexMenu">
+              <ul class="index-menu"></ul>
+          </div>
+          <div class="col-md-10">
+              <div id="myCarousel" class="carousel slide">
+                  <!-- 轮播（Carousel）指标 -->
+                  <ol class="carousel-indicators">
+                      <div th:each="sysCarousel,state:${session.myCarousel}" th:remove="tag">
+                          <li th:classappend="${state.count == 1} ? 'active' : '' "
+                              data-target="#myCarousel" th:data-slide-to="${sysCarousel.getId()}"></li>
+                      </div>
+                  </ol>
+                  <!-- 轮播（Carousel）项目 -->
+                  <div class="carousel-inner">
+                      <div  th:each="sysCarousel,state:${session.myCarousel}" th:remove="tag">
+                          <div th:classappend="${state.count == 1} ? 'item active' : 'item' " >
+                              <img th:src="${sysCarousel.getCarouselImgPath()}" >
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- 轮播（Carousel）导航 -->
+                  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                  </a>
+              </div>
+          </div>
+      </div>
+
+      <script type="text/javascript">
+          //轮播
+          $(function() {
+
+              //每过2秒钟进行一次轮播
+              $('#myCarousel').carousel({
+                  interval: 3000
+              });
+          });
+
+      </script>
+  </div>
+
+
+
+
+  <!--learner 首页menu加载-->
+  <div th:fragment="loadMenu">
+      <script th:inline="javascript">
+
+          /*ajax获得的json对象*/
+          const typeList = [{
+              "id": "1",
+              "parentId": "0",
+              "name": "编程设计"
+          }, {
+              "id": "2",
+              "parentId": "0",
+              "name": "电脑办公"
+          }, {
+              "id": "3",
+              "parentId": "0",
+              "name": "平面设计"
+          }, {
+              "id": "4",
+              "parentId": "0",
+              "name": "工学"
+          }, {
+              "id": "5",
+              "parentId": "0",
+              "name": "考研"
+          }, {
+              "id": "6",
+              "parentId": "0",
+              "name": "考公"
+          }, {
+              "id": "7",
+              "parentId": "0",
+              "name": "考编"
+          }, {
+              "id": "8",
+              "parentId": "0",
+              "name": "专升本"
+          }, {
+              "id": "9",
+              "parentId": "0",
+              "name": "求职就业"
+          }, {
+              "id": "10",
+              "parentId": "0",
+              "name": "经济管理"
+          }, {
+              "id": "11",
+              "parentId": "0",
+              "name": "文史哲法"
+          }, {
+              "id": "12",
+              "parentId": "0",
+              "name": "心理学"
+          }, {
+              "id": "13",
+              "parentId": "0",
+              "name": "教育教学"
+          }, {
+              "id": "14",
+              "parentId": "0",
+              "name": "音乐与艺术"
+          }, {
+              "id": "15",
+              "parentId": "0",
+              "name": "国家电网"
+          }, {
+              "id": "16",
+              "parentId": "0",
+              "name": "期末突击"
+          }, {
+              "id": "17",
+              "parentId": "0",
+              "name": "大学四六级"
+          }, {
+              "id": "18",
+              "parentId": "0",
+              "name": "考研"
+          }, {
+              "id": "19",
+              "parentId": "0",
+              "name": "机械设计"
+          }];
+
+
+          //加载json数据的到课程分类的方法
+          function initMenu() {
+              for (let i = 0; i < typeList.length; i++) {
+
+                  if (typeList[i].parentId === "0") {
+
+                      $(".index-menu").append($("<li id='" + typeList[i].name +"'>" +"<a href='/learner/learner_course_list?firstLabel="+typeList[i].name+"'>"+ typeList[i].name + "</a></li>"))
+                  }
+              }
+          }
+          window.addEventListener("load", function() {
+              initMenu();
+              $(".item img").css("width",1298+ "px")
+              $(".item img").css("height",435+ "px")
+
+              //根据轮播图片的高，导航的高,获得轮播图高
+              const lunh = $("#myCarousel").height();
+              const lih = (lunh - 10) / 19;
+              //确定导航高度
+              $(".index-menu li").css("height", lih + "px")
+
+              //确定按钮位置
+              const btnt = Math.floor($("#myCarousel").height() / 2 - 30);
+              $(".left").css("margin-top", btnt + "px");
+              $(".right").css("margin-top", btnt + "px");
+
+              $(".index-menu li a").hover(function (){
+                  $(this).css("color", "#ff3946");
+              },function (){
+                  $(this).css("color", "");
+              })
+              $(".index-menu li").hover(function() {
+                  $(this).css("background-color", "#eeeeee");
+                  $(this).css("color", "#ff3946");
+              }, function() {
+                  $(this).css("background-color", "");
+                  $(this).css("color", "");
+              })
+              $(".index-menu li a").click(function (){
+                  $(this).css("background-color", "#eeeeee")
+                  $(this).css("color", "#ff3946");
+                  $(this).children("a").css("color", "#ff3946")
+              })
+          })
+
+
+      </script>
+  </div>
+
+
+
+
+  <!--learner 页脚-->
+  <div th:fragment="footer">
+      <footer class="footer">
+          <div class="text-center rights container">
+              <img src="../images/logo/youke.png" width="300x" height="120px">
+          </div>
+      </footer>
+  </div>
+
+
+
+
+  <!--learner 首页获取课程数据，并分页展示-->
+  <div th:fragment="getCourseData">
+      <script th:inline="javascript">
+
+          //获取项目路径
+          const contextPath = [[${#request.getContextPath()}]];
+          const userInterest = [[${session.sysUser.userInterest}]]
+          $(function () {
+              $("#personalization").load(contextPath + "/learner/getCourseDataByUserHistory",buildQuery(1))
+              $("#studyPath").load(contextPath + "/learner/getCourseDataByStudyPath",buildQuery(1))
+              $("#recommend").load(contextPath + "/learner/getCourseDataByUserInterest",buildQueryByUserInterest(1,userInterest))
+              $("#hot").load(contextPath+"/learner/getCourseDataByViewCount",buildQuery(1))
+              $("#high").load(contextPath+"/learner/getCourseDataByCourseScore",buildQuery(1))
+              $("#allFirstLabel").load(contextPath + "/learner/getCourseData",buildQuery(1));
+          })
+
+
+
+          //加载其他页数据
+          function loadDataByUserHistory(pageNumber){
+              $("#personalization").load(contextPath + "/learner/getCourseDataByUserHistory",buildQuery(pageNumber))
+          }
+
+          function loadDataByStudyPath(pageNumber){
+              $("#studyPath").load(contextPath + "/learner/getCourseDataByStudyPath",buildQuery(pageNumber))
+          }
+
+          function loadDataByFirstLabel(pageNumber,firstLabel) {
+              $("." + firstLabel).load(contextPath + "/learner/getCourseDataByFirstLabel",buildQueryByFirstLabel(pageNumber,firstLabel));
+          }
+
+          function loadDataByUserInterest(pageNumber,userInterest) {
+              $("#recommend").load(contextPath + "/learner/getCourseDataByUserInterest",buildQueryByUserInterest(pageNumber,userInterest));
+          }
+
+          function loadDataByViewCount(pageNumber) {
+              $("#hot").load(contextPath + "/learner/getCourseDataByViewCount",buildQuery(pageNumber));
+          }
+
+          function loadDataByCourseScore(pageNumber) {
+              $("#high").load(contextPath + "/learner/getCourseDataByCourseScore",buildQuery(pageNumber));
+          }
+
+          function loadData(pageNumber) {
+              $("#allFirstLabel").load(contextPath + "/learner/getCourseData",buildQuery(pageNumber));
+          }
+
+
+          //设置查询参数
+
+          function buildQueryByFirstLabel(pageNumber,firstLabel) {
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              query.firstLabel = firstLabel;
+              return query;
+          }
+
+          function buildQueryByUserInterest(pageNumber,userInterest) {
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              query.userInterest = userInterest;
+              return query;
+          }
+
+          function buildQuery(pageNumber){
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              return query;
+          }
+
+
+          //设置点击课程更新点击访问量
+          function updateViewCountByCourseId(courseId){
+              $.ajax({
+                  url: "/updateViewCountByCourseId",
+                  data: {
+                      courseId: courseId,
+                  },
+                  type: "POST",
+                  dataTypeL: JSON,
+                  success: function (json) {
+                      if(json.state===200){
+                          console.log("更新成功！")
+                      }else{
+                          console.log("更新失败!")
+                      }
+                  }
+              });
+          }
+
+      </script>
+  </div>
+
+
+
+
+
+  <!--learner 课程列表分页展示-->
+  <div th:fragment="getCourseListDataByFirstLabel">
+
+      <script th:inline="javascript">
+
+          //获取项目路径
+          const contextPath = [[${#request.getContextPath()}]];
+          const firstLabel = [[${firstLabel}]]
+
+
+          $(function () {
+              $("#courseList").load(contextPath + "/learner/getCourseListDataByFirstLabel",queryData(1,'',firstLabel),function (){
+                 const firstLabel=$("#courseListFirstLabel").text()
+                 if(!$.isEmptyObject(firstLabel)){
+                     const label=$("#"+firstLabel)
+                     label.css("background-color", "#eeeeee")
+                     label.css("color", "#ff3946");
+                     label.children("a").css("color", "#ff3946")
+                 }
+
+              })
+          })
+
+          function queryData(pageNumber, pageSize, firstLabel) {
+              const query = {};
+              query.firstLabel = firstLabel;
+              query.pageNumber = pageNumber;
+              query.pageSize = pageSize === '' ? 4 : pageSize;
+              return query;
+          }
+
+          function loadData(pageNumber,pageSize,firstLabel) {
+              $("#courseList").load(contextPath + "/learner/getCourseListDataByFirstLabel",queryData(pageNumber,pageSize,firstLabel))
+          }
+
+          //跳转到指定页
+          function goPage(pageSize,firstLabel) {
+              const pageNumber = $("#inputPage").val();
+              $("#courseList").load(contextPath + "/learner/getCourseListDataByFirstLabel",queryData(pageNumber,pageSize,firstLabel))
+          }
+
+          //修改指定每页显示的记录数
+          function loadDataBySize(obj) {
+              $("#courseList").load(contextPath + "/learner/getCourseListDataByFirstLabel",queryData(1,obj.value,firstLabel))
+          }
+
+      </script>
+
+  </div>
+
+
+
+  <!--发出查询参数并跳转页面-->
+  <div th:fragment="getCourseBySearchCondition">
+      <script th:inline="javascript">
+
+          $(function (){
+
+
+              $("#searchCourse").click(function (){
+                  //获取搜索框条件
+                  const searchCondition=$("#searchCondition")
+                  const search = searchCondition.val();
+                  const urlTpl = [[ @{'/learner/learner_course_search?search=${search}'} ]];
+                  location.href = urlTpl.replace('${search}', search);
+                  searchCondition.val('')
+
+              })
+
+              const searchInput=document.getElementById("searchCondition")
+              searchInput.addEventListener("keydown",function (event){
+                  if(event.keyCode===13){
+                      const searchCondition=$("#searchCondition")
+                      const search = searchCondition.val();
+                      if(!$.isEmptyObject(search)){
+                          const urlTpl = [[ @{'/learner/learner_course_search?search=${search}'} ]];
+                          location.href = urlTpl.replace('${search}', search);
+                          searchCondition.val('')
+                      }
+                  }
+              })
+
+
+
+
+          })
+      </script>
+  </div>
+
+
+
+  <!--展示查询结果数据-->
+  <div th:fragment="searchConditionData">
+      <script th:inline="javascript">
+
+          //获取项目路径
+          const contextPath = [[${#request.getContextPath()}]];
+          let search=[[${search}]]
+
+          $(function (){
+              $("#courseSearch").load(contextPath + "/learner/getCourseListDataByCondition",querySearchData(1,'',search))
+          })
+
+          function querySearchData(pageNumber, pageSize, search) {
+              const query = {};
+              query.search = search;
+              query.pageNumber = pageNumber;
+              query.pageSize = pageSize === '' ? 4 : pageSize;
+              return query;
+          }
+
+          function loadSearchData(pageNumber,pageSize,search) {
+              $("#courseSearch").load(contextPath + "/learner/getCourseListDataByCondition",querySearchData(pageNumber,pageSize,search))
+          }
+
+          //跳转到指定页
+          function goSearchPage(pageSize,search) {
+              const pageNumber = $("#inputPage").val();
+              $("#courseSearch").load(contextPath + "/learner/getCourseListDataByCondition",querySearchData(pageNumber,pageSize,search))
+          }
+
+          //修改指定每页显示的记录数
+          function loadSearchDataBySize(obj) {
+              $("#courseSearch").load(contextPath + "/learner/getCourseListDataByCondition",querySearchData(1,obj.value,search))
+          }
+      </script>
+  </div>
+
+
+
+  <!--二级标签与用户评论数据分页展示以及收藏课程、评价课程操作-->
+  <div th:fragment="getCourseDataAndVideoAndComment">
+      <script th:inline="javascript">
+
+
+          //获取项目路径
+          const contextPath = [[${#request.getContextPath()}]];
+
+          //获取该课程二级分类标签
+          const secondLabel= $("#secondLabel").val()
+
+          //获取该课程id
+          const  courseId =$("#courseId").val()
+
+          /**二级标签课程数据展示*/
+          $(function () {
+              $("#secondLabelForCourse").load(contextPath + "/learner/getCourseDataBySecondLabel",buildQueryBySecondLabel(1,secondLabel,courseId))
+          })
+
+          //加载其他页数据
+          function loadDataBySecondLabel(pageNumber,secondLabel) {
+              $("#secondLabelForCourse").load(contextPath + "/learner/getCourseDataBySecondLabel",buildQueryBySecondLabel(pageNumber,secondLabel,courseId));
+          }
+
+
+          //设置查询参数
+          function buildQueryBySecondLabel(pageNumber,secondLabel,courseId) {
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              query.secondLabel = secondLabel;
+              query.courseId = courseId
+              return query;
+          }
+
+
+          /**用户评论数据展示*/
+
+          $(function () {
+              $("#comment").load(contextPath + "/learner/getUserCourseComment",buildQueryComment(1,courseId))
+          })
+
+          //加载其他页数据
+          function loadDataComment(pageNumber,courseId) {
+              $("#comment").load(contextPath + "/learner/getUserCourseComment",buildQueryComment(pageNumber,courseId));
+          }
+
+
+          //设置查询参数
+          function buildQueryComment(pageNumber,courseId) {
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              query.courseId = courseId
+              return query;
+          }
+
+          /**课程视频数据展示*/
+          $(function (){
+              $("#catalogue").load(contextPath + "/learner/getCourseVideo",buildQueryVideo(1,courseId))
+          })
+
+          //加载其他页数据
+          function loadDataVideo(pageNumber,courseId) {
+              $("#catalogue").load(contextPath + "/learner/getCourseVideo",buildQueryVideo(pageNumber,courseId));
+          }
+
+
+          //设置查询参数
+          function buildQueryVideo(pageNumber,courseId) {
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              query.courseId = courseId
+              return query;
+          }
+
+
+          /**课程试题数据展示*/
+          $(function (){
+              $("#question").load(contextPath + "/learner/getCourseQuestion",buildQueryQuestion(1,courseId))
+          })
+
+          //加载其他页数据
+          function loadDataQuestion(pageNumber,courseId) {
+              $("#question").load(contextPath + "/learner/getCourseQuestion",buildQueryQuestion(pageNumber,courseId))
+          }
+
+          //设置查询参数
+          function buildQueryQuestion(pageNumber,courseId) {
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              query.courseId = courseId
+              return query;
+          }
+
+
+          /**课程收藏操作*/
+          $(function (){
+              $("#collectCourse").click(function (){
+                  const courseId=$("#courseId").val()
+                  const userId=$("#userId").val()
+                  layer.confirm('是否确认收藏？',{
+                      icon: 3,
+                      title: '提示',
+                      shade: [0.5, '#393D49'],
+                      move: true,
+                  },function (){
+                      $.ajax({
+                          url: "/collectCourse",
+                          data: {
+                              courseId: courseId,
+                              userId: userId
+                          },
+                          type: "POST",
+                          dataTypeL: JSON,
+                          success: function (json) {
+                              if(json.state===200){
+                                  layer.msg('收藏成功！', {
+                                      icon: 6,
+                                      time: 700,
+                                      shade: [0.4, '#393D49'],
+                                      area:['100px','66px'],
+                                      end: function (){
+                                          location.href="learner_personal_center";
+                                      }
+                                  });
+                              }else if(json.state===5003){
+                                  layer.msg("改课程已收藏，请勿重复收藏！", {
+                                      icon: 5,
+                                      time: 1000,
+                                      shade: [0.4, '#393D49'],
+                                      area:['300px','66px'],
+                                  });
+                              }
+                          }
+                      });
+                  });
+              })
+          })
+
+      </script>
+  </div>
+
+
+
+  <!--视频播放-->
+  <div th:fragment="getCourseVideoPlay">
+      <script th:inline="javascript">
+          //获取项目路径
+          const contextPath = [[${#request.getContextPath()}]];
+
+          //获取点击视频id
+          const videoId= $("#videoId").val()
+
+          //获取课程id
+          const courseId=$("#courseId").val()
+
+          //获取课程进度
+          const courseProgress=[[${courseProgress}]]
+
+          $(function (){
+              $('input:radio').click(function(){
+                  const $radio = $(this);
+                  if ($radio.data('checked')){
+                      $radio.prop('checked', false);
+                      $radio.data('checked', false);
+                  } else {
+                      $radio.prop('checked', true);
+                      $radio.data('checked', true);
+                  }
+              });
+          })
+
+
+          $(function () {
+              $("#courseVideoPlay").load(contextPath + "/learner/getCourseVideoPlay", buildQueryCourseVideoPlay(videoId, courseId), function () {
+                  const videoName = $("#videoName").text()
+                  $("a.abbreviation").removeClass('active')
+                  $("#" + videoName).addClass('active')
+
+                  const videoCurrent=$("#videoCurrent0").val()
+                  if(!$.isEmptyObject(videoCurrent)){
+                      videoPropertySet(courseId,videoId,videoCurrent)
+                  }
+                  preAndNext()
+                  drawBackAndAdvance()
+                  videoRake()
+              })
+
+
+          })
+
+
+          //加载其他视频数据
+          function loadDataCourseVideoPlay(videoId, courseId) {
+              $("#courseVideoPlay").load(contextPath + "/learner/getCourseVideoPlay", buildQueryCourseVideoPlay(videoId, courseId), function () {
+
+                  const videoName = $("#videoName").text()
+                  $("a.abbreviation").removeClass('active')
+                  $("#" + videoName).addClass('active')
+
+
+                  const videoCurrent=$("#videoCurrent").val()
+                  videoPropertySet(courseId,videoId,videoCurrent)
+                  preAndNext()
+                  drawBackAndAdvance()
+                  videoRake()
+              });
+          }
+
+
+          //设置查询参数
+          function buildQueryCourseVideoPlay(videoId, courseId) {
+              const query = {};
+              query.videoId = videoId
+              query.courseId = courseId
+              return query;
+          }
+
+
+          /**视频播放上一集，下一集*/
+          function preAndNext() {
+              const active = $("a.active")
+              const current = active.parent().children("a")
+              $("#previousVideo").click(function () {
+                  const previous = active.parent().prev("div").children("a")
+                  const first = $("a.abbreviation").parent().siblings().first("div").children("a")
+                  if (current.text() === first.text()) {
+                      layer.msg("已经是第一集，请勿再次点击！", {
+                          icon: 2,
+                          time: 1000,
+                          shade: [0.4, '#393D49'],
+                          area: ['300px', '66px'],
+                      });
+                  } else {
+                      previous.trigger('click')
+                  }
+              })
+              $("#nextVideo").click(function () {
+                  const next = active.parent().next("div").children("a")
+                  const last = $("a.abbreviation").parent().siblings().last("div").children("a")
+                  if (current.text() === last.text()) {
+                      layer.msg("已经是最后一集！", {
+                          icon: 2,
+                          time: 1000,
+                          shade: [0.4, '#393D49'],
+                          area: ['300px', '66px'],
+                      });
+                  } else {
+                      next.trigger('click')
+                  }
+              })
+          }
+
+
+          /**视频前进与后退5秒*/
+          function drawBackAndAdvance(){
+
+              $("#drawBackFive").click(function (){
+                  const myPlayer=document.getElementById("myVideo")
+                  const videoCurrent=Math.round(myPlayer.currentTime)
+                  if(videoCurrent>5){
+                      myPlayer.currentTime=videoCurrent-5
+                  }else{
+                      myPlayer.currentTime=0
+                  }
+              })
+
+              $("#advanceFive").click(function (){
+                  const myPlayer=document.getElementById("myVideo")
+                  const videoCurrent=Math.round(myPlayer.currentTime)
+                  const videoDuration=Math.round(myPlayer.duration)
+                  if(videoCurrent+5<videoDuration){
+                      myPlayer.currentTime=videoCurrent+5
+                  }else{
+                      myPlayer.currentTime=videoDuration
+                      myPlayer.pause()
+                  }
+              })
+          }
+
+
+          /**视频倍速播放*/
+          function videoRake(){
+              const myPlayer=document.getElementById("myVideo")
+              const speed = document.querySelector('.speed');
+              const speedOptions = document.querySelectorAll('.speed-option');
+              const currentSpeed = speed.querySelector('.current-speed');
+              let timeoutId;
+
+              function toggleSpeed() {
+                  this.classList.add('showing');
+                  clearTimeout(timeoutId);
+              }
+
+              function hideSpeed() {
+                  speed.classList.remove('showing');
+              }
+
+              function setSpeed(e) {
+                  e.preventDefault();
+                  myPlayer.playbackRate = parseFloat(this.dataset.speed);
+                  currentSpeed.textContent = myPlayer.playbackRate === 1 ? '倍速' : `${myPlayer.playbackRate}x`;
+                  speed.classList.remove('showing');
+              }
+
+              speed.addEventListener('mouseover', toggleSpeed);
+              speed.addEventListener('mouseout', () => {
+                  timeoutId = setTimeout(hideSpeed, 100)
+              });
+
+              speedOptions.forEach(option => {
+                  option.addEventListener('click', () => {
+                      speedOptions.forEach(item => item.classList.remove('speed-style'));
+                      option.classList.add('speed-style');
+                  });
+              });
+              speedOptions.forEach(option => option.addEventListener('click', setSpeed));
+
+          }
+
+
+          /**视频播放时实时保存视频播放位置以及视频属性设置*/
+          function videoPropertySet(courseId,videoId,videoCurrent){
+
+              const myVideo=document.getElementById("myVideo");
+
+              if(!$.isEmptyObject(videoCurrent)){
+                  console.log("视频进度应设为："+formatToS(videoCurrent))
+                  /**监听视频是否加载完成*/
+                  myVideo.addEventListener('loadedmetadata',function (){
+                      console.log("视频加载完成！")
+                      myVideo.currentTime=formatToS(videoCurrent)  //载入播放进度
+                      console.log("视频进度设置后："+Math.round(myVideo.currentTime))
+                  })
+              }
+
+
+              /**检测是否设置自动连播*/
+              myVideo.addEventListener('ended',function (){
+                  const continueAutoPlay=document.getElementById("continueAutoPlay")
+                  if(continueAutoPlay.checked){
+                      const abbreviation =$("a.abbreviation")
+                      const current = $("a.active").parent().children("a")
+                      const first = abbreviation.parent().siblings().first("div").children("a")
+                      const last = abbreviation.parent().siblings().last("div").children("a")
+                      if (current.text() === last.text()) {     //设置自动连播，当播放完最后一条视频时从头开始播放
+                          // 视频从头播放，已看完视频进度设为初始值
+                          $.post({
+                              url: "/learner/updateIsDoneVideoCurrentToInitial",
+                              data: {
+                                  courseId:courseId
+                              },
+                              dataTypeL: JSON
+                          })
+
+                          first.trigger('click')
+                      }else{
+                          $("#nextVideo").trigger('click')
+                      }
+                  }else{
+                      myVideo.currentTime=0
+                      myVideo.play()
+                  }
+              })
+
+
+
+              /**视频时间改变，实时更新数据*/
+              myVideo.addEventListener('timeupdate',function (){
+                  const currentTime=Math.round(myVideo.currentTime)
+                  const duration=Math.round(myVideo.duration)
+                  let isDone=false;
+                  if(currentTime===duration){
+                      isDone=true;
+                  }
+
+
+                  $.post({
+                      url: "/judgeCourseIsCollected",
+                      data: {
+                          courseId:courseId
+                      },
+                      dataTypeL: JSON,
+                      success: function (json) {
+                          if(json.state === 200){    //当该课程已收藏时，更新用户、课程、视频关联表数据
+                              //实时更新视频进度
+                              $.post({
+                                  url: "/learner/updateVideoCurrentAndIsDone",
+                                  data :{
+                                      courseId:courseId,
+                                      videoId:videoId,
+                                      videoDuration:formatToHMS(duration),
+                                      currentTime:formatToHMS(currentTime),
+                                      isDone:isDone
+                                  },
+                                  dataTypeL: JSON
+                              })
+
+                              //若课程进度不为100%，则实时更新课程进度
+                              if(courseProgress!== null&&courseProgress!== '100%'){
+                                  $.post({
+                                      url: "/learner/updateCourseProgress",
+                                      data :{
+                                          courseId:courseId,
+                                      },
+                                      dataTypeL: JSON
+                                  })
+                              }
+
+                          }
+                      }
+                  })
+
+
+
+
+              })
+
+
+
+          }
+
+
+
+          //将秒转换为00:00:00格式
+          function formatToHMS(seconds) {
+              let hour = Math.floor(seconds / 3600) >= 10 ? Math.floor(seconds / 3600) : '0' + Math.floor(seconds / 3600);
+              seconds -= 3600 * hour;
+              let min = Math.floor(seconds / 60) >= 10 ? Math.floor(seconds / 60) : '0' + Math.floor(seconds / 60);
+              seconds -= 60 * min;
+              let sec = seconds >= 10 ? seconds : '0' + seconds;
+              return hour + ':' + min + ':' + sec;
+          }
+
+          //将00:00:00格式转为秒
+          function formatToS(videoCurrent){
+              let s;
+              const hour = videoCurrent.split(':')[0];
+              const min = videoCurrent.split(':')[1];
+              const sec = videoCurrent.split(':')[2];
+              s = Number(hour*3600) + Number(min*60) + Number(sec);
+              return s;
+          }
+      </script>
+  </div>
+
+
+
+
+  <!--用户已选课程与个人中心高分推荐课程展示-->
+  <div th:fragment="getCourseStudyAndComment">
+      <script th:inline="javascript">
+          //获取项目路径
+          const contextPath = [[${#request.getContextPath()}]];
+
+          //获取用户程id
+          const userId=$("#userId").val()
+
+          /**用户已收藏课程数据展示*/
+          $(function (){
+              $("#myCourse").load(contextPath + "/learner/getUserCourseStudy",buildQueryStudy(1,userId))
+          })
+          //加载其他页数据
+          function loadDataStudy(pageNumber,userId) {
+              $("#myCourse").load(contextPath + "/learner/getUserCourseStudy",buildQueryStudy(pageNumber,userId));
+          }
+
+
+          //设置查询参数
+          function buildQueryStudy(pageNumber,userId) {
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              query.userId = userId
+              return query;
+          }
+
+
+          /**用户历史评论数据展示*/
+          $(function (){
+              $("#myComment").load(contextPath + "/learner/getMyCourseComment",buildQueryMyComment(1,userId))
+          })
+
+          //加载其他页数据
+          function loadDataMyComment(pageNumber,userId) {
+              $("#myComment").load(contextPath + "/learner/getMyCourseComment",buildQueryMyComment(pageNumber,userId));
+          }
+
+
+          //设置查询参数
+          function buildQueryMyComment(pageNumber,userId) {
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              query.userId = userId
+              return query;
+          }
+
+          function changeStar(courseId,courseScore){
+              alert(courseId)
+              const spans=$("#"+courseId).children("span")
+              for(let i =0;i<courseScore;i++){
+                  spans.eq(i).removeClass("icon-xingxing1");
+                  spans.eq(i).addClass("icon-xingxing")
+              }
+          }
+
+          /**个人中心高分课程展示*/
+
+          $(function () {
+              $("#highCourse").load(contextPath+"/learner/getCourseDataByCourseScoreForPersonalCenter",buildQuery(1))
+          })
+
+          function loadDataByCourseScoreForPersonalCenter(pageNumber) {
+              $("#highCourse").load(contextPath + "/learner/getCourseDataByCourseScoreForPersonalCenter",buildQuery(pageNumber));
+          }
+
+          function buildQuery(pageNumber){
+              const query = {};
+              query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+              return query;
+          }
+      </script>
+  </div>
+
+
+
+
+  <!--课程推荐栏目-->
+  <div th:fragment="course-recommend">
+      <div class="row">
+          <div class="col-md-6">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <p class="panel-title">推荐课程</p>
+                  </div>
+                  <div class="panel-body panel-item">
+                      <div class="col-md-12">
+                          <div class="col-md-7 text-row-2"><a href="product.html">齐心（本122张</a></div>
+                          <div class="col-md-2">¥18</div>
+                          <div class="col-md-3"><img src="../images/portal/02COMIXC5902A5122blue/collect.png" class="img-responsive" /></div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="col-md-7  text-row-2"><a href="product.html">得力（deli）1548A商务办公桌面计算器 太阳能双电源</a></div>
+                          <div class="col-md-2">¥50</div>
+                          <div class="col-md-3"><img src="../images/portal/002calculator1548A/collect.png" class="img-responsive" /></div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="col-md-7 text-row-2"><a href="product.html">戴尔(DELL)XPS13-9360-R1609 13.3</a></div>
+                          <div class="col-md-2">¥6299</div>
+                          <div class="col-md-3"><img src="../images/portal/12(DELL)XPS13gold/collect.png" class="img-responsive" /></div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="col-md-7 text-row-2"><a href="product.html">联想（Lenovo）IdeaPad310高配版</a></div>
+                          <div class="col-md-2">¥5298</div>
+                          <div class="col-md-3"><img src="../images/portal/13LenovoIdeaPad310_black/collect.png" class="img-responsive" /></div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <p class="panel-title">热门课程</p>
+                  </div>
+                  <div id="hot-list" class="panel-body panel-item">
+                      <div class="col-md-12">
+                          <div class="col-md-7 text-row-2"><a href="product.html">广博(GuangBo)10本装40张A5牛皮纸记事本子日记本办公软抄本GBR0731</a></div>
+                          <div class="col-md-2">¥23</div>
+                          <div class="col-md-3"><img src="../images/portal/00GuangBo1040A5GBR0731/collect.png" class="img-responsive" /></div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="col-md-7 text-row-2"><a href="product.html">齐心（COMIX）C5902 A5优品商务笔记本子记事本日记本122张</a></div>
+                          <div class="col-md-2">¥18</div>
+                          <div class="col-md-3"><img src="../images/portal/02COMIXC5902A5122blue/collect.png" class="img-responsive" /></div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="col-md-7 text-row-2"><a href="product.html">广博(GuangBo)皮面日程本子 计划记事本效率手册米色FB60322</a></div>
+                          <div class="col-md-2">¥28</div>
+                          <div class="col-md-3"><img src="../images/portal/001GuangBo)FB60322/collect.png" class="img-responsive" /></div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="col-md-7 text-row-2"><a href="product.html">戴尔Dell 燃700R1605银色</a></div>
+                          <div class="col-md-2">¥3799</div>
+                          <div class="col-md-3"><img src="../images/portal/11DELLran7000R1605Ssilvery/collect.png" class="img-responsive" /></div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+
+  <!--课程详细信息展示-->
+  <div th:fragment="getCourseDetailData">
+      <ol class="breadcrumb">
+          <li>
+              <a>课程详情</a>
+          </li>
+          <li>
+              <a th:text="${sysCourse.courseName}">JAVA语言入门教程2022版</a>
+          </li>
+      </ol>
+
+      <div class="row">
+          <input type="hidden" id="secondLabel" th:value="${sysCourse.secondLabel}">
+          <input type="hidden" id="courseId" th:value="${sysCourse.courseId}">
+          <div class="col-sm-12 col-md-5">
+              <div class="thumbnail">
+                  <a><img src="../images/course/computer/java/1031.jpg" th:src="@{'/images/course'+${sysCourse.imgPath}}" alt="略"></a>
+                  <div class="caption">
+                      <h4 th:text="${sysCourse.courseName}">JAVA语言入门教程2022版</h4>
+                      <a id="collectCourse" class="btn btn-group-vertical" role="button" th:if="${msg} == null">
+                          <span class="glyphicon glyphicon-plus"></span> 收藏课程
+                      </a>
+                      <a id="judgeCourse" class="btn btn-group-vertical" role="button"  data-toggle="modal" data-target="#judgeCourseModal" th:if="${msg} != null" >
+                          <span class="glyphicon glyphicon-adjust"></span> 评价课程
+                      </a>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-sm-12 col-md-7">
+              <div class="details">
+                  <ul class="list-group">
+                      <li class="list-group-item"><span class="text-success">课程名称：<span th:text="${sysCourse.courseName}">JAVA语言入门教程2022版</span></span></li>
+                      <li class="list-group-item"><span class="text-info">课程等级：</span><span th:text="${sysCourse.courseLevel}">初级</span></li>
+                      <li class="list-group-item"><span class="text-info">所需基础：</span><span th:text="${sysCourse.courseBase}">Java基础</span></li>
+                      <li class="list-group-item"><span class="text-info">课程点击量：</span><span>[[${sysCourse.viewCount}]]次点击</span></li>
+                      <li class="list-group-item"><span class="text-info">课程评分：</span><span>[[${sysCourse.courseScore}]]分</span></li>
+                      <li class="list-group-item"><span class="text-info">创建时间：</span><span th:text="${sysCourse.courseCreateTime}">略</span></li>
+                      <li class="list-group-item"><span class="text-info">课程简介：&nbsp;&nbsp;</span><span th:text="${sysCourse.courseDescription}">略</span>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+
+  <!--评价课程模态框-->
+  <div th:fragment="judgeCourse">
+      <div class="modal fade" id="judgeCourseModal" tabindex="-1" role="dialog" aria-labelledby="judgeCourseModalLabel" aria-hidden="true">
+          <div class="modal-dialog" style="width: 700px">
+              <div class="modal-content">
+                  <div class="modal-header" style="text-align: center">
+                      <img th:if="${session.sysUser.headImgPath} !=null" th:src="@{${session.sysUser.headImgPath}}" width="100px" height="100px" style="border-radius: 50%">
+                      <img th:if="${session.sysUser.headImgPath} ==null" src="../images/user/user.jpg" width="100px" height="100px" style="border-radius: 50%">
+                      <button type="button" class="close" id="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  </div>
+                  <div class="modal-body" >
+                      <form id="judgeForm" class="form-horizontal" role="form" action="">
+                          <div>
+                              <span style="font-size: 16px;padding-left: 45px" class="iconfont1 icon-zuoshangjiaoxingxing">总评</span>
+                              <div id="star" style="padding-left: 45px;">
+                                  <span id="0" class="iconfont1 icon-xingxing1"></span>
+                                  <span id="1" class="iconfont1 icon-xingxing1"></span>
+                                  <span id="2" class="iconfont1 icon-xingxing1"></span>
+                                  <span id="3" class="iconfont1 icon-xingxing1"></span>
+                                  <span id="4" class="iconfont1 icon-xingxing1"></span>
+                                  <span style="font-size: 16px;color: #999999;padding-left: 10px" class="level"></span>
+                              </div>
+                          </div>
+                          <div style="padding-top: 10px;padding-left: 45px">
+                              <span style="font-size: 16px;padding-top: 10px" class="iconfont1 icon-zuoshangjiaoxingxing">评价内容</span>
+                          </div>
+                          <div style="padding-top: 10px;text-align: center">
+                              <label for="judgeText" ></label>
+                              <textarea id="judgeText" placeholder="请发表您的评价"></textarea>
+                          </div>
+
+                      </form>
+
+                      <div style="padding-top: 10px;text-align: center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal" id="judgeCourseClose">关闭</button>
+                          <input type="button" class="btn btn-primary" value="确定" id="judgeCourse-btn">
+                      </div>
+
+                  </div>
+              </div>
+              <!-- /.modal-content -->
+          </div>
+      </div>
+
+      <script th:inline="javascript">
+          $('#judgeCourseModal').on('shown.bs.modal', function () {
+
+              $(this).css('display', 'block');
+              const modalHeight = $(window).height() / 2 - $('#judgeCourseModal .modal-dialog').height() / 2;
+              $(this).find('.modal-dialog').css({
+                  'margin-top': modalHeight
+              });
+          });
+
+
+          //设置星星事件
+          $(function (){
+              const spans = $("#star").children(".iconfont1");
+              let flag = 5;
+              let i;
+
+              //循环载入鼠标移入事件
+              for(i = 0; i<spans.length; i++){
+                  spans.eq(i).mouseover(function (){
+                      const id = parseInt(this.id);
+                      for(let i=0; i<=id; i++){
+                          $(".level").html(byIndexLeve(i));
+                          spans.eq(i).removeClass("icon-xingxing1");
+                          spans.eq(i).addClass("icon-xingxing")
+                      }
+                      for(let j=id+1; j<5; j++){
+                          spans.eq(j).addClass("icon-xingxing1")
+                      }
+                  })
+              }
+
+              //循环载入鼠标点击星星事件
+              for(i = 0; i<spans.length; i++){
+                  spans.eq(i).click(function (){
+                      const id = parseInt(this.id);
+                      flag=id;
+                      for(let i=0; i<=id; i++){
+                          $(".level").html(byIndexLeve(i));
+                          spans.eq(i).removeClass("icon-xingxing1");
+                          spans.eq(i).addClass("icon-xingxing")
+                      }
+                      Expand();
+                  })
+              }
+
+             // 载入鼠标离开星星事件
+              spans.mouseout(function (){
+                  let i;
+                  //如果tag是3，则循环给把0 1 2 3几个星星整黄
+                  if(flag>=0 && flag<=4){
+                      for(i = 0; i<=flag; i++){
+                          $(".level").html(byIndexLeve(i));
+                          spans.eq(i).removeClass("icon-xingxing1");
+                          spans.eq(i).addClass("icon-xingxing")
+                      }
+                      for(let j=flag+1; j<5; j++){
+                          spans.eq(j).addClass("icon-xingxing1")
+                      }
+                  }
+                  //如果tag没有值或者是初值5，则把所有的星星还原成空星星
+                  else{
+                      $(".level").html("");
+                      for(i = 0; i<spans.length; i++){
+                          spans.eq(i).removeClass("icon-xingxing");
+                          spans.eq(i).addClass("icon-xingxing1")
+
+                      }
+                  }
+              })
+
+              //点击关闭模态框，清除评分内容
+              $("#judgeCourseClose").click(function (){
+                  $("#judgeText").val("")
+                  $(".level").html("");
+                  for(i = 0; i<spans.length; i++){
+                      spans.eq(i).removeClass("icon-xingxing");
+                      spans.eq(i).addClass("icon-xingxing1")
+                  }
+
+              })
+
+              $("#close").click(function (){
+                  $("#judgeText").val("")
+                  $(".level").html("");
+                  for(i = 0; i<spans.length; i++){
+                      spans.eq(i).removeClass("icon-xingxing");
+                      spans.eq(i).addClass("icon-xingxing1")
+                  }
+              })
+          })
+
+
+          /**星星业务扩展*/
+          function Expand(){}
+
+
+          /** 根据index获取 str*/
+          function byIndexLeve(index){
+              let str = "";
+              switch (index)
+              {
+                  case 0:
+                      str="有点失望";
+                      break;
+                  case 1:
+                      str="咳咳！有待提高";
+                      break;
+                  case 2:
+                      str="恩！其实可以做得更好";
+                      break;
+                  case 3:
+                      str="棒！实属上乘";
+                      break;
+                  case 4:
+                      str="哇！超出预期了";
+                      break;
+              }
+              return str;
+          }
+
+
+
+
+          /**课程评价操作*/
+          $(function (){
+              $("#judgeCourse-btn").click(function (){
+                  const courseId=$("#courseId").val()
+                  const userId=$("#userId").val()
+                  const courseScore=$("#star").children(".icon-xingxing").length
+                  const judgeText=$("#judgeText").val()
+                  if(courseScore===0){
+                      layer.msg("请填写评价星级！", {
+                          icon: 5,
+                          time: 1000,
+                          shade: [0.4, '#393D49'],
+                          area:['200px','66px'],
+                      });
+                  }else if($.isEmptyObject(judgeText)){
+                      layer.msg("请填写评价内容！", {
+                          icon: 2,
+                          time: 1000,
+                          shade: [0.4, '#393D49'],
+                          area: ['200px', '66px'],
+                      });
+                  }else if(getByteLen(judgeText)<5) {
+                      layer.msg("至少输入5个字！", {
+                          icon: 5,
+                          time: 1000,
+                          shade: [0.4, '#393D49'],
+                          area: ['200px', '66px'],
+                      });
+                  } else if(sensitive(judgeText)) {
+                      layer.msg("含有不良词汇，请重新输入！", {
+                          icon:2,
+                          time: 1000,
+                          shade: [0.4, '#393D49'],
+                          area: ['280x', '66px'],
+                          end:function (){
+                              $("#judgeText").val("")
+                          }
+                      });                  }else{
+                      layer.confirm('是否确认发表？',{
+                          icon: 3,
+                          title: '提示',
+                          shade: [0.5, '#393D49'],
+                          move: true,
+                      },function (){
+                          $.ajax({
+                              url: "/judgeCourse",
+                              data: {
+                                  courseId: courseId,
+                                  userId: userId,
+                                  courseScore:courseScore,
+                                  judgeText:judgeText
+                              },
+                              type: "POST",
+                              dataTypeL: JSON,
+                              success: function (json) {
+                                  if(json.state===200){
+                                      layer.msg('发表成功！', {
+                                          icon: 6,
+                                          time: 700,
+                                          shade: [0.4, '#393D49'],
+                                          area:['100px','66px'],
+                                          end: function (){
+                                              location.href="/learner/getCourseDetailData?courseId="+courseId;
+                                          }
+                                      });
+                                  }
+                              }
+                          });
+                      });
+                  }
+              })
+          })
+
+
+
+          /**判断是否有敏感词*/
+          function sensitive(judgeText){
+              let flag=false
+              const sensitiveList = ["fuck", "tmd", "他妈的","sb","傻逼","草拟吗","操你妈","臭傻逼",
+                                     "智障","脑瘫","婊子","妓女","你麻痹","尼玛币","你妈比","干你娘",
+                                     "狗币","狗逼","信球","马勒戈壁","妈了个逼","日你妈","死去吧你",
+                                     "扑街","废物","笨蛋","蠢蛋","脑残","白痴","三八","瘪三","无赖",
+                                     "蠢货","二笔","二币","二逼","2B","王八","贱货","贱人","禽兽",
+                                     "妈卖批","妈蛋","神经病","猪"];
+              for (let i = 0; i < sensitiveList.length; i++) {
+                 if(judgeText.indexOf(sensitiveList[i])>=0){
+                     flag=true
+                 }
+              }
+              return flag;
+          }
+
+          /*判断内容长度*/
+          function getByteLen(val) {
+              let len = 0;
+              for (var i = 0; i < val.length; i++) {
+                  var a = val.charAt(i);
+                  if (a.match(/[^\x00-\xff]/ig) != null) {
+                      len += 2;
+                  }
+                  else {
+                      len += 1;
+                  }
+              }
+              return len;
+          }
+
+
+      </script>
+  </div>
+
+
+
+
+  <!--learner 收藏课程、评价课程、取消收藏、删除评论、修改密码、修改用户名、上传头像等操作提示-->
+  <div th:fragment="learner-operation-prompt">
+      <script th:inline="javascript">
+
+          /**用户删除评论操作*/
+          function deleteMyComment(userId,courseId,commentTime,cur){
+              const myCommentCount=$("#myCommentCount").text()
+              layer.confirm('是否确认删除？',{
+                  icon: 3,
+                  title: '提示',
+                  shade: [0.5, '#393D49'],
+                  move: true,
+              },function (){
+                  $.ajax({
+                      url: "/deleteMyComment",
+                      data: {
+                          courseId: courseId,
+                          userId: userId,
+                          commentTime:commentTime
+                      },
+                      type: "POST",
+                      dataTypeL: JSON,
+                      success: function (json) {
+                          if(json.state===200){
+                              layer.msg('删除成功！', {
+                                  icon: 6,
+                                  time: 700,
+                                  shade: [0.4, '#393D49'],
+                                  area:['100px','66px'],
+                                  end: function (){
+                                      $("#myComment").load(contextPath + "/learner/getMyCourseComment",buildQueryMyComment(cur,userId))
+                                      $("#myCommentCount").text(myCommentCount-1)
+                                  }
+                              });
+                          }else if(json.state===5002){
+                              layer.msg("删除失败！", {
+                                  icon: 5,
+                                  time: 1000,
+                                  shade: [0.4, '#393D49'],
+                                  area:['300px','66px'],
+                              });
+                          }
+                      }
+                  });
+              });
+          }
+
+
+          /**删除用户收藏课程操作*/
+          function deleteMyCourse(userId,courseId,cur){
+              const myCourseCount=$("#myCourseCount").text()
+              layer.confirm('是否确认删除？',{
+                  icon: 3,
+                  title: '提示',
+                  shade: [0.5, '#393D49'],
+                  move: true,
+              },function (){
+                  $.ajax({
+                      url: "/deleteMyStudy",
+                      data: {
+                          courseId: courseId,
+                          userId: userId,
+                      },
+                      type: "POST",
+                      dataTypeL: JSON,
+                      success: function (json) {
+                          if(json.state===200){
+                              layer.msg('删除成功！', {
+                                  icon: 6,
+                                  time: 700,
+                                  shade: [0.4, '#393D49'],
+                                  area:['100px','66px'],
+                                  end: function (){
+                                      $("#myCourse").load(contextPath + "/learner/getUserCourseStudy",buildQueryStudy(cur,userId));
+                                      $("#myCourseCount").text(myCourseCount-1)
+                                  }
+                              });
+                          }else if(json.state===5002){
+                              layer.msg("删除失败！", {
+                                  icon: 5,
+                                  time: 1000,
+                                  shade: [0.4, '#393D49'],
+                                  area:['300px','66px'],
+                              });
+                          }
+                      }
+                  });
+              });
+          }
+
+
+
+          /**修改密码操作*/
+          $("#updatePwd-btn").click(function (){
+              const account=[[${session.sysUser.account}]]
+              const oldPassword=[[${session.md5Password}]]
+              const newPassword=$("#newPassword").val()
+              const confirmPassword=$("#confirmPassword").val()
+              if($.isEmptyObject(account)||$.isEmptyObject(oldPassword)||$.isEmptyObject(newPassword)){
+                  layer.msg("用户账号或密码不能为空！", {
+                      icon: 5,
+                      time: 1000,
+                      shade: [0.4, '#393D49'],
+                      area:['260px','66px'],
+                  });
+              }else if($.isEmptyObject(confirmPassword)){
+                  layer.msg("请再次输入密码！", {
+                      icon: 5,
+                      time: 1000,
+                      shade: [0.4, '#393D49'],
+                      area:['200px','66px'],
+                  });
+              }else if(oldPassword === newPassword) {
+                  layer.msg("新密码与原密码一致！", {
+                      icon: 7,
+                      time: 1000,
+                      shade: [0.4, '#393D49'],
+                      area:['260px','66px'],
+                  });
+
+              }else if(newPassword !== confirmPassword){
+                  layer.msg("确认密码输入不一致！", {
+                      icon: 5,
+                      time: 1000,
+                      shade: [0.4, '#393D49'],
+                      area:['220px','66px'],
+                  });
+              }else{
+                  layer.confirm('是否确认修改？',{
+                      icon: 3,
+                      title: '提示',
+                      shade: [0.5, '#393D49'],
+                      move: true,
+                  },function (){
+                      $.ajax({
+                          url: "/updatePassword",
+                          type: "POST",
+                          data: {
+                              account:account,
+                              password:newPassword
+                          },
+                          dataType: "JSON",
+                          success: function (json) {
+                              if (json.state === 200) {
+                                  layer.msg('修改成功，请重新登录！', {
+                                      icon: 6,
+                                      time: 1000,
+                                      shade: [0.4, '#393D49'],
+                                      area:['250px','66px'],
+                                      end: function (){
+                                          location.href = "/toLogin";
+                                      }
+                                  });
+                              }else if(json.state === 4001){
+                                  layer.msg("用户账号不存在！", {
+                                      icon: 5,
+                                      time: 1000,
+                                      shade: [0.4, '#393D49'],
+                                      area:['200px','66px'],
+                                  });
+                              }
+                          }
+                      });
+                  })
+
+              }
+          })
+
+
+
+          /**修改用户名操作*/
+          $("#updateUserName-btn").click(function () {
+              const account = [[${session.sysUser.account}]]
+              const oldUserName = $("#oldUserName").val();
+              const newUserName = $("#newUserName").val();
+              const confirmUserName = $("#confirmUserName").val();
+              if($.isEmptyObject(account)||$.isEmptyObject(oldUserName)||$.isEmptyObject(newUserName)){
+                  layer.msg("用户账号或用户名不能为空！", {
+                      icon: 5,
+                      time: 1000,
+                      shade: [0.4, '#393D49'],
+                      area:['260px','66px'],
+                  });
+              }else if($.isEmptyObject(confirmUserName)){
+                  layer.msg("请再次输入用户名！", {
+                      icon: 5,
+                      time: 1000,
+                      shade: [0.4, '#393D49'],
+                      area:['220px','66px'],
+                  });
+              }else if(oldUserName === newUserName) {
+                  layer.msg("新用户名与原用户名一致！", {
+                      icon: 7,
+                      time: 1000,
+                      shade: [0.4, '#393D49'],
+                      area:['280px','66px'],
+                  });
+
+              }else if(newUserName !== confirmUserName){
+                  layer.msg("确认用户名输入不一致！", {
+                      icon: 5,
+                      time: 1000,
+                      shade: [0.4, '#393D49'],
+                      area:['240px','66px'],
+                  });
+              }else{
+                  layer.confirm('是否确认修改？',{
+                      icon: 3,
+                      title: '提示',
+                      shade: [0.5, '#393D49'],
+                      move: true,
+                  },function (){
+                      $.ajax({
+                          url: "/updateUserName",
+                          type: "POST",
+                          data: {
+                              account:account,
+                              newUserName:newUserName
+                          },
+                          dataType: "JSON",
+                          success: function (json) {
+                              if (json.state === 200) {
+                                  layer.msg('修改成功，请重新登录！', {
+                                      icon: 6,
+                                      time: 1000,
+                                      shade: [0.4, '#393D49'],
+                                      area:['250px','66px'],
+                                      end: function (){
+                                          location.href = "/toLogin";
+                                      }
+                                  });
+                              }else if(json.state === 4001){
+                                  layer.msg("用户账号不存在！", {
+                                      icon: 5,
+                                      time: 1000,
+                                      shade: [0.4, '#393D49'],
+                                      area:['200px','66px'],
+                                  });
+                              }
+                          }
+                      });
+                  })
+
+              }
+          })
+
+          //用户头像上传
+          function uploadNewImage(fileDom) {
+              //获取文件
+              const file = document.getElementById("userNewHeadImg").files[0];
+              const formData = new FormData();
+              formData.append('file', file);
+
+              $.ajax({
+                  url: "/admin/uploadUserHeadImg",
+                  type: "POST",
+                  data: formData,
+                  processData: false,
+                  contentType: false,
+                  success: function (json) {
+                      if(json.state===200){
+                          layer.msg('上传成功！', {
+                              icon: 6,
+                              time: 700,
+                              shade: [0.4, '#393D49'],
+                              area:['100px','66px'],
+                              end:function() {
+                                  $(fileDom).parent('.details_picList_fileUpload').before("<li><img src='.."+json.data.imgPath + "' id='upload_head_img'  width='150px' height='150px' style='border-radius: 50%'/></li>").css("display","none");
+                              }
+                          })
+                      }else if(json.state===6000){
+                          layer.msg("文件上传路径不合法！", {
+                              icon: 5,
+                              time: 1000,
+                              shade: [0.4, '#393D49'],
+                              area:['260px','66px'],
+                              end :function() {
+                                  $(".details_picList_fileUpload").find("span").text("点击上传")
+                                  $(fileDom).attr("disabled", false)
+                              }
+                          });
+                      }else if(json.state===6001){
+                          layer.msg("文件不存在！", {
+                              icon: 5,
+                              time: 1000,
+                              shade: [0.4, '#393D49'],
+                              area:['100px','66px'],
+                              end :function() {
+                                  $(".details_picList_fileUpload").find("span").text("点击上传")
+                                  $(fileDom).attr("disabled", false)
+                              }
+                          });
+                      }else if(json.state===6002){
+                          layer.msg("文件不类型不是图片！", {
+                              icon: 2,
+                              time: 1000,
+                              shade: [0.4, '#393D49'],
+                              area:['260px','66px'],
+                              end :function() {
+                                  $(".details_picList_fileUpload").find("span").text("点击上传")
+                                  $(fileDom).attr("disabled", false)
+                              }
+                          });
+                      }else if(json.state ===6003){
+                          layer.msg("图片上传失败！", {
+                              icon: 5,
+                              time: 1000,
+                              shade: [0.4, '#393D49'],
+                              area:['100px','66px'],
+                              end :function() {
+                                  $(".details_picList_fileUpload").find("span").text("点击上传")
+                                  $(fileDom).attr("disabled", false)
+                              }
+                          });
+                      }else if(json.state ===6004){
+                          layer.msg("图片文件不能为空！", {
+                              icon: 5,
+                              time: 1000,
+                              shade: [0.4, '#393D49'],
+                              area:['100px','66px'],
+                              end :function() {
+                                  $(".details_picList_fileUpload").find("span").text("点击上传")
+                                  $(fileDom).attr("disabled", false)
+                              }
+                          });
+                      }
+                  },
+                  beforeSend: function () {
+                      $(fileDom).attr("disabled", true).prev("span").text("图片上传中...");
+                  },
+                  error: function () {
+                  }
+              });
+          }
+
+          //点击取消或删除，关闭侧边栏的同时，删除已填数据
+          $("#btn_updateHeadImg_cancel").click(function (){
+              $("#user_list").find('li:has("img")').remove()
+              const fileUpload=$(".details_picList_fileUpload")
+              fileUpload.removeAttr("style")
+              fileUpload.find("span").text("点击上传")
+              $("#userNewHeadImg").attr("disabled",false);
+          })
+
+          //保存头像路径
+          $("#btn_updateHeadImg_save").click(function (){
+              const imgPath=$.trim($("#upload_head_img").attr("src"))
+              if(imgPath === "" || imgPath === undefined){
+                  layer.msg("请上传用户头像图片！", {
+                      icon: 2,
+                      time: 1000,
+                      shade: [0.4, '#393D49'],
+                      area:['240px','66px'],
+                  });
+              }else {
+                  $.ajax({
+                      url: "/learner/saveNewHeadPath",
+                      type: "POST",
+                      data:{
+                          headImgPath:imgPath,
+                      },
+                      dataType: "JSON",
+                      success: function (json) {
+                          if (json.state === 200) {
+                              layer.msg('更新成功！', {
+                                  icon: 6,
+                                  time: 1000,
+                                  shade: [0.4, '#393D49'],
+                                  area:['80px','66px'],
+                                  end: function (){
+                                      location.href = "/toLogin";
+                                  }
+                              });
+                          }
+                      }
+                  });
+              }
+          });
+      </script>
+  </div>
+
+
+
+</body>
+
+</html>

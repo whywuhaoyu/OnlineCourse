@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程数据</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/learner-index/webindex.css}" />
+</head>
+<body>
+  <div th:each="sysCourseListMap:${sysCourseInfoMap}">
+      <div th:class="${sysCourseListMap.value.firstLabel}">
+          <h3 style="text-align: center;padding-bottom: 20px" th:text="${sysCourseListMap.value.firstLabel}"></h3>
+          <div class="row">
+              <div class="col-sm-6 col-md-3" th:each="sysCourse:${sysCourseListMap.value.sysCourseListByFirstLabel}">
+                  <div class="thumbnail">
+                      <a th:data="${sysCourse.courseId}" th:onclick="|updateViewCountByCourseId(this.getAttribute('data'))|" th:href="@{/learner/getCourseDetailData(courseId=${sysCourse.courseId})}" ><img src="../images/course/computer/java/1031.jpg" th:src="'/images/course'+${sysCourse.imgPath}" alt="通用的占位符缩略图"></a>
+                      <div class="caption">
+                          <h4 th:text="${sysCourse.courseName}">java初级</h4>
+                          <p>课程等级：<span th:text="${sysCourse.courseLevel}">初级</span></p>
+                          <p>课程说明：<span th:text="${sysCourse.thirdLabel}">入门</span></p>
+                          <p>课程点击量：<span>[[${sysCourse.viewCount}]]次点击</span></p>
+                          <p><a th:href="@{/learner/getCourseDetailData(courseId=${sysCourse.courseId})}">详细信息</a></p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!--分页-->
+          <div class="container">
+              <ul class="pager">
+                  <li th:classappend="${sysCourseListMap.value.cur == 1} ? 'disabled' : ''">
+                      <a th:style="${sysCourseListMap.value.cur == 1} ? 'pointer-events:none' : ''" href="javascript:void(0)" th:data1="${sysCourseListMap.value.pre}" th:data2="${sysCourseListMap.value.firstLabel}" th:onclick="|loadDataByFirstLabel(this.getAttribute('data1'),this.getAttribute('data2'))|">&larr;上一页</a>
+                  </li>
+                  <li th:classappend="${sysCourseListMap.value.cur == sysCourseListMap.value.last} ? 'disabled' : ''" >
+                      <a th:style="${sysCourseListMap.value.cur == sysCourseListMap.value.last}  ? 'pointer-events:none' : ''" href="javascript:void(0)" th:data1="${sysCourseListMap.value.next}"  th:data2="${sysCourseListMap.value.firstLabel}" th:onclick="|loadDataByFirstLabel(this.getAttribute('data1'),this.getAttribute('data2'))|">下一页 &rarr;</a>
+                  </li>
+
+              </ul>
+          </div>
+      </div>
+  </div>
+
+</body>
+</html>

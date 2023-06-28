@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>视频播放</title>
+    <div th:include="learner/common :: learnerCommonBase"></div>
+    <link href="https://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+    <script src="https://vjs.zencdn.net/4.12/video.js"></script>
+</head>
+<body>
+<!--导航 -->
+<div th:replace="learner/common :: navigation"></div>
+<!--导航结束-->
+
+<div class="container">
+    <!--课程分类以及轮播图-->
+    <div th:replace="learner/common :: rotation"></div>
+    <br>
+</div>
+<div class="container">
+    <ol class="breadcrumb">
+        <li>
+            <a>所属课程</a>
+        </li>
+        <li>
+            <a th:href="@{/learner/getCourseDetailData(courseId=${sysCourse.courseId})}">[[${sysCourse.courseName}]]</a>
+        </li>
+        <li>
+
+        </li>
+    </ol>
+</div>
+
+<div class="container">
+    <input type="hidden" id="courseId" th:value="${sysCourse.courseId}">
+    <input type="hidden" id="videoId" th:value="${videoId}">
+    <div th:if="${videoCurrent} != null and ${courseProgress} != null">
+        <input type="hidden" id="videoCurrent0" th:value="${videoCurrent}">
+        <input type="hidden" id="courseProgress" th:value="${courseProgress}">
+    </div>
+    <div id="courseVideoPlay"></div>
+    <div class="col-md-3 col-sm-3" style="background-color: #f1f2f3">
+        <h5 style="display: inline-block">视频选集（[[${courseVideoViewList.size()}]]）  <span class="glyphicon glyphicon-list"></span></h5>
+        <div  style="width: 125px;margin-left: 175px;margin-top: -29px">
+            <input type="radio" id="continueAutoPlay" name="continueAutoPlay" value="自动连播" checked/> <label for="continueAutoPlay">自动连播</label>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-3" style="background-color: #f1f2f3;height: 464px;overflow:auto;padding-top: 25px">
+        <div class="list-group list-group-flush" th:each="courseVideoView:${courseVideoViewList}" style="margin-top: 10px">
+            <a style="display: block;height: 40px" th:id="${courseVideoView.videoName}" th:data1="${courseVideoView.videoId}" th:data2="${sysCourse.courseId}"
+               th:onclick="|loadDataCourseVideoPlay(this.getAttribute('data1'),this.getAttribute('data2'))|" class="list-group-item list-group-item-action abbreviation">
+                <div style="float: left;font-size: 13px"><span>[[${courseVideoView.videoName}]]</span></div>
+                <div style="margin-left: 160px;font-size: 13px">[[${courseVideoView.videoDuration}]]</div>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!--加载课程搜索功能-->
+<div th:replace="learner/common :: getCourseBySearchCondition"></div>
+
+
+<!--首页menu数据加载-->
+<div th:replace="learner/common :: loadMenu"></div>
+
+
+<div th:replace="learner/common :: getCourseVideoPlay"></div>
+
+<!--页脚 start-->
+<div th:replace="learner/common :: footer"></div>
+<!--页脚 end-->
+
+<!--注销操作提示-->
+<div th:replace="user/common :: logout-prompt"></div>
+
+
+</body>
+</html>

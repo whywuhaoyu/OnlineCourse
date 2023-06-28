@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>user 页面公共资源抽取</title>
+</head>
+
+<!--user 页面公共资源抽取-->
+<head th:fragment="userCommonBase">
+    <title></title>
+
+    <!--引入css文件-->
+    <link rel="stylesheet" type="text/css" th:href="@{css/user/index.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{iconfont/iconfont.css}">
+
+    <!--引入js文件-->
+    <script type="text/javascript" th:src="@{js/jquery-1.9.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{js/modernizr.min.js}"></script>
+    <script type="text/javascript" th:src="@{js/bootstrap/js/jquery.cookie.js}"></script>
+    <script type="text/javascript" th:src="@{js/user/remember-user.js}"></script>
+    <script type="text/javascript" th:src="@{js/layer3.1.1/layer.js}"></script>
+    <script type="text/javascript" th:src="@{js/user/sysuser-message-prompt.js}"></script>
+</head>
+
+<body>
+
+
+
+
+<!--用户注销操作-->
+<div th:fragment="logout-prompt">
+    <script th:inline="javascript">
+        $("#logout").click(function (){
+            layer.confirm('是否确认注销？',{
+                icon: 3,
+                title: '提示',
+                shade: [0.5, '#393D49'],
+                move: true,
+            },function (){
+                $.ajax({
+                    url: "/logout",
+                    type: "POST",
+                    dataTypeL: JSON,
+                    success: function (json) {
+                        if(json.state===200){
+                            layer.msg('注销成功！', {
+                                icon: 6,
+                                time: 700,
+                                shade: [0.4, '#393D49'],
+                                area:['100px','66px'],
+                                end: function (){
+                                    location.href="toLogin";
+                                }
+                            })
+                        }
+                    }
+                });
+            });
+        })
+    </script>
+</div>
+</body>
+</html>

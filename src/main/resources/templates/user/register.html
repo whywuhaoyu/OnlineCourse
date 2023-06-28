@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <!--引入公共资源-->
+    <div th:include="user/common :: userCommonBase"></div>
+
+</head>
+<body>
+<div class="container">
+    <div class="register">
+        <h2>用户注册</h2>
+        <form th:action="@{/register}" method="post" class="register-form" id="register-form">
+            <input type="hidden" name="type" id="type" value="learner">
+            <div class="line">
+                <i class="iconfont formal-icon">&#xe608;</i><span class="split">|</span>
+                <label for="account-register">
+                </label><input type="text" class="text" placeholder="账号" id="account-register" name="account" />
+            </div>
+            <div class="line">
+                <i class="iconfont formal-icon">&#xe667;</i><span class="split">|</span>
+                <label for="username"></label><input type="text" class="text" placeholder="用户名" id="username" name="username" />
+            </div>
+            <div class="line message-line">
+                <i class="iconfont formal-icon">&#xe63b;</i><span class="split">|</span>
+                <label for="major"></label>
+                <input type="text" class="text" placeholder="学习专业" id="major" name="major"/>
+            </div>
+            <div class="line">
+                <i class="iconfont formal-icon">&#xe60f;</i><span class="split">|</span>
+                <label for="password-register">
+                </label><input type="password" class="password" placeholder="密码" id="password-register" name="password" />
+            </div>
+            <div class="line">
+                <i class="iconfont formal-icon">&#xe620;</i><span class="split">|</span>
+                <label for="confirm"></label>
+                <input type="password" class="password" placeholder="确认密码" id="confirm" />
+            </div>
+            <button type="button" id="register-btn">注册</button>
+        </form>
+        <div class="back">
+            <span>已有账号？点此</span><a th:href="@{/toLogin}">返回登录</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

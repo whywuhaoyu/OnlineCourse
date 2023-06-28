@@ -1,0 +1,257 @@
+
+/*图表样式*/
+#chartTotal {
+    width: 100%;
+    margin-bottom: 30px;
+    border: none;
+    padding: 0 20px;
+}
+
+#chartTotal > li {
+    width: 24.5%;
+    display: inline-block;
+    border: none;
+    list-style: none;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #81C979;
+}
+
+#chartTotal > li + li {
+    border-left: 2px solid #eee;
+}
+
+
+#chartTotal .chartTotalTitle {
+    height: 20px;
+    text-indent: 3px;
+}
+
+.chartTotalTitle .chartTitleText {
+    float: left;
+    font-weight: bold;
+    font-size: 14px;
+    color: #666;
+}
+
+.chartTotalTitle .chartTitleUnit {
+    float: right;
+    font-weight: bold;
+    font-size: 14px;
+    color: #666;
+}
+
+#chartTotal .chartTotalValue {
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+}
+
+#chartTotal .chartTotalStyle {
+    width: 100%;
+    height: 6px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+
+
+/*修改表单提示颜色*/
+input::-webkit-input-placeholder{
+    font-size: 12px;
+    color:#cccccc;
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    font-size: 12px;
+    color:#cccccc;
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    font-size: 12px;
+    color:#cccccc;
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+    font-size: 12px;
+    color:#cccccc;
+}
+/*修改多选,单选按钮样式*/
+input[type="checkbox"]+label::before,input[type="radio"]+label::before {
+    content: "\a0";
+    position: relative;
+    bottom: 1px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    width: 12px;
+    height: 12px;
+    margin-right: .4em;
+    border: 1px solid #cccccc;
+    text-indent: .15em;
+    line-height: 1;
+    cursor: pointer;
+}
+input[type="radio"]+label::before {
+    border-radius: 50%;
+}
+input[type="checkbox"]:checked + label::before,input[type="radio"]:checked + label::before {
+    background-color: #ff7874;
+    background-clip: content-box;
+    padding: 2px;
+}
+input[type="checkbox"],input[type="radio"] {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+}
+
+
+
+/*修改bootstrap-select下拉框样式*/
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+    width: 150px;
+    margin: 0 20px 0 0;
+}
+.btn.dropdown-toggle.btn-default{
+    font-size: 13px;
+    height: 31px;
+    color:#666;
+    border-color: #e9ebef;
+    border-radius: 3px;
+}
+.btn-group-vertical>.btn, .btn-group>.btn{
+    height: 25px;
+    padding: 5px 12px 5px 5px;
+}
+.bootstrap-select.btn-group .dropdown-toggle .filter-option{
+    position: relative;
+    bottom: 1px;
+}
+.bootstrap-select.btn-group .dropdown-toggle .caret{
+    color:#cccccc;
+}
+.dropdown-menu>li>a{
+    font-size: 13px;
+}
+
+
+
+/*表单样式*/
+
+.text_info{
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.frm_error_msg{
+    font-size: 13px;
+    position: relative;
+    color: #c33;
+    left: 20px;
+    opacity: 0;
+}
+.frm_div{
+    margin-bottom: 20px;
+}
+.frm_group{
+    margin-bottom: 18px;
+}
+.frm_label{
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: normal;
+    color:#666;
+    margin: 0 4px 0 0;
+}
+.frm_input{
+    width: 150px;
+    outline: none;
+    padding: 5px;
+    color:#666;
+    margin: 0 20px 0 0;
+    height: 25px;
+    border-radius: 3px;
+    border: 1px solid #e9ebef;
+    font-size: 13px;
+}
+.frm_input:focus{
+    border: 1px solid #bbb;
+}
+.frm_num{
+    width: 80px;
+}
+
+
+.frm_btn{
+    transition: background-color 0.25s ease-in;
+    outline: none;
+    height: 25px;
+    border-radius: 5px;
+    padding: 5px 18px;
+    border: 0;
+    color:white;
+    font-size: 13px;
+    background-color: #ff7874;
+    margin-right: 10px;
+}
+.frm_btn:hover{
+    background-color: #fe5874;
+}
+
+.frm_btn.frm_add{
+    background-color: #8BB979;
+    padding: 5px 18px;
+}
+
+.frm_btn.frm_add:hover{
+    background-color: #81C979;
+}
+
+.frm_btn.frm_clear{
+    background-color: #f9B689;
+    padding: 5px 18px;
+}
+.frm_btn.frm_clear:hover{
+    background-color: #f9B659;
+}
+
+.frm_btn.frm_all{
+    background-color: #9ea7f5;
+    padding: 5px 18px;
+}
+
+.frm_btn.frm_all:hover{
+    background-color: #ff8dc0;
+    padding: 5px 18px;
+}
+
+/*数据统计部分样式*/
+.data_count_div{
+    margin-top: 20px;
+    overflow: hidden;
+    width: 100%;
+    height: 30px;
+    padding: 3px 12px;
+    background-color: #FEF6F4;
+    border: 2px solid #F9ECEB;
+}
+.data_count_div>.icon{
+    width: 18px;
+    height: 18px;
+    fill: #FF7874;
+    vertical-align: middle;
+}
+.data_count_div>span{
+    font-size: 12px;
+    color:#666;
+}
+.data_count_div>.data_count_title{
+    padding-right: 5px;
+}
+.data_count_div>.data_count_value{
+    color:#ff7874;
+}
+.data_count_div>.data_count_unit{
+    padding-right: 20px;
+}
+

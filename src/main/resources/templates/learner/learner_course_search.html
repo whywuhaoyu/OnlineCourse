@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程搜索</title>
+    <div th:include="learner/common :: learnerCommonBase"></div>
+</head>
+<body>
+
+<!--导航 -->
+<div th:replace="learner/common :: navigation"></div>
+<!--导航结束-->
+
+<!--<div class="container">-->
+<!--    &lt;!&ndash;课程分类以及轮播图&ndash;&gt;-->
+<!--    <div th:replace="learner/common :: rotation"></div>-->
+<!--    <br>-->
+<!--</div>-->
+
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a>关键词</a></li>
+        <li><a id="courseListCondition" th:href="@{/learner/learner_course_search(search=${search})}" th:text="${search}" style="color: red"></a></li>
+    </ol>
+</div>
+
+
+<!--展示数据开始-->
+<div id="courseSearch"></div>
+<!--展示数据结束-->
+
+
+
+<!--加载课程搜索功能-->
+<div th:replace="learner/common :: getCourseBySearchCondition"></div>
+
+
+<!--加载搜索数据结果-->
+<div th:replace="learner/common :: searchConditionData"></div>
+
+
+<!--&lt;!&ndash;menu数据加载&ndash;&gt;-->
+<!--<div th:replace="learner/common :: loadMenu"></div>-->
+
+
+
+<!--页脚 start-->
+<div th:replace="learner/common :: footer"></div>
+<!--页脚 end-->
+
+
+
+<!--注销操作提示-->
+<div th:replace="user/common :: logout-prompt"></div>
+
+
+
+</body>
+</html>

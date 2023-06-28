@@ -1,0 +1,17 @@
+ /*图标加大 颜色*/
+ .rights .fa {
+ 	font-size: 30px;
+ 	color: #667799;
+ }
+
+ /*底部填充高*/
+ .bottom {
+ 	margin: 10px;
+ }
+
+ /*权益整行的颜色和填充*/
+ .rights {
+ 	width: 100%;
+ 	padding: 50px;
+ 	background-color: #F2F2F2;
+ }

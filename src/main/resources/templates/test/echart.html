@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ECharts 学习路径图</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+</head>
+<body>
+<div id="main" style="width: 800px;height: 600px;"></div>
+<script type="text/javascript">
+  // 基于准备好的dom，初始化echarts实例
+  var myChart = echarts.init(document.getElementById('main'));
+
+  // 指定图表的配置项和数据
+  var option = {
+    title: {
+      text: 'ECharts 学习路径图',
+      left: 'center',
+      top: '20',
+      textStyle: {
+        color: '#666',
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {},
+    legend: {
+      data: ['课程'],
+      textStyle: {
+        color: '#666'
+      },
+      top: '20'
+    },
+    series: [{
+      type: 'graph',
+      layout: 'none',
+      data: [{
+        name: '计算机基础',
+        category: 0,
+        draggable: true,
+        x: 100,
+        y: 100,
+        itemStyle: {
+          borderColor: '#666',
+          borderWidth: 2,
+          color: '#FFB6C1'
+        },
+        label: {
+          show: true,
+          fontSize: 16
+        }
+      }, {
+        name: '数据结构',
+        category: 1,
+        draggable: true,
+        x: 400,
+        y: 100,
+        itemStyle: {
+          borderColor: '#666',
+          borderWidth: 2,
+          color: '#FFB6C1'
+        },
+        label: {
+          show: true,
+          fontSize: 16
+        }
+      }, {
+        name: '算法设计',
+        category: 1,
+        draggable: true,
+        x: 700,
+        y: 100,
+        itemStyle: {
+          borderColor: '#666',
+          borderWidth: 2,
+          color: '#FFB6C1'
+        },
+        label: {
+          show: true,
+          fontSize: 16
+        }
+      }, {
+        name: '计算机组成原理',
+        category: 0,
+        draggable: true,
+        x: 100,
+        y: 400,
+        itemStyle: {
+          borderColor: '#666',
+          borderWidth: 2,
+          color: '#FFB6C1'
+        },
+        label: {
+          show: true,
+          fontSize: 16
+        }
+      }, {
+        name: '操作系统',
+        category: 0,
+        draggable: true,
+        x: 400,
+        y: 400,
+        itemStyle: {
+          borderColor: '#666',
+          borderWidth: 2,
+          color: '#FFB6C1'
+        },
+        label: {
+          show: true,
+          fontSize: 16
+        }
+      }, {
+        name: '计算机网络',
+        category: 0,
+        draggable: true,
+        x: 700,
+        y: 400,
+        itemStyle: {
+          borderColor: '#666',
+          borderWidth: 2,
+          color: '#FFB6C1'
+        },
+        label: {
+          show: true,
+          fontSize: 16
+        }
+      }],
+      links: [{
+        source: '计算机基础',
+        target: '数据结构',
+        lineStyle: {
+          color: '#666',
+          width: 2
+        }
+      }, {
+        source: '计算机基础',
+        target: '计算机组成原理',
+        lineStyle: {
+          color: '#666',
+          width: 2
+        }
+      }, {
+        source: '数据结构',
+        target: '算法设计',
+        lineStyle: {
+          color: '#666',
+          width: 2
+        }
+      }, {
+        source: '计算机组成原理',
+        target: '操作系统',
+        lineStyle: {
+          color: '#666',
+          width: 2
+        }
+      }, {
+        source: '操作系统',
+        target: '计算机网络',
+        lineStyle: {
+          color: '#666',
+          width: 2
+        }
+      }],
+      categories: [{
+        name: '基础课程',
+        itemStyle: {
+          normal: {
+            color: '#FFB6C1'
+          }
+        }
+      }, {
+        name: '高级课程',
+        itemStyle: {
+          normal: {
+            color: '#FF69B4'
+          }
+        }
+      }],
+      roam: true,
+      label: {
+        show: true,
+        fontSize: 16,
+        color: '#666'
+      },
+      edgeSymbol: ['circle', 'arrow'],
+      edgeSymbolSize: [0.1, 10]
+    }]
+  };
+
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+
+/* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+    font-family: "iconfont"; /* Project id 3343940 */
+    src: url('//at.alicdn.com/t/c/font_3343940_irhtyy1wmcq.woff2?t=1682578873547') format('woff2'),
+    url('//at.alicdn.com/t/c/font_3343940_irhtyy1wmcq.woff?t=1682578873547') format('woff'),
+    url('//at.alicdn.com/t/c/font_3343940_irhtyy1wmcq.ttf?t=1682578873547') format('truetype');
+}
+
+
+.iconfont {
+  font-family: "iconfont", serif !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-guanbi:before {
+    font-size: 20px;
+    content: "\e639";
+}
+
+.icon-zanwuxinxi:before {
+    font-size: 20px;
+    color: red;
+    content: "\e650";
+}
+
+.icon-bianji:before {
+    font-size: 22px;
+    font-weight: bold;
+    content: "\e612";
+}
+
+.icon-iconfront-:before {
+    font-size: 22px;
+    font-weight: bold;
+    content: "\e606";
+}
+
+
+.icon-xiangqing:before {
+    font-size: 22px;
+    font-weight: bold;
+    content: "\e63c";
+}
+
+.icon-shipinguankan {
+    color: greenyellow ;
+}
+
+.icon-biaoqianlan-qianjin5miao:before {
+    color: black;
+    font-size: 20px;
+    content: "\e610";
+}
+
+.icon-biaoqianlan-houtui5miao:before {
+    color: black;
+    font-size: 20px;
+    content: "\e611";
+}
+
+.icon-shipinguankan:before {
+    content: "\e603";
+}
+
+.icon-jixuguankan:before {
+    content: "\e63e";
+}
+
+.icon-zuoshangjiaoxingxing:before {
+    content: "\e775";
+}
+
+.icon-xingxing:before {
+    content: "\e60d";
+}
+
+.icon-xingxing1:before {
+    content: "\e60e";
+}
+
+.icon-mima:before {
+    content: "\e60f";
+}
+
+.icon-xuexi:before {
+    content: "\e63b";
+}
+
+.icon-confirmation-password-jf:before {
+    content: "\e620";
+}
+
+.icon-yonghu:before {
+    content: "\e667";
+}
+
+.icon-shoujihao:before {
+    content: "\e608";
+}
+
+
+
+
+
+

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户数据</title>
+</head>
+<body>
+<section class="panel" style="border-color: #dddddd">
+    <header class="panel-heading">
+        VideoData Table
+        <span class="tools pull-right">
+            <input class="frm_btn frm_add" id="btn_video_add" type="button"   data-bs-toggle="offcanvas"
+                   data-bs-target="#adminAddVideo" aria-controls="offcanvasRight" value="添加视频"/>
+        </span>
+        <div class="data_count_div text_info">
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2522" width="16"
+                 height="16">
+                <path d="M401.976676 735.74897c-88.721671 0-172.124196-34.635845-234.843656-97.526197-62.724577-62.86784-97.271394-146.453537-97.271394-235.358379s34.546817-172.490539 97.276511-235.361449c62.715367-62.887282 146.117892-97.522104 234.838539-97.522104 88.719624 0 172.135452 34.633798 234.881518 97.522104 62.704111 62.875003 97.235578 146.4607 97.235578 235.361449 0 88.901773-34.530444 172.487469-97.231485 235.358379C574.112128 701.116195 490.6963 735.74897 401.976676 735.74897zM401.976676 121.204479c-75.012438 0-145.533584 29.290093-198.572568 82.474386-109.585861 109.834524-109.585861 288.539602-0.004093 398.36901 53.043077 53.188386 123.564223 82.47848 198.577684 82.47848 75.015507 0 145.553027-29.291117 198.620663-82.47848C710.126918 492.220514 710.126918 313.511343 600.593246 203.678866 547.530726 150.496619 476.992183 121.204479 401.976676 121.204479z"
+                      p-id="2523" fill="#FF7874">
+                </path>
+                <path d="M932.538427 958.228017c-6.565533 0-13.129019-2.508123-18.132986-7.52437L606.670661 642.206504c-9.989515-10.014074-9.969049-26.231431 0.045025-36.220946s26.230408-9.969049 36.220946 0.045025l307.73478 308.497143c9.989515 10.014074 9.969049 26.231431-0.045025 36.220946C945.627537 955.735244 939.081447 958.228017 932.538427 958.228017z"
+                      p-id="2524" fill="#FF7874">
+                </path>
+            </svg>
+            <span class="data_count_title">查看合计</span>
+            <span>视频总数:</span>
+            <span class="data_count_value" id="video_count_data">[[${total}]]</span>
+            <span class="data_count_unit">个</span>
+        </div>
+    </header>
+    <div class="panel-body">
+        <div class="adv-table" >
+            <table class="display table table-bordered  table-hover" id="videoDataTable" style="text-align: center">
+                <thead style="text-align: center">
+                    <tr style="font-weight: bold">
+                        <th>
+                            <input type="checkbox" id="checkAll">
+                            <label class="frm_label" for="checkAll">全选</label>
+                        </th>
+                        <th>视频号</th>
+                        <th>视频名</th>
+                        <th>视频地址</th>
+                        <th>视频时长</th>
+                        <th>上传者</th>
+                        <th>上传时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="gradeX td_middle" th:each="sysvideo: ${sysVideoList}">
+                        <td class="check_info">
+                            <input type="checkbox" name="checkbox" th:id="${sysvideo.videoId}">
+                            <label th:for="${sysvideo.videoId}"></label>
+                        </td>
+                        <td th:text="${sysvideo.videoNum}"></td>
+                        <td th:text="${sysvideo.videoName}"></td>
+                        <td th:text="${sysvideo.videoLocation}"></td>
+                        <td th:text="${sysvideo.videoDuration}"></td>
+                        <td th:text="${sysUserService.getById(sysvideo.videoUploadUser).userName}"></td>
+                        <td th:text="${countUtil.timeConvert(sysvideo.getVideoUploadTime())}"></td>
+
+                        <td style="width: 150px">
+                            <div id="operate">
+                                <a th:href="@{/admin/video/play/}+${sysvideo.videoId}">
+                                       <span id="detailsData" class="iconfont icon-jixuguankan" style="font-size: 22px"></span>&nbsp;&nbsp;
+                                </a>
+                                <span id="editData" data-toggle="modal" data-target="#editVideo-modal" class="iconfont icon-bianji"
+                                      th:data1="${sysvideo.videoId}" th:data2="${sysvideo.videoNum}" th:data3="${sysvideo.videoName}" th:data4="${sysvideo.videoDuration}"
+                                      th:onclick="|getEditVideoData(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'),this.getAttribute('data4'))|"></span>&nbsp;&nbsp;
+                                <span id="deleteData" th:data1="${cur}" th:data2="${pageSize}" th:data3="${sysvideo.videoId}" th:data4="${videoCondition}"
+                                      th:onclick="|deleteVideoDataByVideoId(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'),this.getAttribute('data4'))|"
+                                      class="iconfont icon-iconfront-">
+                            </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="dataTables_info" th:if="${pages} != 0">
+                当前第[[${cur}]]页  总计 [[${pages}]]页  共[[${total}]]条记录
+            </div>
+            <div class="dataTables_info" th:if="${pages} == 0" style="text-align: center;color: #999999;font-style: italic">
+                抱歉，暂无记录！
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--表格分页-->
+<div class="row-fluid">
+    <!--分页-->
+    <nav aria-label="Page navigation">
+        <ul class="pagination" th:if="${pages} != 0">
+
+            <li style="margin-right: 20px">
+                <label class="frm_label">每页显示:</label>
+                <select id="videoPageSize" th:value="${pageSize}" class="form-control" style="width: 60px;display: inline;text-align: center"
+                        th:data="${videoCondition}"
+                        th:onchange="|loadVideoDataBySize(this,this.getAttribute('data'))|">
+                    <option value="3" th:selected="${pageSize == 3}">3</option>
+                    <option value="5" th:selected="${pageSize == 5}">5</option>
+                    <option value="10" th:selected="${pageSize == 10}">10</option>
+                    <option value="15" th:selected="${pageSize == 15}">15</option>
+                    <option value="20" th:selected="${pageSize == 20}">20</option>
+                    <option value="30" th:selected="${pageSize == 30}">30</option>
+                </select>
+                <label class="frm_label">条</label>
+            </li>
+
+            <li th:classappend="${cur == 1} ? 'disabled' : ''"><a href="javascript:void(0)" th:onclick="loadVideoData(1,[[${pageSize}]],[[${videoCondition}]])">首页</a></li>
+
+            <li th:classappend="${cur == 1} ? 'disabled' : ''">
+                <a th:style="${cur == 1}  ? 'disabled pointer-events:none' : ''" href="javascript:void(0)" th:data1="${pre}" th:data2="${pageSize}" th:data3="${videoCondition}"
+                   th:onclick="|loadVideoData(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'))|">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li th:each="num:${#numbers.sequence(1,pages)}" th:class="${cur == num} ? 'active' : ''"
+                th:classappend="${num} == ${cur - 2} and ${cur} > 4 ? 'disabled' : ''">
+                <a href="javascript:void(0)" th:if="${num} == ${cur} or ${num} == ${cur - 1} or ${num} == ${cur + 1} or ${num} == ${pages} or ${num} == ${pages - 1}"
+                   th:text="${num}"  th:data1="${num}" th:data2="${pageSize}" th:data3="${videoCondition}"
+                   th:onclick="|loadVideoData(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'))|">1</a>
+                <a href="javascript:void(0)" th:if="${num} == ${cur - 2} and ${cur} > 4">...</a>
+                <a href="javascript:void(0)" th:if="${num} == ${cur + 2} and ${cur} < ${pages - 3}">...</a>
+            </li>
+
+
+            <li th:classappend="${cur == last} ? 'disabled' : ''">
+                <a th:style="${cur == last}  ? 'disabled pointer-events:none' : ''" href="javascript:void(0)" th:data1="${next}" th:data2="${pageSize}" th:data3="${videoCondition}"
+                   th:onclick="|loadVideoData(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'))|">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li th:classappend="${cur == last} ? 'disabled' : ''"><a href="javascript:void(0)" th:onclick="loadVideoData([[${pages}]],[[${pageSize}]],[[${videoCondition}]])">尾页</a></li>
+
+            <li><label style="margin-left: 20px" class="frm_label" th:text="${'当前页' + cur + '/' + pages + '总页'}">当前页3/5总页</label></li>
+
+            <li style="margin-left: 20px">
+                <div id="courseDataPagination" class="input-group">
+                    <input id="videoDataPage" style="width: 100px;" type="text" class="form-control" placeholder="跳转指定页" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-search" th:onclick="goVideoDataPage([[${pageSize}]],[[${videoCondition}]])">GO</button>
+                    </span>
+                </div>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+
+
+<!--查询和删除视频-->
+<div th:replace="admin/common :: query-video"></div>
+
+<!--添加视频-->
+<div th:replace="admin/common :: add-video"></div>
+
+<!--编辑视频-->
+<div th:replace="admin/common :: edit-video"></div>
+
+
+<div th:replace="admin/common :: tooltip"></div>
+</body>
+</html>

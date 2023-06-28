@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{bootstrap, bootstrap.bundle, echarts, font_3343940_3y4xuzs7pk5, font_3343940_c8urrjtr73j, font_3343940_pbr4ezjgcv, font_3343940_wau61zj6g7, jquery, shine, video, video-js, vis}" />
+  </component>
+</project>

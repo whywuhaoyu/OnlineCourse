@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程列表界面</title>
+    <div th:include="learner/common :: learnerCommonBase"></div>
+</head>
+<body>
+
+<!--导航 -->
+<div th:replace="learner/common :: navigation"></div>
+<!--导航结束-->
+
+<div class="container">
+    <!--课程分类以及轮播图-->
+    <div th:replace="learner/common :: rotation"></div>
+    <br>
+</div>
+
+
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a>课程列表</a></li>
+        <li><a id="courseListFirstLabel" th:href="@{/learner/learner_course_list(firstLabel=${firstLabel})}" th:text="${firstLabel}"></a></li>
+    </ol>
+</div>
+
+<!--展示数据开始-->
+<div id="courseList"></div>
+<!--展示数据结束-->
+
+
+
+
+<!--加载课程搜索功能-->
+<div th:replace="learner/common :: getCourseBySearchCondition"></div>
+
+
+<!--首页menu数据加载-->
+<div th:replace="learner/common :: loadMenu"></div>
+
+
+
+<div th:replace="learner/common :: getCourseListDataByFirstLabel"></div>
+
+
+
+
+<!--页脚 start-->
+<div th:replace="learner/common :: footer"></div>
+<!--页脚 end-->
+
+<!--注销操作提示-->
+<div th:replace="user/common :: logout-prompt"></div>
+
+</body>
+</html>

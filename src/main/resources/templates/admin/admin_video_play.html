@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>视频播放</title>
+    <style>
+        .container {
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .box video {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="box">
+        <video controls th:src="@{/video/play/}+${videoId}"></video>
+    </div>
+</div>
+
+</body>
+</html>

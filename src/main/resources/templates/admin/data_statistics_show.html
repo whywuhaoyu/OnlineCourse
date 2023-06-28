@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>数据统计并展示</title>
+</head>
+<body>
+<ul id="chartTotal">
+    <li id="userTotal">
+        <p class="chartTotalTitle"><span class="chartTitleText">注册用户数量</span><span class="chartTitleUnit">(单位：人)</span>
+        </p>
+        <span class="chartTotalValue">[[${sysUserCount}]]</span>
+        <div class="chartTotalStyle" style="background-color: #f89e9e"></div>
+    </li>
+    <li id="courseTotal">
+        <p class="chartTotalTitle"><span class="chartTitleText">发布课程数量</span><span class="chartTitleUnit">(单位：节)</span>
+        </p>
+        <span class="chartTotalValue">[[${sysCourseCount}]]</span>
+        <div class="chartTotalStyle" style="background-color: #9ea7f5"></div>
+    </li>
+    <li id="videoTotal">
+        <p class="chartTotalTitle"><span class="chartTitleText">收录视频数量</span><span class="chartTitleUnit">(单位：个)</span>
+        </p>
+        <span class="chartTotalValue">[[${sysVideoCount}]]</span>
+        <div class="chartTotalStyle" style="background-color: #ffdea4"></div>
+    </li>
+
+    <li id="questionTotal">
+        <p class="chartTotalTitle"><span class="chartTitleText">收录题目数量</span><span class="chartTitleUnit">(单位：道)</span>
+        </p>
+        <span class="chartTotalValue">[[${sysQuestionCount}]]</span>
+        <div class="chartTotalStyle" style="background-color: #adff2f"></div>
+    </li>
+</ul>
+</body>
+</html>

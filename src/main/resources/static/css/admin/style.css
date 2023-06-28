@@ -1,0 +1,472 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+a {
+    color: #20a53a;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #23527c;
+    text-decoration: none;
+}
+
+a:focus {
+    text-decoration: none;
+}
+
+
+body, html {
+    height: 100%;
+    background-color: #f2f2f2;
+    color: #f2f2f2;
+}
+
+
+.wrap {
+    min-height: 100%;
+}
+
+.wrap .container-fluid {
+    padding: 0;
+    height: 100%;
+}
+
+.left-nav {
+    float: left;
+    background-color: #f5f6fb;
+    width: 200px;
+    height: 100%;
+    position: fixed;
+}
+
+
+.left-nav .navbar {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+.left-nav .navbar .active {
+    border-left: #20a53a 3px solid;
+}
+
+.ul-menu {
+    background-color: #f5f6fb;
+}
+
+.nav > li > a {
+    padding: 15px 15px;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > a:hover {
+    color: #20a53a;
+    background-color: #d9dbe8;
+}
+
+.nav > li > a:focus,
+.nav > li > a:hover {
+    background-color: #20a53a;
+}
+
+
+.aicon {
+    text-align: center;
+    font-size: 15px;
+}
+
+
+
+.main-content {
+    background-color: #f2f2f2;
+    margin-left: 200px;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0 15px;
+    /* 添加纵向滚动条 */
+    overflow-y: auto !important;
+}
+
+.nav-path {
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
+    background-color: #fff;
+    top:0;
+    width: 1272px;
+    position: fixed;
+}
+
+
+
+.show-box{
+    margin-top:70px;
+    height: auto;
+    background-color: #fff;
+    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 10%);
+    padding: 10px 30px;
+}
+
+.show-box .box-header {
+    margin-bottom: 15px;
+}
+
+.show-box .box-header .table-title {
+    display: inline-block;
+}
+
+.show-box .query {
+    display: inline-block;
+    float: right;
+    margin-top: 10px;
+}
+
+.bottom-main {
+    height: 500px;
+}
+
+.bottom-user {
+    height: 400px;
+}
+
+.query .query-selector {
+    display: inline-block;
+    margin: 8px;
+    width: 200px;
+}
+.query-selector {
+    display: inline-block;
+    margin: 8px;
+    width: 200px;
+}
+
+table {
+    width: 100%;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.table {
+    border: 1px solid #ddd;
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.table-bordered > tr > td {
+    height: 20px;
+    max-height: 20px;
+}
+
+
+
+/*单元格设置*/
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+    border: 0 solid #ddd;
+    padding: 8px;
+    line-height: 1.4;
+    border-top: 0.5px solid #ddd;
+    text-align: center;
+}
+
+.td_middle >td{
+    vertical-align: middle;
+}
+
+
+/*表头设置*/
+.table thead th {
+    vertical-align: inherit;
+    background-color: #f6f6f6;
+    color: #666;
+    font-weight: normal;
+    padding: 8px;
+}
+
+tr th > span,
+tr td > span {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+
+tr,td {
+    max-width: 106px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+input[type='checkbox'] {
+    margin: 4px;
+}
+
+.main-content::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+    background-color: #f5f5f5;
+}
+.main-content::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #888;
+}
+.main-content::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+}
+
+
+
+
+/*定义下拉框样式*/
+.data_select {
+    position: relative;
+    width: 100%;
+    height: 36px;
+    background: #fff;
+    border: 1px solid #cccccc;
+    text-indent: 6px;
+    border-radius: 4px;
+    overflow: hidden;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.1); /* 添加浅灰色阴影 */
+}
+
+.option {
+    padding-left: 10px;
+}
+
+.data_select:focus {
+    outline: 1px solid #66afe9; /* 边框加粗并设置颜色 */
+}
+
+
+
+/*开启关闭滑块样式*/
+
+.switch-label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input[type="checkbox"] {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #4cd964;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #4cd964;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/*分页条样式*/
+ul.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 20px;
+    margin: 0;
+}
+
+ul.pagination li {
+    display: block;
+}
+
+
+#userDataPagination{
+    position: relative;
+    float: left;
+    padding: 0 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #428bca;
+    text-decoration: none;
+    background-color: #fff;
+    width: 100px;
+}
+
+#courseDataPagination{
+    position: relative;
+    float: left;
+    padding: 0 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #428bca;
+    text-decoration: none;
+    background-color: #fff;
+    width: 100px;
+}
+
+#dataPagination{
+    position: relative;
+    float: left;
+    padding: 0 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #428bca;
+    text-decoration: none;
+    background-color: #fff;
+    width: 100px;
+}
+
+
+
+
+/*定义图标样式*/
+#deleteData {
+    color: #f4a460;
+}
+
+#deleteData:hover{
+    color:#fe5874;
+}
+
+#editData {
+    color: #8bb979;
+}
+
+#editData:hover{
+    color: green;
+}
+
+#detailsData {
+    color: #9ea7f5;
+}
+
+#detailsData:hover{
+    color: #ff8dc0;
+}
+
+#close_addUser {
+    color: #7f7f7f;
+}
+
+#close_addUser:hover{
+    color:#404040;
+}
+
+
+/*图片上传*/
+.details_div{
+    text-align: center;
+    padding-top: 10px;
+    border-bottom: 1px solid #e9ebef;
+}
+.details_div_last{
+    margin-bottom: 40px;
+}
+.details_div>.details_title{
+    display: block;
+    color:#333;
+    margin-bottom: 20px;
+}
+.details_div>.details_picList{
+    font-size: 0;
+    padding: 0;
+    margin: 0 0 0 10px;
+}
+.details_picList>li{
+    border: 2px dashed #ccc;
+    display: inline-block;
+    list-style: none;
+    padding: 1px;
+    margin: 0 5px 10px;
+    vertical-align: top;
+    cursor: pointer;
+}
+.details_picList>.details_picList_fileUpload{
+    position: relative;
+}
+.details_picList_fileUpload>input[type="file"]{
+    cursor: pointer;
+    width: 128px;
+    height: 128px;
+    opacity: 0;
+}
+.details_picList_fileUpload>svg{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 25px auto 0;
+}
+.details_picList_fileUpload>span{
+    text-align: center;
+    position: absolute;
+    display: inline-block;
+    left: 0;
+    right: 0;
+    margin: 80px auto 0;
+    color:#666;
+    line-height: 14px;
+    font-size: 12px;
+}
+
+.details_tools_div{
+    padding-top: 20px;
+    padding-left: 80px;
+}
+.details_tools_div>.frm_btn{
+    width: 100px;
+    height: 30px;
+    margin-right: 20px;
+}
+
+.details_none {
+    display: none;
+}
+
+
+
+
+

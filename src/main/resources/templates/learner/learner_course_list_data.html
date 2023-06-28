@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程列表</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-3" th:each="sysCourse:${sysCourseListByFirstLabel}">
+                <div class="thumbnail">
+                    <a th:data="${sysCourse.courseId}" th:onclick="|updateViewCountByCourseId(this.getAttribute('data'))|" th:href="@{/learner/getCourseDetailData(courseId=${sysCourse.courseId})}" >
+                        <img src="../images/course/computer/java/1031.jpg" th:src="'/images/course'+${sysCourse.imgPath}" alt="通用的占位符缩略图">
+                    </a>
+                    <div class="caption">
+                        <h4>[[${sysCourse.courseName}]]</h4>
+                        <p>课程等级：<span th:text="${sysCourse.courseLevel}">初级</span></p>
+                        <p>课程说明：<span th:text="${sysCourse.thirdLabel}">入门</span></p>
+                        <p>课程点击量：<span>[[${sysCourse.viewCount}]]次点击</span></p>
+                        <p><a th:href="@{/learner/getCourseDetailData(courseId=${sysCourse.courseId})}">详细信息</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li><a href="javascript:void(0)" th:onclick="loadData(1,[[${pageSize}]],[[${firstLabel}]])">首页</a></li>
+                        <li class="disabled"><a href="javascript:void(0)" th:onclick="loadData([[${pre}]],[[${pageSize}]],[[${firstLabel}]])">&laquo;</a></li>
+
+                        <li th:each="num:${#numbers.sequence(1,pages)}" th:class="${cur == num} ? 'active' : ''">
+                            <a href="javascript:void(0)" th:if="${num} == ${cur} or ${num} == ${cur - 1} or ${num} == ${cur + 1} or ${num} == ${pages} or ${num} == ${pages - 1}"
+                               th:text="${num}" th:onclick="loadData([[${num}]],[[${pageSize}]],[[${firstLabel}]])">1</a>
+                            <a href="javascript:void(0)" th:if="${num} == ${cur - 2} and ${cur} > 4">...</a>
+                            <a href="javascript:void(0)" th:if="${num} == ${cur + 2} and ${cur} < ${pages - 3}">...</a>
+                        </li>
+
+                        <li><a href="javascript:void(0)" th:onclick="loadData([[${next}]],[[${pageSize}]],[[${firstLabel}]])">&raquo;</a></li>
+
+                        <li><a href="javascript:void(0)" style="border: 1px solid #ddd;" th:onclick="loadData([[${pages}]],[[${pageSize}]],[[${firstLabel}]])">尾页</a></li>
+
+                        <li><a style="border: 0;margin-left: 0;background-color: #d1e6da" th:text="${'当前页' + cur + '/' + pages + '总页'}">当前页3/5总页</a></li>
+                        <li>
+                            <div id="searchCourseList" class="input-group"  style="background-color: #d1e6da">
+                                <input id="inputPage" type="text" class="form-control" placeholder="跳转指定页" />
+                                <span class="input-group-btn">
+									<button class="btn btn-info btn-search" th:onclick="goPage([[${pageSize}]],[[${firstLabel}]])">GO</button>
+                            </span>
+                            </div>
+                        </li>
+                        <li><a style="padding-top: 0;border: 0;background-color: #d1e6da">
+                            <label>每页显示:</label>
+                            <select id="pageSize" th:value="${pageSize}" class="form-control" style="width: 100px;display: inline;" th:onchange="|loadDataBySize(this)|">
+                                <option value="1" th:selected="${pageSize == 1}">1</option>
+                                <option value="2" th:selected="${pageSize == 2}">2</option>
+                                <option value="4" th:selected="${pageSize == 4}">4</option>
+                                <option value="6" th:selected="${pageSize == 6}">6</option>
+                                <option value="8" th:selected="${pageSize == 8}">8</option>
+                            </select>
+                            <label>条</label>
+                        </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

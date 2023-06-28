@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <title>课程学习路径推荐</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: #ffffff;
+            padding: 20px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            font-size: 16px;
+            color: #555555;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: #333333;
+        }
+
+        .hero {
+            background-image: url('img/hero.jpg');
+            background-size: cover;
+            background-position: center center;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            color: #ffffff;
+            margin: 0 0 40px;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .hero p {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            padding: 20px 40px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: #008CBA;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 80px;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background-color: #00677D;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+
+        .course-section {
+            padding: 80px 0;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 40px;
+        }
+
+        .course {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .course:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-10px);
+        }
+
+        .course img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .course h3 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            margin: 0 0 10px;
+        }
+
+        .course p {
+            font-size: 16px;
+            color: #555555;
+            line-height: 1.5;
+            margin: 0 0 20px;
+        }
+
+        .course-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #008CBA;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .course-link:hover {
+            background-color: #00677D;
+        }
+
+        footer {
+            background-color: #333333;
+            color: #ffffff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 16px;
+            margin: 0;
+        }
+
+
+    </style>
+    <div class="container">
+        <a href="#" class="logo">学习路径</a>
+        <nav>
+            <ul>
+                <li><a href="#">首页</a></li>
+                <li><a href="#">课程推荐</a></li>
+                <li><a href="#">关于我们</a></li>
+                <li><a href="#">联系我们</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<section class="hero">
+    <div class="container">
+        <h1>拓扑算法课程推荐</h1>
+        <p>拓扑算法是计算机科学中重要的算法之一，也是与之相关的其他学科中的重要内容。在这里，我们为您推荐几个拓扑算法的学习课程，帮助您快速掌握该算法的知识。</p>
+        <a href="#courses" class="btn">了解更多</a>
+    </div>
+</section>
+<section id="courses" class="course-section">
+    <div class="container">
+        <h2>推荐的拓扑算法课程</h2>
+        <div class="course-grid">
+            <div class="course">
+                <img src="img/course1.jpg" alt="拓扑排序基础" class="course-img">
+                <h3>拓扑排序基础</h3>
+                <p>学习拓扑排序的基本知识，理解有向无环图的概念及其在拓扑排序中的运用。</p>
+                <a href="#" class="course-link">查看课程</a>
+            </div>
+            <div class="course">
+                <img src="img/course2.jpg" alt="最短路径算法" class="course-img">
+                <h3>最短路径算法</h3>
+                <p>学习最短路径算法的基本概念及其在常见的拓扑算法中的运用。</p>
+                <a href="#" class="course-link">查看课程</a>
+            </div>
+            <div class="course">
+                <img src="img/course3.jpg" alt="拓扑排序的应用" class="course-img">
+                <h3>拓扑排序的应用</h3>
+                <p>通过实际案例的演示，掌握拓扑排序的应用技巧，加速您的拓扑算法学习进程。</p>
+                <a href="#" class="course-link">查看课程</a>
+            </div>
+            <div class="course">
+                <img src="img/course4.jpg" alt="拓扑排序的高级应用" class="course-img">
+                <h3>拓扑排序的高级应用</h3>
+                <p>了解拓扑排序的高级应用，包括在图形设计、软件开发等领域中的运用技巧。</p>
+                <a href="#" class="course-link">查看课程</a>
+            </div>
+        </div>
+    </div>
+</section>
+<footer>
+    <div class="container">
+        <p>版权所有 &copy; 2021 学习路径</p>
+    </div>
+</footer>
+</body>
+</html>

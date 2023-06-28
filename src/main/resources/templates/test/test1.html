@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <title>课程学习路径推荐</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>课程学习路径推荐</h1>
+</header>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #f8f8f8;
+        font-family: Arial, sans-serif;
+    }
+
+    header {
+        background-color: #ffffff;
+        width: 100%;
+        padding: 40px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    main {
+        background-color: #ffffff;
+        width: 80%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        margin: 20px 0;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    li h3 {
+        margin-bottom: 10px;
+    }
+
+    li p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+</style>
+<main>
+    <h2>根据您的需求，我们为您推荐以下学习路径：</h2>
+    <ul id="courseList"></ul>
+</main>
+<script>
+    const courses = [
+        {
+            title: 'HTML/CSS基础',
+            description: '学习 HTML 和 CSS 的基础知识，了解网页的基本结构和样式布局。',
+            image: 'htmlcss.jpg',
+            link: 'https://www.codecademy.com/learn/learn-html-css'
+        },
+        {
+            title: 'JavaScript基础',
+            description: '学习 JavaScript 的基础知识，了解基本的语法和常用的 API。学习如何使用事件，实现用户交互和动态效果。',
+            image: 'javascript.jpg',
+            link: 'https://www.codecademy.com/learn/introduction-to-javascript'
+        },
+        {
+            title: '前端框架',
+            description: '学习使用流行的前端框架，比如 Vue.js、React、Angular 等。了解如何使用组件和模块来构建复杂的页面。',
+            image: 'framework.jpg',
+            link: 'https://www.udacity.com/course/front-end-web-developer-nanodegree--nd0011'
+        },
+        {
+            title: 'UI设计',
+            description: '学习页面设计的基本原则以及如何设计出美观、易用的页面。了解颜色、排版、字体等基本要素的运用原理。',
+            image: 'ui.jpg',
+            link: 'https://www.coursera.org/specializations/ui-graphic-design'
+        },
+        {
+            title: '前端工程化',
+            description: '学习前端自动化构建工具，比如 webpack、grunt、gulp 等，学习如何使用版本控制工具如 Git 来管理代码。通过CSS预处理器、代码压缩、代码混淆技术等，提升开发效率。',
+            image: 'engineering.jpg',
+            link: 'https://www.udacity.com/course/front-end-frameworks--ud894'
+        },
+    ];
+
+    const courseList = document.getElementById('courseList');
+
+    for (let course of courses) {
+        let li = document.createElement('li');
+        let image = document.createElement('img');
+        image.src = course.image;
+        image.alt = course.title;
+        li.appendChild(image);
+        let h3 = document.createElement('h3');
+        h3.textContent = course.title;
+        li.appendChild(h3);
+        let p = document.createElement('p');
+        p.textContent = course.description;
+        li.appendChild(p);
+        let button = document.createElement('a');
+        button.href = course.link;
+        button.textContent = '立即学习';
+        li.appendChild(button);
+        courseList.appendChild(li);
+    }
+
+</script>
+</body>
+</html>

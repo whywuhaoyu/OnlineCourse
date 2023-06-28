@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+
+a:hover {
+    color: #23527c;
+    text-decoration: none;
+}
+
+body {
+    background-image: url("../../images/login-bg.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.container .login,
+.container .register,
+.container .updatePwd{
+    border: 1px solid #333;
+    background-color: #ffffff;
+    border-radius: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container .login {
+    width: 450px;
+    height: 400px;
+}
+
+.container .register {
+    width: 450px;
+    height: 600px;
+}
+
+.container .updatePwd {
+    width: 450px;
+    height: 450px;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 10%;
+}
+
+.login-form,
+.register-form,
+.updatePwd-form{
+    margin-top: -20px;
+    padding: 20px 30px;
+}
+
+.login-form .line,
+.register-form .line,
+.updatePwd-form .line{
+    margin: 35px 0;
+    border: 2px solid #EDEDED;
+    font-size: 0;
+    background-color: #F6F6F6;
+    border-radius: 8px;
+}
+
+.login-form .input-error,
+.register-form .input-error ,
+.updatePwd-form .input-error{
+    border: 1px solid #F94F17;
+    box-shadow: 0 0 15px 0 rgb(255 101 128 / 28%);
+}
+
+
+.login-form .line input,
+.register-form .line input ,
+.updatePwd-form .line input{
+    margin: 5px;
+    width: 80%;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    background-color: #F6F6F6;
+    height: 30px;
+}
+
+
+::-webkit-input-placeholder {
+    padding-left: 3px;
+}
+
+
+#login-btn,
+#register-btn,
+#updatePwd-btn{
+    display: block;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 35px;
+    background-color: #60b9a5;
+    color: #ffffff;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+
+
+.login-form .line i,
+.register-form .line i,
+.updatePwd-form .line i{
+
+    width: 20px;
+    height: 15px;
+    font-size: 20px;
+    line-height: 10px;
+}
+
+.login-form .line .formal-icon,
+.register-form .line .formal-icon,
+.updatePwd-form .line .formal-icon{
+    margin: 8px;
+}
+
+.error-div{
+    color: red;
+    margin-top: 10px;
+    margin-left: 150px;
+}
+
+.login-form .line .split,
+.register-form .line .split,
+.updatePwd-form .line .split{
+    display: inline-block;
+    padding: 0 5px;
+    font-size: 15px;
+    color: #CCCCCC;
+    font-family: sans-serif;
+}
+
+.login-form .text-error,
+.register-form .text-error,
+.updatePwd-form .text-error{
+    font-family: sans-serif;
+    color: #F94F17;
+    font-size: 5px;
+    margin-left: 3px;
+}
+
+.remember {
+    color: #c7c7c7;
+    text-align: center;
+    margin-top: 15px;
+}
+
+
+.clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+
+a {
+    color: #60b9a5;
+}
+
+.link {
+    margin-top: 19px;
+}
+
+#register {
+    float: right;
+}
+
+#forget {
+    float: left;
+}
+
+.back {
+    text-align: center;
+}

@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>admin 页面公共资源抽取</title>
+</head>
+
+<!--admin 页面公共资源抽取-->
+<head th:fragment="adminCommonBase">
+    <title></title>
+
+    <!--引入css文件-->
+    <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/c/font_3343940_c8urrjtr73j.css">
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/admin/style.css}" >
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/admin/chart.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/iconfont/iconfont.css}">
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-5.1.1.css}">-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap-theme.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap-select.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap-table.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/font-awesome-4.7.0/css/font-awesome.css}" />
+
+
+    <!-- 引入js文件 -->
+    <script type="text/javascript" th:src="@{/js/jquery-3.5.1.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/echarts.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/bootstrap-select.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/defaults-zh_CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/holder.js}"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/layer3.1.1/layer.js}"></script>
+</head>
+
+<body>
+
+<!--系统数据统计展示-->
+<div th:fragment="getDataStatistics">
+    <script th:inline="javascript">
+
+        //获取项目路径
+        const contextPath = [[${#request.getContextPath()}]];
+
+        $(function (){
+           $("#getDataStatistics").load(contextPath+ "/admin/getDataStatistics", {})
+        })
+    </script>
+</div>
+
+
+
+<!--用户管理-->
+<!--用户数据展示-->
+<div th:fragment="getUserDataTable">
+    <script th:inline="javascript">
+        //获取项目路径
+        const contextPath = [[${#request.getContextPath()}]];
+
+        $(function (){
+            $("#getUserDataTable").load(contextPath+ "/admin/getUserDataTable", {})
+        })
+
+        //加载其他页数据
+        function loadUserData(pageNumber,pageSize,isNotEnabled,isEnabled,userType,userCondition) {
+            $("#getUserDataTable").load(contextPath + "/admin/getUserDataTable",buildQueryUserData(pageNumber,pageSize,isNotEnabled,isEnabled,userType,userCondition));
+        }
+
+
+        //设置查询参数
+        function buildQueryUserData(pageNumber,pageSize,isNotEnabled,isEnabled,userType,userCondition) {
+            const query = {};
+            query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+            query.pageSize= pageSize === "undefined" ? 3 : pageSize
+            query.isNotEnabled = isNotEnabled;
+            query.isEnabled = isEnabled;
+            query.userType = typeof userType == "undefined" ? 'all' : userType;
+            query.userCondition = userCondition
+            return query;
+        }
+
+        //跳转到指定页
+        function goUserDataPage(pageSize,isNotEnabled,isEnabled,userType,userCondition) {
+            const pageNumber = $("#userDataPage").val();
+            $("#getUserDataTable").load(contextPath + "/admin/getUserDataTable",buildQueryUserData(pageNumber,pageSize,isNotEnabled,isEnabled,userType,userCondition))
+        }
+
+        //修改指定每页显示的记录数
+        function loadUserDataBySize(obj,isNotEnabled,isEnabled,userType,userCondition) {
+            $("#getUserDataTable").load(contextPath + "/admin/getUserDataTable",buildQueryUserData(1,obj.value,isNotEnabled,isEnabled,userType,userCondition))
+        }
+    </script>
+</div>
+
+<!--用户信息条件查询-->
+<div th:fragment="query-user">
+    <script th:inline="javascript">
+
+        /**显示全部用户信息*/
+
+        $("#getAllUser").click(function (){
+
+            $(".query-selector :input")
+                .not(':button',':submit',':reset','hidden')
+                .val('')
+                .prop("checked",false);
+            //刷新下拉框
+            const user_type_select=$("#user_type")
+            user_type_select.val('all')
+            user_type_select.selectpicker('refresh')
+            const pageSize=$("#userPageSize").val()
+
+            $("#getUserDataTable").load(contextPath+ "/admin/getUserDataTable", buildQueryUserData(1,pageSize,0,0,'all',null))
+        })
+
+
+        /**按条件查询用户信息*/
+        $("#getUserByUserCondition").click(function (){
+            let pageNumber=""
+            let isNotEnabled=""
+            let isEnabled=""
+            const checked=$("input[name = checkbox_account_isEnabled]:checked")
+            const length=checked.length
+            if(length===2||length===0){
+                isNotEnabled=0
+                isEnabled=1
+            }else{
+                if($("#isNotEnabled:checked").length>0){
+                    isNotEnabled=0
+                }
+                if($("#isEnabled:checked").length>0){
+                    isEnabled=1
+                }
+            }
+            const pageSize=$("#userPageSize").val()
+            const userType=$("#user_type").val()
+            const userCondition=$("#user_condition").val()
+
+            $("#getUserDataTable").load(contextPath+ "/admin/getUserDataTable", buildQueryUserData(pageNumber,pageSize,isNotEnabled,isEnabled,userType,userCondition))
+        })
+
+        /**删除用户信息操作*/
+        function deleteUserDataByUserId(cur,pageSize,userId,isNotEnabled,isEnabled,userType,userCondition){
+            layer.confirm('是否确认删除？',{
+                icon: 3,
+                title: '提示',
+                shade: [0.5, '#393D49'],
+                move: true,
+            },function (){
+                $.ajax({
+                    url: "/admin/deleteUserDataByUserId",
+                    data: {
+                        userId: userId,
+                    },
+                    type: "POST",
+                    dataTypeL: JSON,
+                    success: function (json) {
+                        if(json.state===200){
+                            layer.msg('删除成功！', {
+                                icon: 6,
+                                time: 700,
+                                shade: [0.4, '#393D49'],
+                                area:['100px','66px'],
+                                end: function (){
+                                    $("#getUserDataTable").load(contextPath + "/admin/getUserDataTable",buildQueryUserData(cur,pageSize,isNotEnabled,isEnabled,userType,userCondition));
+                                }
+                            });
+                        }else if(json.state===5002){
+                            layer.msg("删除失败！", {
+                                icon: 5,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['300px','66px'],
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+    </script>
+</div>
+
+<!--添加用户侧边栏-->
+<div th:fragment="add-user">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="adminAddUser" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 id="adminAddUserLabel" style="font-size: 20px">用户信息</h5>
+            <span type="button" id="close_addUser" class="iconfont icon-guanbi pull-right" data-bs-dismiss="offcanvas" aria-label="Close"></span>
+        </div>
+        <div class="offcanvas-body">
+            <label for="userAccount" class="control-label">用户账号（手机号）：</label>
+            <input type="text" class="form-control" id="userAccount" name="userAccount" placeholder="请输入账号"><br>
+            <label for="userName" class="control-label">用户名：</label>
+            <input type="text" class="form-control" id="userName" name="userName" placeholder="请输入用户名"><br>
+            <label for="userMajor" class="control-label">用户专业：</label>
+            <input type="text" class="form-control" id="userMajor" name="userMajor" placeholder="请输入用户专业"><br>
+            <label for="userPassword" class="control-label">用户密码（初始）：</label>
+            <input type="text" class="form-control" id="userPassword" name="userPassword" readonly value="123456"><br>
+
+            <label for="userHeadImg" class="control-label">用户头像：</label>
+            <div class="details_div">
+                <ul class="details_picList" id="user_list">
+                    <li class="details_picList_fileUpload">
+                        <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1528"
+                             width="40" height="40">
+                            <path d="M0 512C0 229.230208 229.805588 0 512 0 794.769792 0 1024 229.805588 1024 512 1024 794.769792 794.194412 1024 512 1024 229.230208 1024 0 794.194412 0 512Z"
+                                  p-id="1529" fill="#FF7874"></path>
+                            <path d="M753.301333 490.666667l-219.946667 0L533.354667 270.741333c0-11.776-9.557333-21.333333-21.354667-21.333333-11.776 0-21.333333 9.536-21.333333 21.333333L490.666667 490.666667 270.72 490.666667c-11.776 0-21.333333 9.557333-21.333333 21.333333 0 11.797333 9.557333 21.354667 21.333333 21.354667L490.666667 533.354667l0 219.904c0 11.861333 9.536 21.376 21.333333 21.376 11.797333 0 21.354667-9.578667 21.354667-21.333333l0-219.946667 219.946667 0c11.754667 0 21.333333-9.557333 21.333333-21.354667C774.634667 500.224 765.077333 490.666667 753.301333 490.666667z"
+                                  p-id="1530" fill="#FFFFFF"></path>
+                        </svg>
+                        <span>点击上传</span>
+                        <input type="file" id="userHeadImg" onchange="uploadImage(this)" accept="image/*">
+
+                    </li>
+                </ul>
+            </div>
+            <div class="details_tools_div">
+                <input class="frm_btn" id="btn_user_save" type="button" value="保存"/>
+                <input class="frm_btn frm_clear" id="btn_user_cancel" data-bs-dismiss="offcanvas" type="button" value="取消"/>
+            </div>
+        </div>
+    </div>
+
+
+    <script th:inline="javascript">
+        //图片上传
+        function uploadImage(fileDom) {
+            //获取文件
+            const file = document.getElementById("userHeadImg").files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            $.ajax({
+                url: "/admin/uploadUserHeadImg",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (json) {
+                    if(json.state===200){
+                        layer.msg('上传成功！', {
+                            icon: 6,
+                            time: 700,
+                            shade: [0.4, '#393D49'],
+                            area:['100px','66px'],
+                            end:function() {
+                                $(fileDom).parent('.details_picList_fileUpload').before("<li><img src='.."+json.data.imgPath + "' id='upload_head_img'  width='128px' height='128px'/></li>").css("display","none");
+                            }
+                        })
+                    }else if(json.state===6000){
+                        layer.msg("文件上传路径不合法！", {
+                            icon: 5,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['260px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }else if(json.state===6001){
+                        layer.msg("文件不存在！", {
+                            icon: 5,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['100px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }else if(json.state===6002){
+                        layer.msg("文件不类型不是图片！", {
+                            icon: 2,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['260px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }else if(json.state ===6003){
+                        layer.msg("图片上传失败！", {
+                            icon: 5,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['100px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }else if(json.state ===6004){
+                        layer.msg("图片文件不能为空！", {
+                            icon: 5,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['100px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }
+                },
+                beforeSend: function () {
+                    $(fileDom).attr("disabled", true).prev("span").text("图片上传中...");
+                },
+                error: function () {
+                }
+            });
+        }
+
+
+        $(function (){
+            //点击取消或删除，关闭侧边栏的同时，删除已填数据
+            $("#close_addUser,#btn_user_cancel").click(function (){
+                $("#userAccount").val("")
+                $("#userName").val("")
+                $("#userMajor").val("")
+                $("#user_list").find('li:has("img")').remove()
+                const fileUpload=$(".details_picList_fileUpload")
+                fileUpload.removeAttr("style")
+                fileUpload.find("span").text("点击上传")
+                $("#userHeadImg").attr("disabled",false);
+            })
+
+
+            //保存用户信息
+            $("#btn_user_save").click(function (){
+                const userAccount=$("#userAccount").val()
+                const userName=$("#userName").val()
+                const userMajor=$("#userMajor").val()
+                const userPassword=$("#userPassword").val()
+                const imgPath=$.trim($("#upload_head_img").attr("src"))
+                if($.isEmptyObject(userAccount)||$.isEmptyObject(userName)|| $.isEmptyObject(userMajor)){
+                    layer.msg("输入不能为空！", {
+                        icon: 5,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['180px','66px'],
+                    });
+                }else if(!isPhoneNumber(userAccount)){
+                    layer.msg("请输入正确的手机号！", {
+                        icon: 2,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['220px','66px'],
+                    });
+                }else if(userName.length <= 2){
+                    layer.msg("用户名长度不能小于等于2！", {
+                        icon: 7,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['250px','66px'],
+                    });
+                }else if(userName.length > 10){
+                    layer.msg("用户名长度不能超过10！", {
+                        icon: 7,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['230px','66px'],
+                    });
+                }else if(!isChinese(userMajor)){
+                    layer.msg("专业名只能包含中文字符！", {
+                        icon: 7,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['260px','66px'],
+                    });
+                }else if(imgPath === "" || imgPath === undefined){
+                    layer.msg("请上传用户头像图片！", {
+                        icon: 2,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['240px','66px'],
+                    });
+                }else {
+                    $.ajax({
+                        url: "/admin/addUser",
+                        type: "POST",
+                        data:{
+                            userAccount:userAccount,
+                            userName:userName,
+                            userMajor:userMajor,
+                            userPassword:userPassword,
+                            headImgPath:imgPath,
+                        },
+                        dataType: "JSON",
+                        success: function (json) {
+                            if (json.state === 200) {
+                                layer.msg('增加成功！', {
+                                    icon: 6,
+                                    time: 1000,
+                                    shade: [0.4, '#393D49'],
+                                    area:['80px','66px'],
+                                    end: function (){
+                                        let pageNumber=0
+                                        const total=[[${total}]]
+                                        const pageSize=[[${pageSize}]]
+                                        if((total+1)%5===0){
+                                            pageNumber=Math.floor((total + 1)/5)
+                                        }else{
+                                            pageNumber=Math.floor((total + 1)/5)+1
+                                        }
+                                        const isNotEnabled=[[${isNotEnabled}]]
+                                        const isEnabled=[[${isEnabled}]]
+                                        const userType=[[${userType}]]
+                                        const userCondition=[[${userCondition}]]
+                                        loadUserData(pageNumber,pageSize,isNotEnabled,isEnabled,userType,userCondition)
+                                    }
+                                });
+                            }else if(json.state === 3009){
+                                layer.msg("用户名已被占用！", {
+                                    icon: 5,
+                                    time: 1000,
+                                    shade: [0.4, '#393D49'],
+                                    area:['200px','66px'],
+                                });
+                            }else if(json.state === 4000){
+                                layer.msg("用户账号已存在！", {
+                                    icon: 7,
+                                    time: 1000,
+                                    shade: [0.4, '#393D49'],
+                                    area:['200px','66px'],
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        })
+
+        //判断账号是否合法
+        function isPhoneNumber(phoneNumber) {
+            const regExp = /^1\d{10}$/;
+            return regExp.test(phoneNumber);
+        }
+
+
+        //判断专业名是否只包含中文
+        function isChinese(str) {
+            const reg = /^[\u4e00-\u9fa5]+$/;
+            return reg.test(str);
+        }
+    </script>
+
+</div>
+
+<!--编辑用户模态框-->
+<div th:fragment="edit-user">
+    <div class="modal fade" id="editUser-modal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="editUserModalLabel">用户信息</h4>
+                </div>
+                <div class="scroll">
+                    <div class="modal-body">
+                        <input type="hidden" id="userId" class="form-control" name="userId">
+                        <label for="account-edit" class="control-label" >手机号（账号）：</label>
+                        <input type="text" class="form-control" id="account-edit" name="account">
+                        <br>
+
+                        <label for="username-edit" class="control-label">用户名：</label>
+                        <input type="text" class="form-control" id="username-edit" name="username">
+                        <br>
+
+                        <div id="major">
+                            <label for="major-edit" class="control-label" name="major">用户专业：</label>
+                            <input type="text" class="form-control" id="major-edit" name="major">
+                            <br>
+                        </div>
+
+
+                        <div th:if="${session.sysUser.userType} == 'super_admin'" th:remove="tag">
+                            <label for="data_select" class="control-label">用户类型：</label><br>
+                            <select class="data_select" id="data_select">
+                                <option value="learner">普通学习者</option>
+                                <option value="super_admin">超级管理员</option>
+                                <option value="admin">系统管理员</option>
+                            </select>
+                            <br><br>
+                        </div>
+                        <label class="control-label switch-label">是否可用：</label>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <br>
+                    </div>
+
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-primary" id="confirm-edit-user">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+
+        //点击编辑用户，向模态框中填充用户数据
+        function getEditUserData(userId,account,userName,userMajor,userType,userEnabled){
+            $("#userId").val(userId)
+            $("#account-edit").val(account)
+            $("#username-edit").val(userName)
+            $("#user_type").val(userType)
+            if(userType !== 'learner'){
+                $("#major").css("display","none")
+            }else{
+                $("#major").css("display","block")
+            }
+            if(userMajor !== null){
+                $("#major-edit").val(userMajor)
+            }
+            $("#user_type_select").find("option[value=" + userType + "]").prop("selected", true);
+            const checkboxIsChecked=$("#toggle")
+            if(userEnabled){
+                checkboxIsChecked.attr("checked","checked")
+            }else{
+                checkboxIsChecked.prop("checked",false)
+            }
+
+        }
+
+        $(function (){
+
+            //确定编辑修改用户
+            $("#confirm-edit-user").click(function (){
+                const userId=$("#userId").val()
+                const account=$("#account-edit").val()
+                const userName=$("#username-edit").val()
+                const userMajor=$("#major-edit").val()
+                const userType=$("#user_type_select").val()
+                let userEnabled= false
+                if($("#toggle").is(":checked")){
+                    userEnabled= true
+                }
+                $.ajax({
+                    url: "/admin/editUser",
+                    type: "POST",
+                    data:{
+                        userId:userId,
+                        account:account,
+                        userName:userName,
+                        userMajor:userMajor,
+                        userType:userType,
+                        userEnabled:userEnabled,
+                    },
+                    dataType: "JSON",
+                    success: function (json) {
+                        if (json.state === 200) {
+                            layer.msg('编辑成功！', {
+                                icon: 6,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['80px','66px'],
+                                end: function (){
+                                    $("#editUser-modal").modal("hide")
+                                    $("div.modal-backdrop").remove()
+                                    const pageNumber=[[${cur}]]
+                                    const pageSize=[[${pageSize}]]
+                                    const isNotEnabled=[[${isNotEnabled}]]
+                                    const isEnabled=[[${isEnabled}]]
+                                    const userType=[[${userType}]]
+                                    const userCondition=[[${userCondition}]]
+                                    loadUserData(pageNumber,pageSize,isNotEnabled,isEnabled,userType,userCondition)
+                                }
+
+                            });
+
+                        }else if(json.state === 5001){
+                            layer.msg("编辑失败！", {
+                                icon: 5,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['80px','66px'],
+                                end: function (){
+                                    $("#editUser-modal").modal("hide");
+                                    $("div.modal-backdrop").remove()
+                                }
+                            });
+                        }
+                    }
+                })
+
+            })
+        })
+    </script>
+
+</div>
+
+
+
+
+
+
+<!--课程管理-->
+<!--课程数据展示-->
+<div th:fragment="getCourseDataTable">
+    <script th:inline="javascript">
+        //获取项目路径
+        const contextPath = [[${#request.getContextPath()}]];
+
+        $(function (){
+            $("#getCourseDataTable").load(contextPath+ "/admin/getCourseDataTable", {})
+        })
+
+        //加载其他页数据
+        function loadCourseData(pageNumber,pageSize,firstLabel,secondLabel,courseCondition) {
+            $("#getCourseDataTable").load(contextPath + "/admin/getCourseDataTable",buildQueryCourseData(pageNumber,pageSize,firstLabel,secondLabel,courseCondition));
+        }
+
+
+        //设置查询参数
+        function buildQueryCourseData(pageNumber,pageSize,firstLabel,secondLabel,courseCondition) {
+            const query = {};
+            query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+            query.pageSize= pageSize === "undefined" ? 5 : pageSize
+            query.firstLabel = typeof firstLabel == 'undefined' ? '全部' : firstLabel;
+            query.secondLabel = typeof secondLabel == 'undefined' ? '全部' : secondLabel;
+            query.courseCondition = courseCondition
+            return query;
+        }
+
+        //跳转到指定页
+        function goCourseDataPage(pageSize,firstLabel,secondLabel,courseCondition) {
+            const pageNumber = $("#courseDataPage").val();
+            $("#getCourseDataTable").load(contextPath + "/admin/getCourseDataTable",buildQueryCourseData(pageNumber,pageSize,firstLabel,secondLabel,courseCondition))
+        }
+
+        //修改指定每页显示的记录数
+        function loadCourseDataBySize(obj,firstLabel,secondLabel,courseCondition) {
+            $("#getCourseDataTable").load(contextPath + "/admin/getCourseDataTable",buildQueryCourseData(1,obj.value,firstLabel,secondLabel,courseCondition))
+        }
+    </script>
+
+</div>
+
+<!--课程信息条件查询-->
+<div th:fragment="query-course">
+    <script th:inline="javascript">
+
+        /**显示全部课程信息*/
+
+        $("#getAllCourse").click(function (){
+
+            $(".query-selector :input")
+                .not(':button',':submit',':reset','hidden')
+                .val('')
+            //刷新下拉框
+            const first_label_select=$("#first_label")
+            first_label_select.val('全部')
+            first_label_select.selectpicker('refresh')
+
+            const second_label_select=$("#second_label")
+            second_label_select.val('全部')
+            second_label_select.selectpicker('refresh')
+            const pageSize=$("#coursePageSize").val()
+
+            $("#getCourseDataTable").load(contextPath+ "/admin/getCourseDataTable", buildQueryCourseData(1,pageSize,'全部','全部',null))
+        })
+
+
+        /**按条件查询课程信息*/
+        $("#getCourseByQueryCondition").click(function (){
+            let pageNumber=""
+            const pageSize=$("#coursePageSize").val()
+            const firstLabel=$("#first_label").val()
+            const secondLabel=$("#second_label").val()
+            const courseCondition=$("#course_condition").val()
+            $("#getCourseDataTable").load(contextPath+ "/admin/getCourseDataTable", buildQueryCourseData(pageNumber,pageSize,firstLabel,secondLabel,courseCondition))
+        })
+
+        /**删除课程信息操作*/
+        function deleteCourseDataByCourseId(cur,pageSize,courseId,firstLabel,secondLabel,courseCondition){
+            layer.confirm('是否确认删除？',{
+                icon: 3,
+                title: '提示',
+                shade: [0.5, '#393D49'],
+                move: true,
+            },function (){
+                $.ajax({
+                    url: "/admin/deleteCourseDataByCourseId",
+                    data: {
+                        courseId: courseId,
+                    },
+                    type: "POST",
+                    dataTypeL: JSON,
+                    success: function (json) {
+                        if(json.state===200){
+                            layer.msg('删除成功！', {
+                                icon: 6,
+                                time: 700,
+                                shade: [0.4, '#393D49'],
+                                area:['100px','66px'],
+                                end: function (){
+                                    $("#getCourseDataTable").load(contextPath+ "/admin/getCourseDataTable", buildQueryCourseData(cur,pageSize,firstLabel,secondLabel,courseCondition))
+                                }
+                            });
+                        }else if(json.state===5002){
+                            layer.msg("删除失败！", {
+                                icon: 5,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['300px','66px'],
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+    </script>
+</div>
+
+<!--添加课程侧边栏-->
+<div th:fragment="add-course">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="adminAddCourse" aria-labelledby="offcanvasRightLabel" style="overflow-y: scroll">
+        <div class="offcanvas-header">
+            <h5 id="adminAddCourseLabel" style="font-size: 20px">课程信息</h5>
+            <span type="button" id="close_addCourse" class="iconfont icon-guanbi pull-right" data-bs-dismiss="offcanvas" aria-label="Close"></span>
+        </div>
+        <div class="offcanvas-body">
+            <label for="courseName" class="control-label">课程名：</label>
+            <input type="text" class="form-control" id="courseName" name="courseName" placeholder="请输入课程名"><br>
+            <label for="courseDescription" class="control-label">课程描述：</label>
+            <textarea type="text" class="form-control" id="courseDescription" name="courseDescription" placeholder="请输入课程描述"></textarea><br>
+            <label for="course_level_select" class="control-label">课程等级：</label>
+            <select class="data_select" id="course_level_select" style="font-size: 13px">
+                <option value="">请选择课程等级</option>
+                <option value="初级">初级</option>
+                <option value="中级">中级</option>
+                <option value="高级">高级</option>
+            </select><br>
+            <br>
+            <label for="courseBase" class="control-label">课程基础：</label>
+            <input type="text" class="form-control" id="courseBase" name="courseBase" placeholder="请输入课程所需基础"><br>
+            <label for="courseMajor" class="control-label">课程专业：</label>
+            <input type="text" class="form-control" id="courseMajor" name="courseMajor" placeholder="请输入课程专业"><br>
+            <label for="firstLabel" class="control-label">一级标签：</label>
+            <input type="text" class="form-control" id="firstLabel" name="firstLabel" placeholder="请输入课程一级标签"><br>
+            <label for="secondLabel" class="control-label">二级标签：</label>
+            <input type="text" class="form-control" id="secondLabel" name="secondLabel" placeholder="请输入课程二级标签"><br>
+            <label for="thirdLabel" class="control-label">三级标签：</label>
+            <input type="text" class="form-control" id="thirdLabel" name="thirdLabel" placeholder="请输入课程三级标签"><br>
+
+            <label for="courseImg" class="control-label">课程头像：</label>
+            <div class="details_div">
+                <ul class="details_picList" id="course_list">
+                    <li class="details_picList_fileUpload">
+                        <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1528"
+                             width="40" height="40">
+                            <path d="M0 512C0 229.230208 229.805588 0 512 0 794.769792 0 1024 229.805588 1024 512 1024 794.769792 794.194412 1024 512 1024 229.230208 1024 0 794.194412 0 512Z"
+                                  p-id="1529" fill="#FF7874"></path>
+                            <path d="M753.301333 490.666667l-219.946667 0L533.354667 270.741333c0-11.776-9.557333-21.333333-21.354667-21.333333-11.776 0-21.333333 9.536-21.333333 21.333333L490.666667 490.666667 270.72 490.666667c-11.776 0-21.333333 9.557333-21.333333 21.333333 0 11.797333 9.557333 21.354667 21.333333 21.354667L490.666667 533.354667l0 219.904c0 11.861333 9.536 21.376 21.333333 21.376 11.797333 0 21.354667-9.578667 21.354667-21.333333l0-219.946667 219.946667 0c11.754667 0 21.333333-9.557333 21.333333-21.354667C774.634667 500.224 765.077333 490.666667 753.301333 490.666667z"
+                                  p-id="1530" fill="#FFFFFF"></path>
+                        </svg>
+                        <span>点击上传</span>
+                        <input type="file" id="courseImg" onchange="uploadCourseImage(this)" accept="image/*">
+                    </li>
+                </ul>
+            </div>
+            <div class="details_tools_div">
+                <input class="frm_btn" id="btn_course_save" type="button" value="保存"/>
+                <input class="frm_btn frm_clear" id="btn_course_cancel" data-bs-dismiss="offcanvas" type="button" value="取消"/>
+            </div>
+        </div>
+    </div>
+
+
+    <script th:inline="javascript">
+        //图片上传
+        function uploadCourseImage(fileDom) {
+            //获取文件
+            const file = document.getElementById("courseImg").files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            $.ajax({
+                url: "/admin/uploadCourseImg",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (json) {
+                    if(json.state===200){
+                        layer.msg('上传成功！', {
+                            icon: 6,
+                            time: 700,
+                            shade: [0.4, '#393D49'],
+                            area:['100px','66px'],
+                            end:function() {
+                                $(fileDom).parent('.details_picList_fileUpload').before("<li><img src='../images/course"+json.data.imgPath + "' id='upload_course_img'  width='128px' height='128px'/></li>").css("display","none");
+                            }
+                        })
+                    }else if(json.state===6000){
+                        layer.msg("文件上传路径不合法！", {
+                            icon: 5,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['260px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }else if(json.state===6001){
+                        layer.msg("文件不存在！", {
+                            icon: 5,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['100px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }else if(json.state===6002){
+                        layer.msg("文件不类型不是图片！", {
+                            icon: 2,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['260px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }else if(json.state ===6003){
+                        layer.msg("图片上传失败！", {
+                            icon: 5,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['100px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }else if(json.state ===6004){
+                        layer.msg("图片文件不能为空！", {
+                            icon: 5,
+                            time: 1000,
+                            shade: [0.4, '#393D49'],
+                            area:['100px','66px'],
+                            end :function() {
+                                $(".details_picList_fileUpload").find("span").text("点击上传")
+                                $(fileDom).attr("disabled", false)
+                            }
+                        });
+                    }
+                },
+                beforeSend: function () {
+                    $(fileDom).attr("disabled", true).prev("span").text("图片上传中...");
+                },
+                error: function () {
+                }
+            });
+        }
+
+
+        $(function (){
+            //点击取消或删除，关闭侧边栏的同时，删除已填数据
+            $("#close_addCourse,#btn_course_cancel").click(function (){
+                $("#courseName").val("")
+                $("#courseDescription").val("")
+                $("#course_level_select").val("")
+                $("#courseBase").val("")
+                $("#courseMajor").val("")
+                $("#firstLabel").val("")
+                $("#secondLabel").val("")
+                $("#thirdLabel").val("")
+                $("#course_list").find('li:has("img")').remove()
+                const fileUpload=$(".details_picList_fileUpload")
+                fileUpload.removeAttr("style")
+                fileUpload.find("span").text("点击上传")
+                $("#courseImg").attr("disabled",false);
+            })
+
+
+            //保存用户信息
+            $("#btn_course_save").click(function (){
+                const courseName=$("#courseName").val()
+                const courseDescription=$("#courseDescription").val()
+                const courseLevel= $("#course_level_select").val()
+                const courseBase=$("#courseBase").val()
+                const courseMajor=$("#courseMajor").val()
+                const firstLabel=$("#firstLabel").val()
+                const secondLabel=$("#secondLabel").val()
+                const thirdLabel= $("#thirdLabel").val()
+                const imgPath=$.trim($("#upload_course_img").attr("src"))
+                if($.isEmptyObject(courseName)||$.isEmptyObject(courseLevel)|| $.isEmptyObject(courseMajor||$.isEmptyObject(firstLabel))){
+                    layer.msg("输入不能为空！", {
+                        icon: 5,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['180px','66px'],
+                    });
+                }else if(!isChinese(courseMajor)){
+                    layer.msg("专业名只能包含中文字符！", {
+                        icon: 7,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['260px','66px'],
+                    });
+                }else if(imgPath === "" || imgPath === undefined){
+                    layer.msg("请上传课程图片！", {
+                        icon: 2,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['240px','66px'],
+                    });
+                }else {
+                    $.ajax({
+                        url: "/admin/addCourse",
+                        type: "POST",
+                        data:{
+                            courseName:courseName,
+                            courseDescription:courseDescription,
+                            courseLevel:courseLevel,
+                            courseBase:courseBase,
+                            courseMajor:courseMajor,
+                            firstLabel:firstLabel,
+                            secondLabel:secondLabel,
+                            thirdLabel:thirdLabel,
+                            imgPath:imgPath
+
+                        },
+                        dataType: "JSON",
+                        success: function (json) {
+                            if (json.state === 200) {
+                                layer.msg('增加成功！', {
+                                    icon: 6,
+                                    time: 1000,
+                                    shade: [0.4, '#393D49'],
+                                    area:['80px','66px'],
+                                    end: function (){
+                                        let pageNumber
+                                        const total=[[${total}]]
+                                        const pageSize=[[${pageSize}]]
+                                        if((total+1)%5===0){
+                                            pageNumber=Math.floor((total + 1)/5)
+                                        }else{
+                                            pageNumber=Math.floor((total + 1)/5)+1
+                                        }
+                                        const firstLabel=[[${firstLabel}]]
+                                        const secondLabel=[[${secondLabel}]]
+                                        const courseCondition=[[${courseCondition}]]
+                                        loadCourseData(pageNumber,pageSize,firstLabel,secondLabel,courseCondition)
+                                    }
+                                });
+                            }else if(json.state === 5000){
+                                layer.msg("添加失败！", {
+                                    icon: 5,
+                                    time: 1000,
+                                    shade: [0.4, '#393D49'],
+                                    area:['80px','66px'],
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        })
+
+
+        //判断专业名是否只包含中文
+        function isChinese(str) {
+            const reg = /^[\u4e00-\u9fa5]+$/;
+            return reg.test(str);
+        }
+    </script>
+
+</div>
+
+<!--编辑课程模态框-->
+<div th:fragment="edit-course">
+    <div class="modal fade" id="editCourse-modal" tabindex="-1" role="dialog" aria-labelledby="editCourseModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="editCourseModalLabel">课程信息</h4>
+                </div>
+                <div class="scroll">
+                    <div class="modal-body">
+                        <input type="hidden" id="courseId" class="form-control" name="courseId">
+
+                        <label for="courseName-edit" class="control-label">课程名：</label>
+                        <input type="text" class="form-control" id="courseName-edit" name="courseName">
+                        <br>
+
+                        <label for="viewCount-edit" class="control-label" >课程点击量：</label>
+                        <input type="text" class="form-control" id="viewCount-edit" name="viewCount">
+                        <br>
+
+
+                        <label for="courseMajor-edit" class="control-label">课程专业：</label>
+                        <input type="text" class="form-control" id="courseMajor-edit" name="courseMajor">
+                        <br>
+
+                        <label for="secondLabel-edit" class="control-label">二级标签：</label>
+                        <input type="text" class="form-control" id="secondLabel-edit" name="secondLabel">
+                        <br>
+
+                        <label for="thirdLabel-edit" class="control-label">三级标签：</label>
+                        <input type="text" class="form-control" id="thirdLabel-edit" name="thirdLabel">
+                        <br>
+
+
+                        <label class="control-label switch-label">是否发布：</label>
+                        <label class="switch">
+                            <input type="checkbox" id="isRelease">
+                            <span class="slider round"></span>
+                        </label>
+                        <br>
+                    </div>
+
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-primary" id="confirm-edit-course">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+
+        //点击编辑课程，向模态框中填充用户数据
+        function getEditCourseData(courseId,courseName,viewCount,courseMajor,secondLabel,thirdLabel,courseState){
+            $("#courseId").val(courseId)
+            $("#courseName-edit").val(courseName)
+            $("#viewCount-edit").val(viewCount)
+            $("#courseMajor-edit").val(courseMajor)
+            $("#secondLabel-edit").val(secondLabel)
+            $("#thirdLabel-edit").val(thirdLabel)
+            const checkboxIsChecked=$("#isRelease")
+            if(courseState){
+                checkboxIsChecked.attr("checked","checked")
+            }else{
+                checkboxIsChecked.prop("checked",false)
+            }
+
+        }
+
+        $(function (){
+
+            //确定编辑修改课程
+            $("#confirm-edit-course").click(function (){
+                const courseId=$("#courseId").val()
+                const courseName=$("#courseName-edit").val()
+                const viewCount=$("#viewCount-edit").val()
+                const courseMajor=$("#courseMajor-edit").val()
+                const secondLabel=$("#secondLabel-edit").val()
+                const thirdLabel=$("#thirdLabel-edit").val()
+                let courseState= false
+                if($("#isRelease").is(":checked")){
+                    courseState= true
+                }
+                $.ajax({
+                    url: "/admin/editCourse",
+                    type: "POST",
+                    data:{
+                        courseId:courseId,
+                        courseName:courseName,
+                        viewCount:viewCount,
+                        courseMajor:courseMajor,
+                        secondLabel:secondLabel,
+                        thirdLabel:thirdLabel,
+                        courseState:courseState
+                    },
+                    dataType: "JSON",
+                    success: function (json) {
+                        if (json.state === 200) {
+                            layer.msg('编辑成功！', {
+                                icon: 6,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['80px','66px'],
+                                end: function (){
+                                    $("#editCourse-modal").modal("hide")
+                                    $("div.modal-backdrop").remove()
+                                    const pageNumber=[[${cur}]]
+                                    const pageSize=[[${pageSize}]]
+                                    const firstLabel=[[${firstLabel}]]
+                                    const secondLabel=[[${secondLabel}]]
+                                    const courseCondition=[[${courseCondition}]]
+                                    loadCourseData(pageNumber,pageSize,firstLabel,secondLabel,courseCondition)
+                                }
+
+                            });
+
+                        }else if(json.state === 5001){
+                            layer.msg("编辑失败！", {
+                                icon: 5,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['80px','66px'],
+                                end: function (){
+                                    $("#editCourse-modal").modal("hide");
+                                    $("div.modal-backdrop").remove()
+                                }
+                            });
+                        }
+                    }
+                })
+
+            })
+        })
+    </script>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!--视频管理-->
+<!--视频数据展示-->
+<div th:fragment="getVideoDataTable">
+    <script th:inline="javascript">
+        //获取项目路径
+        const contextPath = [[${#request.getContextPath()}]];
+
+        $(function (){
+            $("#getVideoDataTable").load(contextPath+ "/admin/getVideoDataTable", {})
+        })
+
+        //加载其他页数据
+        function loadVideoData(pageNumber,pageSize,videoCondition) {
+            $("#getVideoDataTable").load(contextPath + "/admin/getVideoDataTable",buildQueryVideoData(pageNumber,pageSize,videoCondition));
+        }
+
+
+        //设置查询参数
+        function buildQueryVideoData(pageNumber,pageSize,videoCondition) {
+            const query = {};
+            query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+            query.pageSize= pageSize === "undefined" ? 5 : pageSize
+            query.videoCondition = videoCondition
+            return query;
+        }
+
+        //跳转到指定页
+        function goVideoDataPage(pageSize,videoCondition) {
+            const pageNumber = $("#videoDataPage").val();
+            $("#getVideoDataTable").load(contextPath + "/admin/getVideoDataTable",buildQueryVideoData(pageNumber,pageSize,videoCondition))
+        }
+
+        //修改指定每页显示的记录数
+        function loadVideoDataBySize(obj,videoCondition) {
+            $("#getVideoDataTable").load(contextPath + "/admin/getVideoDataTable",buildQueryVideoData(1,obj.value,videoCondition))
+        }
+    </script>
+
+</div>
+
+<!--视频信息条件查询-->
+<div th:fragment="query-video">
+    <script th:inline="javascript">
+
+        /**显示全部用户信息*/
+
+        $("#getAllVideo").click(function (){
+
+            $(".query-selector :input")
+                .not(':button',':submit',':reset','hidden')
+                .val('')
+            const pageSize=$("#videoPageSize").val()
+
+            $("#getVideoDataTable").load(contextPath+ "/admin/getVideoDataTable", buildQueryVideoData(1,pageSize,null))
+        })
+
+
+        /**按条件查询视频信息*/
+        $("#getVideoByQueryCondition").click(function (){
+            let pageNumber=""
+            const pageSize=$("#videoPageSize").val()
+            const videoCondition=$("#video_condition").val()
+            $("#getVideoDataTable").load(contextPath+ "/admin/getVideoDataTable", buildQueryVideoData(pageNumber,pageSize,videoCondition))
+        })
+
+        /**删除视频信息操作*/
+        function deleteVideoDataByVideoId(cur,pageSize,videoId,videoCondition){
+            layer.confirm('是否确认删除？',{
+                icon: 3,
+                title: '提示',
+                shade: [0.5, '#393D49'],
+                move: true,
+            },function (){
+                $.ajax({
+                    url: "/admin/deleteVideoDataByVideoId",
+                    data: {
+                        videoId: videoId,
+                    },
+                    type: "POST",
+                    dataTypeL: JSON,
+                    success: function (json) {
+                        if(json.state===200){
+                            layer.msg('删除成功！', {
+                                icon: 6,
+                                time: 700,
+                                shade: [0.4, '#393D49'],
+                                area:['100px','66px'],
+                                end: function (){
+                                    $("#getVideoDataTable").load(contextPath+ "/admin/getVideoDataTable", buildQueryVideoData(cur,pageSize,videoCondition))
+                                }
+                            });
+                        }else if(json.state===5002){
+                            layer.msg("删除失败！", {
+                                icon: 5,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['300px','66px'],
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        /**checkbox全选*/
+        $(function () {
+            $("#checkAll").click(function () {
+                $('.check_info :checkbox').prop('checked', $('#checkAll').is(':checked'));
+            });
+
+            $('.check_info :checkbox').click(function () {
+                const a = $('.check_info :checkbox').length;
+                const b = $('.check_info :checked').length;
+                $('#checkAll').prop('checked', a === b);
+            });
+        });
+
+
+    </script>
+</div>
+
+<!--添加视频侧边栏-->
+<div th:fragment="add-video">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="adminAddVideo" aria-labelledby="offcanvasRightLabel" style="overflow-y: scroll">
+        <div class="offcanvas-header">
+            <h5 id="adminAddVideoLabel" style="font-size: 20px">视频信息</h5>
+            <span type="button" id="close_addVideo" class="iconfont icon-guanbi pull-right" data-bs-dismiss="offcanvas" aria-label="Close"></span>
+        </div>
+        <div class="offcanvas-body">
+            <label for="videoNum" class="control-label">视频号：</label>
+            <input type="text" class="form-control" id="videoNum" name="videoNum" placeholder="请输入视频号"><br>
+
+            <label for="videoName" class="control-label">视频名：</label>
+            <input type="text" class="form-control" id="videoName" name="courseBase" placeholder="请输入视频名"><br>
+
+            <label for="fileupload" class="control-label">视频文件：</label>
+            <input id="fileupload" type="file" name="fileupload" style="display:none;">
+            <label for='textfield'></label>
+            <input type='text' class="form-control" name='textfield' id='textfield' placeholder="请选择文件"/>
+            <div class="details_tools_div">
+                <input class="frm_btn frm_add" id="excelImport" type="button" value="浏览"/>
+                <input class="frm_btn" id="btn_video_save" type="button" value="保存"/>
+            </div>
+        </div>
+    </div>
+
+
+    <script th:inline="javascript">
+
+        //视频文件选择
+        $(function (){
+            $("#excelImport").click(function() {
+                $('#fileupload').click();
+            });
+
+            $('#fileupload').change(function(){
+                document.getElementById("textfield").value =
+                    document.getElementById("fileupload").files[0].name;
+            });
+        });
+
+
+        $(function (){
+            //点击取消或删除，关闭侧边栏的同时，删除已填数据
+            $("#close_addVideo").click(function (){
+                $("#videoNum").val("")
+                $("#videoName").val("")
+                $("#fileupload").val("")
+                $("#textfield").val("")
+            })
+
+
+            //保存用户信息
+            $("#btn_video_save").click(function (){
+                const videoNum=$("#videoNum").val()
+                const videoName=$("#videoName").val()
+                const textfield=$("#textfield").val()
+                const file = document.getElementById("fileupload").files[0];
+                const formData = new FormData();
+                formData.append('fileupload', file);
+
+                if($.isEmptyObject(videoNum)||$.isEmptyObject(videoName)){
+                    layer.msg("输入不能为空！", {
+                        icon: 5,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['180px','66px'],
+                    });
+                }else if($.isEmptyObject(textfield)){
+                    layer.msg("请选择视频文件！", {
+                        icon: 2,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['240px','66px'],
+                    });
+                }else {
+                    $.ajax({
+                        url: "/admin/addVideo/"+videoNum+"/"+videoName,
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (json) {
+                            if (json.state === 200) {
+                                layer.msg('增加成功！', {
+                                    icon: 6,
+                                    time: 1000,
+                                    shade: [0.4, '#393D49'],
+                                    area:['80px','66px'],
+                                    end: function (){
+                                        let pageNumber
+                                        const total=[[${total}]]
+                                        const pageSize=[[${pageSize}]]
+                                        if((total+1)%5===0){
+                                            pageNumber=Math.floor((total + 1)/5)
+                                        }else{
+                                            pageNumber=Math.floor((total + 1)/5)+1
+                                        }
+                                        const videoCondition=[[${videoCondition}]]
+                                        loadVideoData(pageNumber,pageSize,videoCondition)
+                                    }
+                                });
+                            }else if(json.state === 5000){
+                                layer.msg("添加失败！", {
+                                    icon: 5,
+                                    time: 1000,
+                                    shade: [0.4, '#393D49'],
+                                    area:['80px','66px'],
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        })
+
+    </script>
+
+</div>
+
+<!--编辑视频模态框-->
+<div th:fragment="edit-video">
+    <div class="modal fade" id="editVideo-modal" tabindex="-1" role="dialog" aria-labelledby="editVideoModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="ediVideoModalLabel">视频信息</h4>
+                </div>
+                <div class="scroll">
+                    <div class="modal-body">
+                        <input type="hidden" id="videoId" class="form-control" name="videoId">
+                        <label for="videoNum-edit" class="control-label" >视频号：</label>
+                        <input type="text" class="form-control" id="videoNum-edit" name="videoNum">
+                        <br>
+                        <label for="videoName-edit" class="control-label">视频名：</label>
+                        <input type="text" class="form-control" id="videoName-edit" name="videoName">
+                        <br>
+                        <label for="videoDuration-edit" class="control-label">视频时长：</label>
+                        <input type="text" class="form-control" id="videoDuration-edit" name="videoDuration">
+                        <br>
+                    </div>
+
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-primary" id="confirm-edit-video">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+
+        //点击编辑视频，向模态框中填充用户数据
+        function getEditVideoData(videoId,videoNum,videoName,videoDuration){
+            $("#videoId").val(videoId)
+            $("#videoNum-edit").val(videoNum)
+            $("#videoName-edit").val(videoName)
+            $("#videoDuration-edit").val(videoDuration)
+        }
+
+        $(function (){
+
+            //确定编辑修改视频
+            $("#confirm-edit-video").click(function (){
+                const videoId=$("#videoId").val()
+                const videoNum=$("#videoNum-edit").val()
+                const videoName=$("#videoName-edit").val()
+                const videoDuration=$("#videoDuration-edit").val()
+                $.ajax({
+                    url: "/admin/editVideo",
+                    type: "POST",
+                    data:{
+                        videoId:videoId,
+                        videoNum:videoNum,
+                        videoName:videoName,
+                        videoDuration:videoDuration
+                    },
+                    dataType: "JSON",
+                    success: function (json) {
+                        if (json.state === 200) {
+                            layer.msg('编辑成功！', {
+                                icon: 6,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['80px','66px'],
+                                end: function (){
+                                    $("#editVideo-modal").modal("hide")
+                                    $("div.modal-backdrop").remove()
+                                    const pageNumber=[[${cur}]]
+                                    const videoCondition=[[${videoCondition}]]
+                                    loadVideoData(pageNumber,pageSize,videoCondition)
+                                }
+
+                            });
+
+                        }else if(json.state === 5001){
+                            layer.msg("编辑失败！", {
+                                icon: 5,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['80px','66px'],
+                                end: function (){
+                                    $("#editVideo-modal").modal("hide");
+                                    $("div.modal-backdrop").remove()
+                                }
+                            });
+                        }
+                    }
+                })
+
+            })
+        })
+    </script>
+
+</div>
+
+
+
+
+
+<!--题目管理-->
+<!--题目数据展示-->
+<div th:fragment="getQuestionDataTable">
+    <script th:inline="javascript">
+        //获取项目路径
+        const contextPath = [[${#request.getContextPath()}]];
+
+        $(function (){
+            $("#getQuestionDataTable").load(contextPath+ "/admin/getQuestionDataTable", {})
+        })
+
+        //加载其他页数据
+        function loadQuestionData(pageNumber,pageSize,questionType,contentType) {
+            $("#getQuestionDataTable").load(contextPath + "/admin/getQuestionDataTable",buildQueryQuestionData(pageNumber,pageSize,questionType,contentType));
+        }
+
+
+        //设置查询参数
+        function buildQueryQuestionData(pageNumber,pageSize,questionType,contentType) {
+            const query = {};
+            query.pageNumber = typeof pageNumber == "undefined" ? 1 : pageNumber;
+            query.pageSize= pageSize === "undefined" ? 5 : pageSize
+            query.questionType = typeof questionType == 'undefined' ? '全部' : questionType;
+            query.contentType = typeof contentType == 'undefined' ? '全部' : contentType;
+            return query;
+        }
+
+        //跳转到指定页
+        function goQuestionDataPage(pageSize,questionType,contentType) {
+            const pageNumber = $("#questionDataPage").val();
+            $("#getQuestionDataTable").load(contextPath + "/admin/getQuestionDataTable",buildQueryQuestionData(pageNumber,pageSize,questionType,contentType))
+        }
+
+        //修改指定每页显示的记录数
+        function loadQuestionDataBySize(obj,questionType,contentType) {
+            $("#getQuestionDataTable").load(contextPath + "/admin/getQuestionDataTable",buildQueryQuestionData(1,obj.value,questionType,contentType))
+        }
+    </script>
+
+</div>
+
+<!--题目信息条件查询-->
+<div th:fragment="query-question">
+    <script th:inline="javascript">
+
+        /**显示全部题目信息*/
+
+        $("#getAllQuestion").click(function (){
+
+            $(".query-selector :input")
+                .not(':button',':submit',':reset','hidden')
+                .val('')
+            //刷新下拉框
+            const first_label_select=$("#question_type")
+            first_label_select.val('全部')
+            first_label_select.selectpicker('refresh')
+
+            const second_label_select=$("#content_type")
+            second_label_select.val('全部')
+            second_label_select.selectpicker('refresh')
+            const pageSize=$("#questionPageSize").val()
+
+            $("#getQuestionDataTable").load(contextPath+ "/admin/getQuestionDataTable", buildQueryQuestionData(1,pageSize,'全部','全部'))
+        })
+
+
+        /**按条件查询题目信息*/
+        $("#getQuestionByQueryCondition").click(function (){
+            let pageNumber=""
+            const pageSize=$("#questionPageSize").val()
+            const questionType=$("#question_type").val()
+            const contentType =$("#content_type").val()
+            $("#getQuestionDataTable").load(contextPath+ "/admin/getQuestionDataTable", buildQueryQuestionData(pageNumber,pageSize,questionType,contentType))
+        })
+
+        /**删除题目信息操作*/
+        function deleteQuestionDataByQuestionId(cur,pageSize,questionId,questionType,contentType){
+            layer.confirm('是否确认删除？',{
+                icon: 3,
+                title: '提示',
+                shade: [0.5, '#393D49'],
+                move: true,
+            },function (){
+                $.ajax({
+                    url: "/admin/deleteQuestionDataByQuestionId",
+                    data: {
+                        questionId: questionId,
+                    },
+                    type: "POST",
+                    dataTypeL: JSON,
+                    success: function (json) {
+                        if(json.state===200){
+                            layer.msg('删除成功！', {
+                                icon: 6,
+                                time: 700,
+                                shade: [0.4, '#393D49'],
+                                area:['100px','66px'],
+                                end: function (){
+                                    $("#getQuestionDataTable").load(contextPath+ "/admin/getQuestionDataTable", buildQueryQuestionData(cur,pageSize,questionType,contentType))
+                                }
+                            });
+                        }else if(json.state===5002){
+                            layer.msg("删除失败！", {
+                                icon: 5,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['300px','66px'],
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        /**checkbox全选*/
+        $(function () {
+            $("#checkAll").click(function () {
+                $('.check_info :checkbox').prop('checked', $('#checkAll').is(':checked'));
+            });
+
+            $('.check_info :checkbox').click(function () {
+                const a = $('.check_info :checkbox').length;
+                const b = $('.check_info :checked').length;
+                $('#checkAll').prop('checked', a === b);
+            });
+        });
+
+
+    </script>
+</div>
+
+<!--添加题目侧边栏-->
+<div th:fragment="add-question">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="adminAddQuestion" aria-labelledby="offcanvasRightLabel" style="overflow-y: scroll">
+        <div class="offcanvas-header">
+            <h5 id="adminAddQuestionLabel" style="font-size: 20px">课程信息</h5>
+            <span type="button" id="close_addQuestion" class="iconfont icon-guanbi pull-right" data-bs-dismiss="offcanvas" aria-label="Close"></span>
+        </div>
+        <div class="offcanvas-body">
+            <label for="questionDescription" class="control-label">题干：</label>
+            <textarea type="text" class="form-control" id="questionDescription" name="courseDescription" placeholder="请输入题干"></textarea><br>
+
+            <label for="A" class="control-label">选项A：</label>
+            <input type="text" class="form-control" id="A" name="A" placeholder="请输入选项A内容"><br>
+            <label for="B" class="control-label">选项B：</label>
+            <input type="text" class="form-control" id="B" name="B" placeholder="请输入选项B内容"><br>
+            <label for="C" class="control-label">选项C：</label>
+            <input type="text" class="form-control" id="C" name="C" placeholder="请输入选项C内容"><br>
+            <label for="D" class="control-label">选项D：</label>
+            <input type="text" class="form-control" id="D" name="D" placeholder="请输入选项D内容"><br>
+            <label for="E" class="control-label">选项E：</label>
+            <input type="text" class="form-control" id="E" name="E" placeholder="请输入选项E内容"><br>
+            <label for="F" class="control-label">选项F：</label>
+            <input type="text" class="form-control" id="F" name="F" placeholder="请输入选项F内容"><br>
+
+
+            <label for="question_type_select" class="control-label">题目类型：</label>
+            <select class="data_select" id="question_type_select" style="font-size: 13px">
+                <option value="">请选择题目类型</option>
+                <option value="单选题">单选题</option>
+                <option value="多选题">多选题</option>
+                <option value="判断题">判断题</option>
+            </select><br>
+            <br>
+            <label for="contentType" class="control-label">内容类型：</label>
+            <input type="text" class="form-control" id="contentType" name="contentType" placeholder="请输入内容类型"><br>
+            <label for="questionAnswer" class="control-label">题目答案：</label>
+            <input type="text" class="form-control" id="questionAnswer" name="questionAnswer" placeholder="请输入题目答案"><br>
+            <div class="details_tools_div">
+                <input class="frm_btn" id="btn_question_save" type="button" value="保存"/>
+                <input class="frm_btn frm_clear" id="btn_question_cancel" data-bs-dismiss="offcanvas" type="button" value="取消"/>
+            </div>
+        </div>
+    </div>
+
+
+    <script th:inline="javascript">
+
+        $(function (){
+            //点击取消或删除，关闭侧边栏的同时，删除已填数据
+            $("#close_addQuestion,#btn_question_cancel").click(function (){
+                $("#questionDescription").val("")
+                $("#A").val("")
+                $("#B").val("")
+                $("#C").val("")
+                $("#D").val("")
+                $("#E").val("")
+                $("#F").val("")
+                $("#question_type_select").val("")
+                $("#contentType").val("")
+                $("#questionAnswer").val("")
+            })
+
+
+            //保存题目信息
+            $("#btn_question_save").click(function (){
+                const questionDescription=$("#questionDescription").val()
+                const A=$("#A").val()
+                const B= $("#B").val()
+                const C=$("#C").val()
+                const D=$("#D").val()
+                const E=$("#E").val()
+                const F=$("#F").val()
+                const questionType=  $("#question_type_select").val()
+                const contentType= $("#contentType").val()
+                const questionAnswer=$("#questionAnswer").val()
+                if($.isEmptyObject(questionDescription)||$.isEmptyObject(A)|| $.isEmptyObject(B)||$.isEmptyObject(questionType)||
+                    $.isEmptyObject(contentType)||$.isEmptyObject(questionAnswer)){
+                    layer.msg("输入不能为空！", {
+                        icon: 5,
+                        time: 1000,
+                        shade: [0.4, '#393D49'],
+                        area:['180px','66px'],
+                    });
+                }else {
+                    $.ajax({
+                        url: "/admin/addQuestion",
+                        type: "POST",
+                        data:{
+                            questionDescription:questionDescription,
+                            A:A,B:B,C:C,D:D,E:E,F:F,
+                            questionType:questionType,
+                            contentType:contentType,
+                            questionAnswer:questionAnswer
+                        },
+                        dataType: "JSON",
+                        success: function (json) {
+                            if (json.state === 200) {
+                                layer.msg('增加成功！', {
+                                    icon: 6,
+                                    time: 1000,
+                                    shade: [0.4, '#393D49'],
+                                    area:['80px','66px'],
+                                    end: function (){
+                                        let pageNumber
+                                        const total=[[${total}]]
+                                        const pageSize=[[${pageSize}]]
+                                        if((total+1)%5===0){
+                                            pageNumber=Math.floor((total + 1)/5)
+                                        }else{
+                                            pageNumber=Math.floor((total + 1)/5)+1
+                                        }
+                                        const questionType=[[${questionType}]]
+                                        const contentType=[[${contentType}]]
+                                        loadQuestionData(pageNumber,pageSize,questionType,contentType)
+                                    }
+                                });
+                            }else if(json.state === 5000){
+                                layer.msg("添加失败！", {
+                                    icon: 5,
+                                    time: 1000,
+                                    shade: [0.4, '#393D49'],
+                                    area:['80px','66px'],
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        })
+
+
+        //判断专业名是否只包含中文
+        function isChinese(str) {
+            const reg = /^[\u4e00-\u9fa5]+$/;
+            return reg.test(str);
+        }
+    </script>
+
+</div>
+
+<!--编辑题目模态框-->
+<div th:fragment="edit-question">
+    <div class="modal fade" id="editQuestion-modal" tabindex="-1" role="dialog" aria-labelledby="editQuestionModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="editQuestionModalLabel">题目信息</h4>
+                </div>
+                <div class="scroll">
+                    <div class="modal-body">
+                        <input type="hidden" id="questionId" class="form-control" name="questionId">
+                        <label for="A-edit" class="control-label">选项A：</label>
+                        <input type="text" class="form-control" id="A-edit" name="A">
+                        <label for="B-edit" class="control-label">选项B：</label>
+                        <input type="text" class="form-control" id="B-edit" name="B">
+                        <label for="C-edit" class="control-label">选项C：</label>
+                        <input type="text" class="form-control" id="C-edit" name="C">
+                        <label for="D-edit" class="control-label">选项D：</label>
+                        <input type="text" class="form-control" id="D-edit" name="D">
+                        <label for="E-edit" class="control-label">选项E：</label>
+                        <input type="text" class="form-control" id="E-edit" name="E">
+                        <label for="F-edit" class="control-label">选项F：</label>
+                        <input type="text" class="form-control" id="F-edit" name="F">
+                        <label for="data_select" class="control-label">题目类型：</label><br>
+                        <select class="data_select" id="questionType-edit">
+                            <option value="单选题">单选题</option>
+                            <option value="多选题">多选题</option>
+                            <option value="判断题">判断题</option>
+                        </select>
+                        <label for="contentType-edit" class="control-label" >内容类型：</label>
+                        <input type="text" class="form-control" id="contentType-edit" name="contentType">
+                        <label for="questionAnswer-edit" class="control-label">题目答案：</label>
+                        <input type="text" class="form-control" id="questionAnswer-edit" name="questionAnswer">
+                    </div>
+
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-primary" id="confirm-edit-question">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+
+        //点击编辑课程，向模态框中填充用户数据
+        function getEditQuestionData(questionId,A,B,C,D,E,F,questionType,contentType,questionAnswer){
+            $("#questionId").val(questionId)
+            $("#A-edit").val(A)
+            $("#B-edit").val(B)
+            $("#C-edit").val(C)
+            $("#D-edit").val(D)
+            $("#E-edit").val(E)
+            $("#F-edit").val(F)
+            $("#questionType-edit").val(questionType)
+            $("#contentType-edit").val(contentType)
+            $("#questionAnswer-edit").val(questionAnswer)
+        }
+
+        $(function (){
+
+            //确定编辑修改课程
+            $("#confirm-edit-question").click(function (){
+                const questionId=$("#questionId").val()
+                const A=$("#A-edit").val()
+                const B=$("#B-edit").val()
+                const C=$("#C-edit").val()
+                const D=$("#D-edit").val()
+                const E=$("#E-edit").val()
+                const F=$("#F-edit").val()
+                const questionType=$("#questionType-edit").val()
+                const contentType=$("#contentType-edit").val()
+                const questionAnswer=$("#questionAnswer-edit").val()
+                $.ajax({
+                    url: "/admin/editQuestion",
+                    type: "POST",
+                    data:{
+                        questionId:questionId,
+                        A:A,B:B,C:C,D:D,E:E,F:F,
+                        questionType:questionType,
+                        contentType:contentType,
+                        questionAnswer:questionAnswer
+                    },
+                    dataType: "JSON",
+                    success: function (json) {
+                        if (json.state === 200) {
+                            layer.msg('编辑成功！', {
+                                icon: 6,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['80px','66px'],
+                                end: function (){
+                                    $("#editCourse-modal").modal("hide")
+                                    $("div.modal-backdrop").remove()
+                                    const pageNumber=[[${cur}]]
+                                    const pageSize=[[${pageSize}]]
+                                    const questionType=[[${questionType}]]
+                                    const contentType=[[${contentType}]]
+                                    loadQuestionData(pageNumber,pageSize,questionType,contentType)
+                                }
+
+                            });
+
+                        }else if(json.state === 5001){
+                            layer.msg("编辑失败！", {
+                                icon: 5,
+                                time: 1000,
+                                shade: [0.4, '#393D49'],
+                                area:['80px','66px'],
+                                end: function (){
+                                    $("#editCourse-modal").modal("hide");
+                                    $("div.modal-backdrop").remove()
+                                }
+                            });
+                        }
+                    }
+                })
+
+            })
+        })
+    </script>
+
+</div>
+
+
+
+
+<!--当前用户注销操作-->
+<div th:fragment="logout-prompt">
+    <script th:inline="javascript">
+        $("#logout").click(function (){
+            layer.confirm('是否确认注销？',{
+                icon: 3,
+                title: '提示',
+                shade: [0.5, '#393D49'],
+                move: true,
+            },function (){
+                $.ajax({
+                    url: "/logout",
+                    type: "POST",
+                    dataTypeL: JSON,
+                    success: function (json) {
+                        if(json.state===200){
+                            layer.msg('注销成功！', {
+                                icon: 6,
+                                time: 700,
+                                shade: [0.4, '#393D49'],
+                                area:['100px','66px'],
+                                end: function (){
+                                    location.href="toLogin";
+                                }
+                            })
+                        }
+                    }
+                });
+            });
+        })
+    </script>
+</div>
+
+
+<!--信息提示框-->
+<div th:fragment="tooltip">
+    <script th:inline="javascript">
+        $(function (){
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
+</div>
+</body>
+</html>

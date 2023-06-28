@@ -1,0 +1,10 @@
+a:hover {
+    color: #20a53a;
+    text-decoration: none;
+}
+
+a:focus {
+    color: #23527c;
+    text-decoration: none;
+}
+
