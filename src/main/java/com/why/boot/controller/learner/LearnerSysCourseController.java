@@ -389,6 +389,10 @@ public class LearnerSysCourseController extends BaseController {
 
         return "/learner/learner_course_question_data";
     }
+
+
+
+    //获取最终学习成绩结果
     @ResponseBody
     @PostMapping("/learner/getExamResult/{courseId}")
     public JsonResult<Map> getExamResult(@PathVariable("courseId") Long courseId, @RequestBody QuestionAnswer[] questionAnswers,HttpSession session){
